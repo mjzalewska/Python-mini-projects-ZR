@@ -23,8 +23,17 @@ print("""
                                      _|                                      
                                  _|_|                                        
 """)
+
+
+# helper functions
 def find_index(word, char):
     return [idx for idx, letter in enumerate(word) if letter == char]
+
+
+def unhide_word(matrix, indices, letter):
+    for s_index in indices:
+        matrix[s_index] = letter
+    return matrix
 
 
 greeting = "Hello! Let's play hangman. Can you guess the secret word?"
@@ -38,7 +47,7 @@ print(f"The word I'm thinking of has {len(secret_word)} letters: {''.join(hidden
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
 game_on = True
 
-while hidden_word != secret_word:
+while ''.join(hidden_word) != secret_word:
     print(f"Give me your letter: ")
     player_guess = input().casefold()
     if player_guess not in alphabet:
@@ -46,9 +55,8 @@ while hidden_word != secret_word:
     else:
         if player_guess in secret_word:
             print("That's right!")
-            for s_index in find_index(secret_word, player_guess):
-                hidden_word[s_index] = player_guess
-                print(f"The secret word is now: {''.join(hidden_word)}") ## musi zwarcać tylko raz
+            print(f"The secret word is now: "
+                  f"{''.join(unhide_word(hidden_word, find_index(secret_word, player_guess),player_guess))}")
             player_guess_all = input(f"Would you like to guess the whole word? Y/N: ")
             if player_guess_all.casefold()[0] == 'y':
                 player_word = input("Your guess: ")
@@ -59,7 +67,6 @@ while hidden_word != secret_word:
                     print("Sorry, you missed! Please try again!")
             else:
                 print("OK then. Let's carry on!")
-
         else:
             print("Sorry, you missed! Please try again!")
 
