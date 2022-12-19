@@ -1,26 +1,59 @@
-# powinien tak długo pytać o litery aż albo się wypełnią wszystkie
-# jak się wszystko wypełni to gra stop
-# podzielić logikę na mniejsze funkcje + wpleść funchę draw_hangman
+# podzielić logikę na mniejsze funkcje + wpleść funckcję draw_hangman
 # dodać "would you like to play again? "
-import random
-import word_list
 
-secret_word = random.choice(word_list.words)
-print(secret_word) # do wywalenia na końcu
+import csv
+import os
+import random
 
 print("""
-
- _|    _|
- _|    _|    _|_|_|  _|_|_|      _|_|_|  _|_|_|  _|_|      _|_|_|  _|_|_|
- _|_|_|_|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|
- _|    _|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|
- _|    _|    _|_|_|  _|    _|    _|_|_|  _|    _|    _|    _|_|_|  _|    _|
-                                     _|
-                                 _|_|
+*****************************************************************************
+* _|    _|                                                                  *    
+* _|    _|    _|_|_|  _|_|_|      _|_|_|  _|_|_|  _|_|      _|_|_|  _|_|_|  *    
+* _|_|_|_|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|*
+* _|    _|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|*
+* _|    _|    _|_|_|  _|    _|    _|_|_|  _|    _|    _|    _|_|_|  _|    _|*
+*                                     _|                                    *
+*                                   _|_|                                    *
+*****************************************************************************
 """)
 
 
-# helper functions
+def clear_screen():
+    """
+    Helper function to clear terminal
+    :return: None
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def import_wordlist(file_name):
+    words = []
+    with open(file_name, 'r') as f:
+        data = csv.reader(f)
+        for row in data:
+            words.extend(row)
+    return words
+
+
+def choose_secret_word(word_list):
+    secret_word = random.choice(word_list)
+    print(secret_word)  # do wywalenia na końcu
+    return secret_word
+
+
+def greet():
+    greeting = "Hello! Let's play hangman. Can you guess the secret word in 10 attempts?"
+    print('*' * len(greeting))
+    print(greeting)
+    print('*' * len(greeting))
+
+
+def hide_word(word):  # secret word
+    hidden_word = ['*'] * len(word)
+    print(f"The word I'm thinking of has {len(word)} letters: {''.join(hidden_word)}")
+    return hidden_word
+
+
 def find_index(word, char):
     return [idx for idx, letter in enumerate(word) if letter == char]
 
@@ -29,44 +62,6 @@ def unhide_word(matrix, indices, letter):
     for s_index in indices:
         matrix[s_index] = letter
     return matrix
-
-
-greeting = "Hello! Let's play hangman. Can you guess the secret word in 11 moves?"
-print('*' * len(greeting))
-print(greeting)
-print('*' * len(greeting))
-
-hidden_word = ['*'] * len(secret_word)
-print(f"The word I'm thinking of has {len(secret_word)} letters: {''.join(hidden_word)}")
-
-alphabet = 'abcdefghijklmnopqrstuvwxyz'
-game_on = True
-missed_shots = 0
-
-while ''.join(hidden_word) != secret_word:
-    print(f"Give me your best guess: ")
-    player_guess = input().casefold()
-    if player_guess not in alphabet:
-        print("Sorry, this is not a letter! Please try again!")
-    else:
-        if player_guess in secret_word:
-            print("That's right!")
-            print(f"The secret word is now: "
-                  f"{''.join(unhide_word(hidden_word, find_index(secret_word, player_guess),player_guess))}")
-            player_guess_all = input(f"Would you like to take a shot at the whole word? Y/N: ")
-            if player_guess_all.casefold()[0] == 'y':
-                player_word = input("Your guess: ")
-                if player_word == secret_word:
-                    print("That's right! You win!")
-                    break
-                else:
-                    print("Sorry, you missed! Please try again!")
-                    missed_shots += 1
-            else:
-                print("OK then. Let's carry on!")
-        else:
-            print("Sorry, you missed! Please try again!")
-            missed_shots += 1
 
 
 def draw_hangman(counter):
@@ -138,3 +133,52 @@ def draw_hangman(counter):
         print("|")
         print("|")
         print("|")
+
+
+def take_a_guess(wrd_list, word):
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    yes_no = ['y', 'n']
+    missed_shots = 0
+
+    while missed_shots < 10:
+        player_guess = input(f"Give me your best shot: ").casefold()
+        if player_guess not in alphabet:
+            print("Sorry, this is not a letter! Please name a letter in range a-z!")
+
+        elif player_guess in hide_word(word):
+            print("You have already used that letter! Please name another one!")
+
+        elif player_guess in choose_secret_word(wrd_list):
+            print("That's right!")
+            print(f"The secret word is now: "
+                  f"{''.join(unhide_word(hide_word(word), find_index(choose_secret_word(wrd_list), player_guess), player_guess))}")
+            if '*' not in hide_word(word):
+                print("You've unhidden the word! You win!")
+                break
+            # else:
+            #     print(f"Would you like to take a shot at the whole word? Y/N: ")  # tutaj jest problem
+            #     while True:
+            #         guess_all = input()
+            #         if guess_all.casefold()[0] not in ['y', 'n']:
+            #             print("Sorry, I didn't understand that. Please answer Y/N")
+            #         elif guess_all.casefold()[0] in ['y', 'n']:
+            #             if guess_all.casefold()[0] == 'y':
+            #                 player_word = input("Your guess: ")
+            #                 if player_word == secret_word:
+            #                     print("That's right! You win!")
+            #                     break
+            #                 else:
+            #                     print("Sorry, you missed! Please try again!")
+            #                     missed_shots += 1
+            #             else:
+            #                 print("OK. Let's carry on then!")
+
+        else:
+            # if player_guess not in choose_secret_word(wrd_list):
+            print("Sorry, you missed! Please try again!")
+            missed_shots += 1
+            if missed_shots >= 10:
+                print("You missed 10 times! Game over!")
+
+take_a_guess()
+
