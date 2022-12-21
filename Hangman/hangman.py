@@ -1,36 +1,30 @@
 import csv
 import os
 import random
+import string
 
 
 def print_header():
-    print("""
-    * ********************************************************************************
-    * ****************************************************************************** *
-    * * _|    _|                                                                   * *  
-    * * _|    _|    _|_|_|  _|_|_|      _|_|_|  _|_|_|  _|_|      _|_|_|  _|_|_|   * *   
-    * * _|_|_|_|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _| * *
-    * * _|    _|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _| * *
-    * * _|    _|    _|_|_|  _|    _|    _|_|_|  _|    _|    _|    _|_|_|  _|    _| * *
-    * *                                     _|                                     * *
-    * *                                   _|_|                                     * *
-    * ****************************************************************************** *
-    **********************************************************************************
+    print(
+        """
+     _|    _|                                                                   
+     _|    _|    _|_|_|  _|_|_|      _|_|_|  _|_|_|  _|_|      _|_|_|  _|_|_|   
+     _|_|_|_|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|
+     _|    _|  _|    _|  _|    _|  _|    _|  _|    _|    _|  _|    _|  _|    _|
+     _|    _|    _|_|_|  _|    _|    _|_|_|  _|    _|    _|    _|_|_|  _|    _|
+                                         _|                                    
+                                       _|_|                                    
     """)
 
 
 def greet():
     greeting = "Hello! Let's play hangman. Can you guess the secret word in 10 attempts?"
-    print('*' * len(greeting))
+    # print('*' * len(greeting))
     print(greeting)
-    print('*' * len(greeting))
+    # print('*' * len(greeting))
 
 
 def clear_screen():
-    """
-    Helper function to clear terminal
-    :return: None
-    """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -45,11 +39,10 @@ def import_wordlist(file_name):
 
 def choose_secret_word(word_list):
     secret_word = random.choice(word_list)
-    print(secret_word)  # do wywalenia na końcu
     return secret_word
 
 
-def hide_word(word):  # secret word
+def hide_word(word):
     hidden_word = ['*'] * len(word)
     print(f"The word I'm thinking of has {len(word)} letters: {''.join(hidden_word)}")
     return hidden_word
@@ -63,26 +56,6 @@ def unhide_word(matrix, indices, letter):
     for s_index in indices:
         matrix[s_index] = letter
     return matrix
-
-
-def take_and_check_input(prompt, warning, criteria=None):
-    while True:
-        user_reply = input(prompt).casefold()
-        if user_reply in criteria:
-            return user_reply
-        else:
-            return warning
-
-
-def check_result(user_input, secret_word):
-    if user_input in secret_word or user_input == secret_word:
-        return True
-    else:
-        return False
-
-
-def print_screen(): #decide if needed
-    pass
 
 
 def draw_hangman(counter):
@@ -157,63 +130,67 @@ def draw_hangman(counter):
 
 
 def run():
+    print_header()
+    greet()
+
     word_bank = import_wordlist('wordlist.csv')
     secret_word = choose_secret_word(word_bank)
     hidden_secret = hide_word(secret_word)
-    game_on = True
+
+    print(secret_word)  # do usunięcia potem
+
+    choices = ['y', 'n']
     missed_shots = 0
+    game_on = True
 
-    print_header()
-    greet()
     while game_on:
-        pass
+        print('Give me a letter in the range a-z: ')
+        user_guess = input().casefold()
+        letter_indexes = find_index(secret_word, user_guess)
+        revealed_secret = ''.join(unhide_word(hidden_secret, letter_indexes, user_guess))
+        if user_guess not in string.ascii_lowercase:
+            print('Incorrect input!')
+        else:
+            if user_guess in secret_word:
+                print(f'Correct! The secret word is now: {revealed_secret}')
+                if '*' not in hidden_secret:
+                    print('Congratulations! You\'ve unhidden all letters! You win!')
+                    game_on = False
+                else:
+                    user_choice = input("Would you like to take a shot at the whole word? Y/N").casefold()
+                    if user_choice not in choices:
+                        print("Incorrect input! Please choose Y or N!")
+                    else:
+                        if user_choice:
+                            guess_all = input("Your guess: ").casefold()
+                            if guess_all == secret_word:
+                                print("Correct! You win!")
+                                game_on = False
+                            else:
+                                print("Sorry! You missed!")
+                                missed_shots +=1
+                                print()
+                                draw_hangman(missed_shots)
+                                print()
+                        else:
+                            print("No worries! Let's carry on!")
+
+            else:
+                print('Sorry, you missed! Please try again!')
+                missed_shots += 1
+                print()
+                draw_hangman(missed_shots)
+                print()
+
+        if missed_shots == 10:
+            print('You missed 10 times! Game over')
+            game_on = False
+
+
+        #     if user_guess in revealed_secret:
+        #         print('You have already used that letter! Please name another one!')
 
 
 
-
-# OLD - to be deleted
-# def take_a_guess(wrd_list, word):
-#     alphabet = 'abcdefghijklmnopqrstuvwxyz'
-#     yes_no = ['y', 'n']
-#     missed_shots = 0
-#
-#     while missed_shots < 10:
-#         player_guess = input(f"Give me your best shot: ").casefold()
-#         if player_guess not in alphabet:
-#             print("Sorry, this is not a letter! Please name a letter in range a-z!")
-#
-#         elif player_guess in hide_word(word):
-#             print("You have already used that letter! Please name another one!")
-#
-#         elif player_guess in choose_secret_word(wrd_list):
-#             print("That's right!")
-#             print(f"The secret word is now: "
-#                   f"{''.join(unhide_word(hide_word(word), find_index(choose_secret_word(wrd_list), player_guess), player_guess))}")
-#             if '*' not in hide_word(word):
-#                 print("You've unhidden the word! You win!")
-#                 break
-#             # else:
-#             #     print(f"Would you like to take a shot at the whole word? Y/N: ")  # tutaj jest problem
-#             #     while True:
-#             #         guess_all = input()
-#             #         if guess_all.casefold()[0] not in ['y', 'n']:
-#             #             print("Sorry, I didn't understand that. Please answer Y/N")
-#             #         elif guess_all.casefold()[0] in ['y', 'n']:
-#             #             if guess_all.casefold()[0] == 'y':
-#             #                 player_word = input("Your guess: ")
-#             #                 if player_word == secret_word:
-#             #                     print("That's right! You win!")
-#             #                     break
-#             #                 else:
-#             #                     print("Sorry, you missed! Please try again!")
-#             #                     missed_shots += 1
-#             #             else:
-#             #                 print("OK. Let's carry on then!")
-#
-#         else:
-#             # if player_guess not in choose_secret_word(wrd_list):
-#             print("Sorry, you missed! Please try again!")
-#             missed_shots += 1
-#             if missed_shots >= 10:
-#                 print("You missed 10 times! Game over!")
-#
+if __name__ == "__main__":
+    run()
