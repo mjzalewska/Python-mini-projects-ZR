@@ -1,5 +1,4 @@
 import csv
-import os
 import random
 import string
 
@@ -122,10 +121,6 @@ def draw_hangman(counter):
         print("|")
 
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-
 def run():
     print_header()
     greet()
@@ -142,9 +137,11 @@ def run():
 
     while game_on:
         print('Give me a letter in the range a-z: ')
+
         user_guess = input().casefold()
         letter_indexes = find_index(secret_word, user_guess)
         revealed_secret = ''.join(unhide_word(hidden_secret, letter_indexes, user_guess))
+
         if user_guess not in string.ascii_lowercase:
             print('Incorrect input!')
         else:
@@ -153,10 +150,10 @@ def run():
                 if '*' not in hidden_secret:
                     print('Congratulations! You\'ve unhidden all letters! You win!')
                     game_on = False
-                else:  # tutaj jest problem-od drugiej iteracji omija tę pętlę
+                else:
                     print("Would you like to take a shot at the whole word? Y/N")
-                    choice = True
-                    while choice:
+                    choice_time = True
+                    while choice_time:
                         user_choice = input().casefold()
                         if user_choice not in choices:
                             print("Incorrect input! Please choose Y or N!")
@@ -166,17 +163,17 @@ def run():
                                 if guess_all == secret_word:
                                     print("Correct! You win!")
                                     game_on = False
-                                    choice = False
+                                    choice_time = False
                                 else:
                                     print("Sorry! You missed!")
                                     missed_shots += 1
                                     print()
                                     draw_hangman(missed_shots)
                                     print()
-                                    choice = False
+                                    choice_time = False
                             else:
                                 print("No worries! Let's carry on!")
-                                choice = False
+                                choice_time = False
             else:
                 print('Sorry, you missed! Please try again!')
                 missed_shots += 1
@@ -188,9 +185,9 @@ def run():
             print('You missed 10 times! Game over')
             game_on = False
 
-        #     if user_guess in revealed_secret:
-        #         print('You have already used that letter! Please name another one!')
-
 
 if __name__ == "__main__":
     run()
+
+# if user_guess in revealed_secret:
+#     print('You have already used that letter! Please name another one!')
