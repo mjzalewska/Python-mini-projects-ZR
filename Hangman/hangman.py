@@ -121,7 +121,7 @@ def draw_hangman(counter):
         print("|")
 
 
-def run():
+def play():
     print_header()
     greet()
 
@@ -129,15 +129,12 @@ def run():
     secret_word = choose_secret_word(word_bank)
     hidden_secret = hide_word(secret_word)
 
-    print(secret_word)  # do usunięcia potem
-
     choices = ['y', 'n']
     missed_shots = 0
     game_on = True
 
     while game_on:
         print('Give me a letter in the range a-z: ')
-
         user_guess = input().casefold()
         letter_indexes = find_index(secret_word, user_guess)
         revealed_secret = ''.join(unhide_word(hidden_secret, letter_indexes, user_guess))
@@ -187,7 +184,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
-
-# if user_guess in revealed_secret:
-#     print('You have already used that letter! Please name another one!')
+    play()
