@@ -26,8 +26,18 @@ def greet():
     return name
 
 
+def chose_game_mode():
+    print("Please choose game mode: 1 - Player vs Player, 2 - Player vs Computer: ")
+    while True:
+        game_mode = input()
+        if int(game_mode) in [1, 2]:
+            return str(game_mode)
+        else:
+            print("Invalid input! Please choose 1 or 2")
+
+
 def choose_sign():
-    print("Please choose if you want to be \'X\' or \'O\':\n")
+    print("Player 1, please choose if you want to be \'X\' or \'O\':\n")
     while True:
         player_choice = input()
         if player_choice.casefold() not in ['x', 'o']:
@@ -53,7 +63,7 @@ def choose_order(player_sign, player_name):
         return order
 
 
-def draw_board(board):  # tutaj funkcja game
+def draw_board(board):
     print('|'.center(17) + '|'.center(3))
     print(f" {board[0]}".center(8) + '|' + f"{board[1]}".center(9) + '|' + f" {board[2]}".center(8))
     print('|'.center(17) + '|'.center(3))
@@ -67,6 +77,13 @@ def draw_board(board):  # tutaj funkcja game
     print('|'.center(17) + '|'.center(3))
 
 
+def check_field(board, field_index):
+    if not board[field_index]:
+        return True
+    else:
+        return False
+
+
 def comp_play(comp_sign, board):
     computer_choice = random.randint(0, 8)
     if check_field(board, computer_choice):
@@ -75,14 +92,7 @@ def comp_play(comp_sign, board):
         comp_play(comp_sign, board)
 
 
-def check_field(board, field_index):
-    if not board[field_index]:
-        return True
-    else:
-        return False
-
-
-def game(player_sign):
+def game(player_sign, board):
     game_on = True
     while game_on:
         print("Choose a field number from 1 to 9")
@@ -90,10 +100,10 @@ def game(player_sign):
         if not player_choice.isdigit() or 9 < int(player_choice) < 1:
             print("Sorry, this is not a valid choice. Choose a digit from 1 to 9")
         else:
-            if game_board[int(player_choice) - 1]:
+            if board[int(player_choice) - 1]:
                 print("Sorry, this field is already taken. Please choose another field number between 1 and 9.\n")
             else:
-                game_board[int(player_choice) - 1] += player_sign
+                board[int(player_choice) - 1] = player_sign
                 game_on = False
 
 
@@ -101,5 +111,5 @@ def check_winner():
     pass
 
 
-def chose_game_mode():
-    pass
+
+
