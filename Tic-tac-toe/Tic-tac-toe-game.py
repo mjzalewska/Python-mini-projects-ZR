@@ -2,9 +2,9 @@
 # losujemy kto zaczyna (x czy o i odpowiednio pytanie o pole) - done
 # komputer losuje pole - done
 # pytamy gracza o pole - done
+# jeśli pole zajęte, to info, że tutaj nie można postawić - done
+# j.w. - komputer musi postawić na kolejny mwolnym - done
 
-# jeśli pole zajęte, to info, że tutaj nie można postawić
-# j.w. - komputer musi postawić na kolejny mwolnym
 # sprawdzamy czy 3 pola obok siebie zajęte
 # jeśli trzy zajęte obok siebie lub wszystkie zajęte, to koniec gry
 # pytanie czy chce grać jeszcze raz - jak nie, kończymy
@@ -12,14 +12,18 @@
 
 import random
 
-print("*" * 38)
-print("Hello! Welcome to the tic-tac-toe game!")
-print("*" * 38)
-print('\n')
 
-name = input("What's your name: \n")
 # game_board = [''] * 9
-game_board = ['X', 'X', '','X','', 'X', 'X', 'X', '']
+game_board = ['X', 'X', '', 'X', '', 'X', 'X', 'X', '']
+
+
+def greet():
+    greeting = "Hello! Welcome to the tic-tac-toe game!"
+    print("*" * len(greeting))
+    print(greeting)
+    print("*" * len(greeting))
+    name = input("What's your name: \n")
+    return name
 
 
 def choose_sign():
@@ -50,7 +54,6 @@ def choose_order(player_sign, player_name):
 
 
 def draw_board(board):  # tutaj funkcja game
-
     print('|'.center(17) + '|'.center(3))
     print(f" {board[0]}".center(8) + '|' + f"{board[1]}".center(9) + '|' + f" {board[2]}".center(8))
     print('|'.center(17) + '|'.center(3))
@@ -66,14 +69,10 @@ def draw_board(board):  # tutaj funkcja game
 
 def comp_play(comp_sign, board):
     computer_choice = random.randint(0, 8)
-    while True:
-        for index in range(len(board)):
-            if not check_field(board, computer_choice):
-                # computer_choice = random.randint(0, 8)
-                continue
-            else:
-                board[computer_choice] = comp_sign
-                break
+    if check_field(board, computer_choice):
+        board[computer_choice] = comp_sign
+    else:
+        comp_play(comp_sign, board)
 
 
 def check_field(board, field_index):
@@ -101,9 +100,6 @@ def game(player_sign):
 def check_winner():
     pass
 
+
 def chose_game_mode():
     pass
-
-
-comp_play('O', game_board)
-print(game_board)
