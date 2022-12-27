@@ -1,17 +1,8 @@
-# gracz wybiera swój znak - done
-# losujemy kto zaczyna (x czy o i odpowiednio pytanie o pole) - done
-# komputer losuje pole - done
-# pytamy gracza o pole - done
-# jeśli pole zajęte, to info, że tutaj nie można postawić - done
-# j.w. - komputer musi postawić na kolejny mwolnym - done
-
-# sprawdzamy czy 3 pola obok siebie zajęte
 # jeśli trzy zajęte obok siebie lub wszystkie zajęte, to koniec gry
 # pytanie czy chce grać jeszcze raz - jak nie, kończymy
 
 
 import random
-
 
 # game_board = [''] * 9
 game_board = ['X', 'X', '', 'X', '', 'X', 'X', 'X', '']
@@ -107,9 +98,28 @@ def game(player_sign, board):
                 game_on = False
 
 
+def convert_to_bool(matrix):
+    for item in matrix:
+        if isinstance(item, list):
+            return any([len(set(item)) == 1 for item in matrix])
+        else:
+            return len(set(matrix)) == 1
+
+
+game_board = [
+    'X', 'X', 'O',
+    'X', 'X', 'X',
+    'O', 'X', 'X'
+]
+
+h_fields = [game_board[index:index + 3] for index in range(0, len(game_board), 3)]
+v_fields = [[item[i] for item in h_fields] for i in range(0, 3)]
+l_cross_fields = [h_fields[i][i] for i in range(0, 3)]
+r_cross_fields = [h_fields[i][2 - i] for i in range(0, 3)]
+
+
 def check_winner():
     pass
-
-
+# return winner's sign
 
 
