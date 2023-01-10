@@ -1,0 +1,101 @@
+THE_CROSSROADS_START
+
+You've been walking for days on. You come to a crossroads.
+It's getting dark. A forest is looming in the distance.
+There's an inn close by, but you desperately want to get THERE.
+What do you want to do?
+[1] Stay at the inn
+[2] Move on. You can do it
+
+THE_CROSSROADS_END
+
+
+THE_INN_START
+
+You fall asleep as soon as your head hits the pillow.
+It seems you were more tired than you'd realized! Good call!
+#
+#
+You wake up at dawn, and you instantly spot a glimmering object lying on the table by the window.
+What do you do?
+[1] Take it
+[2] Leave it
+
+[an old key]
+
+Let's move on then!
+
+THE_INN_END
+
+
+THE_SLEEPING_FOREST_AFTER_INN_START
+
+You walk into the forest. It's unnaturally still and dark.
+Not even the slightest sound or faintest ray of light...
+As you make your way through the undergrowth you notice something shining bright blue a short distance away.
+
+[1] Leave it
+[2] Check it out
+
+#1 You've decided to check what it is. Looks like it's just a small blueish pond.
+But wait. What are those fish-like creatures?! You've been surrounded by Fishermen.
+
+[1] Fight
+[2] Run
+
+Won: The Fishermen ran away. One of them dropped a bright blue stone.
+What do you want to do with it?
+
+[1] Take it
+[2] Leave it
+
+[water stone]
+
+Lost:
+You've lost. Game over!
+
+#2 You ignored it. The sooner you get to the end, the better. Let's go!
+
+THE_SLEEPING_FOREST_AFTER_INN_END
+
+
+THE FIELDS_AFTER_INN_START
+You decided to take the right turn on the crossroads.
+You've been walking across vast fields for hours now.
+It's getting darker and darker, and you hear some strange noises.
+A Wolfpack! Too many of them! You can't run. Fight!
+
+Won: You scared them off! They dropped something when running away.
+
+[1] Take it
+[2] Leave it
+
+[a fire stone]
+
+It's getting darker by the minute.
+You decide to walk a little further, and come up against a solid wall of rock.
+A dead end! You'll have to camp here for the night, and return to the crossroads tomorrow.
+
+You can use the fire stone to make a fire to fend off wild animals.
+What do you want to do?
+
+[1] Use the stone
+[2] Sleep in the cold
+
+Lost:
+You've lost. Game over!
+
+THE_FIELDS_AFTER_INN_END
+
+
+THE_FORLORN_VILLAGE_START
+
+
+
+
+THE_FORLORN_VILLAGE_END
+
+
+
+# THE ANCIENT TEMPLE
+#
