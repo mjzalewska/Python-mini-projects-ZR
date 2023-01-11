@@ -1,0 +1,180 @@
+THE_CROSSROADS_START
+
+You've been walking for days on. You come to a crossroads.
+It's getting dark. A forest is looming in the distance.
+There's an inn close by, but you desperately want to get THERE.
+What do you want to do?
+[1] Stay at the inn
+[2] Move on. You can do it
+
+THE_CROSSROADS_END
+
+
+THE_INN_START
+
+You fall asleep as soon as your head hits the pillow.
+It seems you were more tired than you'd realized! Good call!
+#
+#
+You wake up at dawn, and you instantly spot a glimmering object lying on the table by the window.
+What do you do?
+[1] Take it
+[2] Leave it
+
+[an old key]
+
+Let's move on then!
+
+THE_INN_END
+
+
+THE_SLEEPING_FOREST_AFTER_INN_START
+
+You walk into the forest. It's unnaturally still and dark.
+Not even the slightest sound or faintest ray of light...
+As you make your way through the undergrowth you notice something shining bright blue a short distance away.
+
+[1] Leave it
+[2] Check it out
+
+#1 You've decided to check what it is. Looks like it's just a small blueish pond.
+But wait. What are those fish-like creatures?! You've been surrounded by Fishermen.
+
+[1] Fight
+[2] Run
+
+Won: The Fishermen ran away. One of them dropped a bright blue stone.
+What do you want to do with it?
+
+[1] Take it
+[2] Leave it
+
+[water stone]
+
+Lost:
+You've lost. Game over!
+
+#2 You ignored it. The sooner you get to the end, the better. Let's go!
+
+THE_SLEEPING_FOREST_AFTER_INN_END
+
+
+THE FIELDS_AFTER_INN_START
+
+You decided to take the right turn on the crossroads.
+You've been walking across vast fields for hours now.
+It's getting darker and darker, and you hear some strange noises.
+A Wolfpack! Too many of them!
+You can't run. Fight!
+
+Won: You scared them off! They dropped something when running away.
+
+[1] Take it
+[2] Leave it
+
+[a fire stone]
+
+It's getting darker by the minute.
+You decide to walk a little further, and come up against a solid wall of rock.
+A dead end! You'll have to camp here for the night, and return to the crossroads tomorrow.
+You can use the fire stone to make a fire to fend off wild animals.
+What do you want to do?
+
+[1] Use the stone
+[2] Sleep in the cold
+
+Lost:
+You've lost. Game over!
+
+THE_FIELDS_AFTER_INN_END
+
+
+THE_FORLORN_VILLAGE_START
+
+You walk through an old, crumbling gate and take a look around.
+Seems like it's been a long time since anyone lived here.
+Better find somewhere to stay for the night.
+You can see a couple of small dilapidated houses.
+What do you want to do?
+
+[1] Search them. Maybe you can find something useful there.
+[2] Leave them. You will camp outside tonight. You never know what dangers might be lurking in the shadows.
+
+## First_building
+You approach the first building. It looks like an old smithy.
+It's dark inside.
+
+** if use matches **
+You light a match and take a look around.
+No food or drink. But you find something that looks like a weapon.
+[a titanium sword]
+
+[1] Take it
+[2] Leave it
+
+Ouch! You've burnt your fingers!
+Better leave now.
+
+** if not try to use matches **
+Too dark. Can't see a thing.
+
+
+## Second_building
+Judging by the board hanging loosely over the entrance this must've been a shop.
+
+** if use matches **
+You light a match and take a look around.
+You spot
+[a can of sardines]
+[a pack of sugar]
+
+lying in a corner.
+
+[1] Take them
+[2] Leave them
+
+** if not use matches **
+Too dark. Can't see a thing.
+
+## Third_building
+
+** if use matches **
+Looks like an old guesthouse.
+You light a match and take a look around. Oh, and old candle!
+You light the candle and carefully examine every nook and cranny.
+Looks like a safe place to stay. What do you want to do?
+
+[1] Stay for the night
+[2] Leave
+
+
+** if not use matches **
+Too dark. Can't see a thing.
+
+## sleep (10)
+
+You wake up at the break of dawn.
+
+** if slept outside **
+It rained heavily over the night. All your things got wet!
+You caught a cold and lost 50 HP
+
+** if slept inside **
+Wow! You slept surprisingly well on that old straw mattress.
+You gained 100 HP.
+
+Time to move on!
+
+THE_FORLORN_VILLAGE_END
+
+
+THE_ANCIENT_TEMPLE_START
+
+You leave the village and find yourself on the side of a vast lake.
+In the middle of the lake sits an old temple.
+It's two towers seems to touch the sky.
+
+
+
+
+THE_ANCIENT_TEMPLE_END

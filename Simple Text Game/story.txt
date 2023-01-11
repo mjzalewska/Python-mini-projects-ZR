@@ -1,11 +1,12 @@
 THE_CROSSROADS_START
 
 You've been walking for days on. You come to a crossroads.
-It's getting dark. A forest is looming in the distance.
+It's getting dark. A forest is looming over the horizon.
 There's an inn close by, but you desperately want to get THERE.
 What do you want to do?
-[1] Stay at the inn
-[2] Move on. You can do it
+
+[1] Stay at the inn, and get some good night's sleep.
+[2] Move on. You can do it!
 
 THE_CROSSROADS_END
 
@@ -22,6 +23,11 @@ What do you do?
 [2] Leave it
 
 [an old key]
+
+Oh! A box of matches. Might come in handy later on.
+What do you do?
+[1] Take it
+[2] Leave it
 
 Let's move on then!
 
@@ -51,6 +57,14 @@ What do you want to do with it?
 
 [water stone]
 
+You're exhausted after the fight, but you decide to move on.
+Who knows what other creatures might be lurking in the dark.
+...
+After what seemed like days, you see sun rays shyly shining through the thick, dark branches.
+You made it!
+As you walk out of the forest you see a village looming on the horizon.
+The sun is setting. Better hurry up. Maybe you can get some rest there.
+
 Lost:
 You've lost. Game over!
 
@@ -60,6 +74,7 @@ THE_SLEEPING_FOREST_AFTER_INN_END
 
 
 THE FIELDS_AFTER_INN_START
+
 You decided to take the right turn on the crossroads.
 You've been walking across vast fields for hours now.
 It's getting darker and darker, and you hear some strange noises.
@@ -76,11 +91,11 @@ It's getting darker by the minute.
 You decide to walk a little further, and come up against a solid wall of rock.
 A dead end! You'll have to camp here for the night, and return to the crossroads tomorrow.
 
-You can use the fire stone to make a fire to fend off wild animals.
+You can use the fire stone to light a fire - it will keep you warm and keep away wild animals.
 What do you want to do?
 
 [1] Use the stone
-[2] Sleep in the cold
+[2] Sleep in the cold - the stone might come in handy later.
 
 Lost:
 You've lost. Game over!
