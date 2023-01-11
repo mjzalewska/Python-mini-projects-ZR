@@ -167,13 +167,23 @@ Time to move on!
 
 THE_FORLORN_VILLAGE_END
 
-
-THE_ANCIENT_TEMPLE_START
+CROSSING_THE_LAKE
 
 You leave the village and find yourself on the side of a vast lake.
 In the middle of the lake sits an old temple.
 It's two towers seems to touch the sky.
+The Temple of Light! But...there's no bridge. How will you get there?
 
+** use water stone **
+The waters of the lake break apart creating a passage for you.
+
+** no water stone **
+Looks like it's a dead end.
+Game over!
+
+CROSSING_THE_LAKE
+
+THE_ANCIENT_TEMPLE_START
 
 
 
