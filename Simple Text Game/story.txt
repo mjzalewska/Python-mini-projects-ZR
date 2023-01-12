@@ -1,12 +1,11 @@
 THE_CROSSROADS_START
 
 You've been walking for days on. You come to a crossroads.
-It's getting dark. A forest is looming over the horizon.
+It's getting dark. A forest is looming in the distance.
 There's an inn close by, but you desperately want to get THERE.
 What do you want to do?
-
-[1] Stay at the inn, and get some good night's sleep.
-[2] Move on. You can do it!
+[1] Stay at the inn
+[2] Move on. You can do it
 
 THE_CROSSROADS_END
 
@@ -23,11 +22,6 @@ What do you do?
 [2] Leave it
 
 [an old key]
-
-Oh! A box of matches. Might come in handy later on.
-What do you do?
-[1] Take it
-[2] Leave it
 
 Let's move on then!
 
@@ -57,14 +51,6 @@ What do you want to do with it?
 
 [water stone]
 
-You're exhausted after the fight, but you decide to move on.
-Who knows what other creatures might be lurking in the dark.
-...
-After what seemed like days, you see sun rays shyly shining through the thick, dark branches.
-You made it!
-As you walk out of the forest you see a village looming on the horizon.
-The sun is setting. Better hurry up. Maybe you can get some rest there.
-
 Lost:
 You've lost. Game over!
 
@@ -78,7 +64,8 @@ THE FIELDS_AFTER_INN_START
 You decided to take the right turn on the crossroads.
 You've been walking across vast fields for hours now.
 It's getting darker and darker, and you hear some strange noises.
-A Wolfpack! Too many of them! You can't run. Fight!
+A Wolfpack! Too many of them!
+You can't run. Fight!
 
 Won: You scared them off! They dropped something when running away.
 
@@ -90,12 +77,11 @@ Won: You scared them off! They dropped something when running away.
 It's getting darker by the minute.
 You decide to walk a little further, and come up against a solid wall of rock.
 A dead end! You'll have to camp here for the night, and return to the crossroads tomorrow.
-
-You can use the fire stone to light a fire - it will keep you warm and keep away wild animals.
+You can use the fire stone to make a fire to fend off wild animals.
 What do you want to do?
 
 [1] Use the stone
-[2] Sleep in the cold - the stone might come in handy later.
+[2] Sleep in the cold
 
 Lost:
 You've lost. Game over!
@@ -105,12 +91,147 @@ THE_FIELDS_AFTER_INN_END
 
 THE_FORLORN_VILLAGE_START
 
+You walk through an old, crumbling gate and take a look around.
+Seems like it's been a long time since anyone lived here.
+Better find somewhere to stay for the night.
+You can see a couple of small dilapidated houses.
+What do you want to do?
+
+[1] Search them. Maybe you can find something useful there.
+[2] Leave them. You will camp outside tonight. You never know what dangers might be lurking in the shadows.
+
+## First_building
+You approach the first building. It looks like an old smithy.
+It's dark inside.
+
+** if use matches **
+You light a match and take a look around.
+No food or drink. But you find something that looks like a weapon.
+[a titanium sword]
+
+[1] Take it
+[2] Leave it
+
+Ouch! You've burnt your fingers!
+Better leave now.
+
+** if not try to use matches **
+Too dark. Can't see a thing.
 
 
+## Second_building
+Judging by the board hanging loosely over the entrance this must've been a shop.
+
+** if use matches **
+You light a match and take a look around.
+You spot
+[a can of sardines]
+[a pack of sugar]
+
+lying in a corner.
+
+[1] Take them
+[2] Leave them
+
+** if not use matches **
+Too dark. Can't see a thing.
+
+## Third_building
+
+** if use matches **
+Looks like an old guesthouse.
+You light a match and take a look around. Oh, and old candle!
+You light the candle and carefully examine every nook and cranny.
+Looks like a safe place to stay. What do you want to do?
+
+[1] Stay for the night
+[2] Leave
+
+
+** if not use matches **
+Too dark. Can't see a thing.
+
+## sleep (10)
+
+You wake up at the break of dawn.
+
+** if slept outside **
+It rained heavily over the night. All your things got wet!
+You caught a cold and lost 50 HP
+
+** if slept inside **
+Wow! You slept surprisingly well on that old straw mattress.
+You gained 100 HP.
+
+Time to move on!
 
 THE_FORLORN_VILLAGE_END
 
+CROSSING_THE_LAKE_START
+
+You leave the village and find yourself on the side of a vast lake.
+In the middle of the lake sits an old temple.
+It's two towers seems to touch the sky.
+The Temple of Light! But...there's no bridge. How will you get there?
+
+** use water stone **
+The waters of the lake break apart creating a passage for you.
+
+** no water stone **
+Looks like it's a dead end.
+Game over!
+
+CROSSING_THE_LAKE_END
+
+THE_ANCIENT_TEMPLE_START
+
+You've finally made it to the ancient temple.
+You pass the mighty stone gate, and find yourself in the vast hallway.
+Early morning sun is shining through the stained-glass windows making the floor a mosaic of colors.
+You walk up the main aisle, all the way to what looks like a stone podium or altar.
+Behind it, you see two sets of door.
+Which door to you choose?
+
+[L] left
+[R] right
+
+** left **
+You've entered the West Tower.
+You run all the way up the winding stone staircase.
+When you finally reach the top, you can barely breathe.
+The top chamber is pitch black, not a single ray of light.
+You make your way in the dark feeling your way around.
+You find a small window.
+
+[1] Open it
+[2] Leave the tower - there's nothing interesting in here
+
+** open **
+Light pours in as you open the window.
+As your eyes adjust to the light, you see that the room is almost empty save for a small wooden table.
+There's a small chest lying on top of it.
+You get closer, open it and...it's empty!
+Seems like you've only wasted your time here...
+
+** leave **
+Start at the entrance to the second tower.
 
 
-# THE ANCIENT TEMPLE
-#
+** right **
+You've entered the West Tower.
+You slowly make your way up the winding staircase.
+Finally, you reach another set of wooden door.
+You try to push it, but it won't budge.
+Suddenly you have the craziest idea, what if you used the old key from the inn?
+You put the key in the lock and...it fits!
+You slowly open the door, and enter a small dusty room full of old books and papers.
+Guess you'll have to look through them one by one to find the map.
+And there it is! You tear the page out, and head out.
+You finally know where to look for the Temple of Light.
+
+THE_ANCIENT_TEMPLE_END
+
+
+
+
+# items description
