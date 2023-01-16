@@ -1,4 +1,4 @@
-# SIMPLE TEXT GAME
+# SIMPLE TEXT GAME - BASE ASSUMPTIONS
 
 Write a simple text game:
 * come up with a simple riddle,
