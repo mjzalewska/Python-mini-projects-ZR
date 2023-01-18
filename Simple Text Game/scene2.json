@@ -1,0 +1,32 @@
+{
+    "no": 2,
+    "name": "The goblin's lair",
+    "into": "...",
+    "description": "A strange, ominous, dark place full off half-eaten animal remains",
+    "items":
+        [
+            {
+                "name": "key",
+                "collectible": true,
+                "hidden": true,
+                "description": "a rusty old key",
+                "stats": [
+                  {
+                    "hp": 0,
+                    "attack": 0,
+                    "defense": 0
+                  }
+                ],
+                "actions": [
+                  {
+                    "target": "drzwi",
+                    "result": "The key fits in the lock. You've opened the door and can move on",
+                    "new event": "next scene"
+                  }
+                ]
+            },
+          {     "name": "wooden door",
+                "description": "A sturdy wooden door"
+          }
+        ]
+}
