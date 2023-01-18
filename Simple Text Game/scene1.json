@@ -1,0 +1,61 @@
+{
+    "no": 1,
+    "name": "Empty dungeon",
+    "into": "...",
+    "description": "An old, empty dungeon in a deserted castle's underground",
+    "items":
+        [
+            {
+                "name": "sword",
+                "collectible": true,
+                "hidden": false,
+                "description": "A steel sword with a decorative handle",
+                "stats": [
+                  {
+                      "hp": 0,
+                      "attack": 1,
+                      "defense": 0
+                  }
+                ]
+            },
+            {
+                "name": "shield",
+                "collectible": true,
+                "hidden": true,
+                "description": "A sturdy shield",
+                "stats": [
+                  {
+                      "hp": 0,
+                      "attack": 0,
+                      "defense": 1
+                  }
+                ]
+            },
+          {
+            "name": "health potion",
+            "collectible": true,
+            "hidden": true,
+            "description": "A strange bluish liquid in a slender flask",
+            "stats": [
+              {
+                "hp": 1,
+                "attack": 0,
+                "defense": 0
+              }
+            ]
+          },
+            {
+                "name": "burning torch",
+                "collectible": true,
+                "hidden": false,
+                "description": "a burning torch mounted on the wall",
+                "stats": [
+                  {
+                    "hp": 0,
+                    "attack": 0,
+                    "defense": 0
+                  }
+                ]
+            }
+        ]
+}
