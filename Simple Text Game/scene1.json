@@ -1,8 +1,8 @@
 {
     "no": 1,
     "name": "Empty dungeon",
-    "into": "...",
-    "description": "An old, empty dungeon in a deserted castle's underground",
+    "into": "You cautiously walk past a crumbling wooden door into an old dungeon. The air is so damp and smelly you can almost touch it. A strong smell of sulphur coming from the torches mounted on the walls hits your nose. You decide to tale a look around",
+    "description": "An old, damp dungeon in a deserted castle's underground",
     "items":
         [
             {
