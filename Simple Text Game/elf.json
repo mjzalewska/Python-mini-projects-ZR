@@ -6,7 +6,8 @@
            "hp": 10,
            "mp" : 8,
            "attack": 8,
-           "defence": 8
+           "defence": 8,
+           "max_inventory": 6
           }
 
         ],
