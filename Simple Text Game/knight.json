@@ -1,0 +1,20 @@
+{
+    "class": "Knight",
+    "stats":
+        [
+          {"level": 10,
+           "hp": 12,
+           "mp" : 0,
+           "attack": 15,
+           "defence": 10
+          }
+
+        ],
+    "description": "Very skilled in close-range combat.Limited knowledge of potions",
+    "inventory":
+        [
+          {     "name": "Buster Sword",
+                "description": "A long steel broadsword, very powerful in close-range combat"
+          }
+        ]
+}
