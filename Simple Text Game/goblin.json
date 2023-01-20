@@ -1,0 +1,14 @@
+{
+    "class": "Goblin",
+    "stats":
+        [
+          {"level": 11,
+           "hp": 20,
+           "mp" : 0,
+           "attack": 15,
+           "defence": 5
+          }
+
+        ],
+    "description": "Not a very intelligent, yet strong and tireless creature. Dwells in the darkness, hates light"
+}

@@ -19,4 +19,3 @@ class FileManager:
                 return data
         except FileNotFoundError:
             return 1
-
