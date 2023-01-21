@@ -1,5 +1,3 @@
-# implement use_item method
-
 class Character:
 
     def __init__(self, **kwargs):
@@ -29,6 +27,3 @@ class Character:
                 return item
         else:
             return "There's nothing in your backpack"
-
-    def use_item(self, item):
-        pass
