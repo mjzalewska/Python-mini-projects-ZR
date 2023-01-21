@@ -1,4 +1,4 @@
-# implement use_inventory method
+# implement use_item method
 
 class Character:
 
@@ -9,7 +9,7 @@ class Character:
         self.max_inventory = kwargs['max_inventory']
 
     def __str__(self):
-        return f"{self.description}"
+        return self.description
 
     def add_item(self, item):
         if len(self.inventory) < self.max_inventory:
