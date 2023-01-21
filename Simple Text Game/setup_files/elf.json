@@ -12,9 +12,5 @@
 
         ],
     "description": "Skilled in swordsmanship and archery. Can use faerie magic and prepare potions",
-    "inventory":
-        ["Silver Bow",
-                "description": "A silver emerald-encrusted bow"
-          }
-        ]
+    "inventory": ["Silver Bow"]
 }

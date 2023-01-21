@@ -8,19 +8,7 @@
             {
                 "name": "key",
                 "collectible": true,
-                "hidden": true,
-                "description": "a rusty old key",
-                "stats": [
-                  {
-                    "hp": 0,
-                    "attack": 0,
-                    "defense": 0
-                  }
-                ],
-                "actions":
-                    {"target": "iron bars crate",
-                     "result": "The key fits the lock! You've opened the grate and can move on", ,
-                    }
+                "hidden": true
                 },
           {     "name": "wooden door",
                 "description": "A sturdy wooden door"
