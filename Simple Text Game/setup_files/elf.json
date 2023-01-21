@@ -1,16 +1,13 @@
 {
     "class": "High Elf",
     "stats":
-        [
           {"level": 10,
            "hp": 10,
            "mp" : 8,
            "attack": 8,
-           "defence": 8,
-           "max_inventory": 6
-          }
-
-        ],
+           "defense": 8
+          },
+    "max inventory": 6,
     "description": "Skilled in swordsmanship and archery. Can use faerie magic and prepare potions",
     "inventory": ["Silver Bow"]
 }

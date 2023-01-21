@@ -6,11 +6,11 @@
            "hp": 10,
            "mp" : 20,
            "attack": 8,
-           "defence": 8,
-           "max_inventory":5
+           "defense": 8
           }
 
         ],
+    "max inventory":5,
     "description": "Highly skilled in magic, elixir- and potion making. Limited weapon-wielding skills ",
     "inventory":
         [

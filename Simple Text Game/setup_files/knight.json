@@ -6,11 +6,11 @@
            "hp": 12,
            "mp" : 0,
            "attack": 15,
-           "defence": 10,
-           "max_inventory": 10
+           "defense": 10
           }
 
         ],
+    "max inventory": 10,
     "description": "Very skilled in close-range combat.Limited knowledge of potions",
     "inventory": ["Buster Sword"]
 }
