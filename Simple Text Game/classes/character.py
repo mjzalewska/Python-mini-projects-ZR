@@ -6,7 +6,7 @@ class Character:
         self.stats = kwargs['stats']
         self.description = kwargs['description']
         self.inventory = kwargs['inventory']
-        self.max_inventory = kwargs['max_inventory']
+        self.max_inventory = kwargs['max inventory']
 
     def __str__(self):
         return self.description
