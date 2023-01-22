@@ -10,6 +10,7 @@
           }
 
         ],
+    "weapon type": "Sword",
     "max inventory": 10,
     "description": "Very skilled in close-range combat.Limited knowledge of potions",
     "inventory": ["Buster Sword"]

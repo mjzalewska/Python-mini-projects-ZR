@@ -1,5 +1,5 @@
 {
-    "class": "High Elf",
+    "class": "Elf",
     "stats":
           {"level": 10,
            "hp": 10,
@@ -7,6 +7,7 @@
            "attack": 8,
            "defense": 8
           },
+    "weapon type": "Bow",
     "max inventory": 6,
     "description": "Skilled in swordsmanship and archery. Can use faerie magic and prepare potions",
     "inventory": ["Silver Bow"]
