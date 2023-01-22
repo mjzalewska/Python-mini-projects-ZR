@@ -3,7 +3,6 @@ class Item:
         self.name = kwargs['name']
         self.description = kwargs['description']
         self.impact = kwargs['impact']
-        self.user = kwargs['user class']
 
     def __str__(self):
         return self.description
