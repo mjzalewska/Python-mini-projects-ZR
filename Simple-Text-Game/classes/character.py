@@ -5,6 +5,7 @@ class Character:
         self.description = kwargs['description']
         self.inventory = kwargs['inventory']
         self.max_inventory = kwargs['max inventory']
+        self.weapon = kwargs['weapon type']
 
     def __str__(self):
         return self.description
