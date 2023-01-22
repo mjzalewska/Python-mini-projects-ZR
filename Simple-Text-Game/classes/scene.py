@@ -13,10 +13,17 @@ class Scene:
     def __str__(self):
         return self.description
 
-    def enumerate_items(self):
+    def enumerate_items(self, character):
         if len(self.items) > 0:
+            print("There are some interesting items here...")
             for item in self.items:
-                return item
+                item_type = item.lower().split()[1]
+                weapons = ['bow', 'sword', 'staff']
+                if (item_type == character.weapon.lower()) or \
+                        (item_type not in weapons):
+                    print(item)
         else:
-            return "Nothing in here..."
+            return "Nothing interesting here for you..."
+
+
 
