@@ -1,24 +1,21 @@
 {
     "no": 1,
     "name": "Empty dungeon",
-    "intro": "You cautiously walk past a crumbling wooden door into an old dungeon. The air is so damp and smelly you can almost touch it. A strong smell of sulphur coming from the torches mounted on the walls hits your nose. You decide to tale a look around",
+    "intro": "You cautiously walk past a crumbling wooden door into an old dungeon. The air is so damp and smelly you can almost touch it. A strong smell of sulphur coming from the torches mounted on the walls hits your nose. You decide to take a look around",
     "description": "An old, damp dungeon in a deserted castle's underground",
     "items":
         [
             {
                 "name": "Steel Sword",
-                "collectible": true,
-                "hidden": false
+                "collectible": true
              },
             {
-                "name": "shield",
-                "collectible": true,
-                "hidden": true
+                "name": "Dragon Shield",
+                "collectible": true
             },
           {
-            "name": "health potion",
+            "name": "Health Potion",
             "collectible": true,
-            "hidden": true,
             "description": "A strange bluish liquid in a slender flask",
             "stats": [
               {
@@ -29,9 +26,8 @@
             ]
           },
             {
-                "name": "burning torch",
-                "collectible": true,
-                "hidden": false
+                "name": "A Burning Torch",
+                "collectible": true
             }
                 ]
 }
