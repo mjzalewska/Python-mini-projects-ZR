@@ -1,20 +1,20 @@
 [
   {"name": "Buster Sword",
    "description": "A long steel broadsword, very powerful in close-range combat",
-   "impact": {"hp":0, "mp":0, "attack":7, "defense":3},
-   "user class:":  "Knight"},
+   "impact": {"hp":0, "mp":0, "attack":7, "defense":3}
+  },
   {"name": "Silver Bow",
    "description": "A silver emerald-encrusted bow",
-   "impact": {"hp":0, "mp":2, "attack":4, "defense":0},
-   "user class": "Elf"},
+   "impact": {"hp":0, "mp":2, "attack":4, "defense":0}
+  },
   {"name": "Mage Staff",
     "description": "An ancient, elaborately carved wooden staff",
-    "impact:":{"hp":0, "mp":5, "attack":5, "defense":5},
-    "user class":  "Mage"},
+    "impact:":{"hp":0, "mp":5, "attack":5, "defense":5}
+  },
   {"name": "Steel Sword",
    "description": "A steel sword with a decorative handle",
-   "impact": {"hp":0, "mp":0, "attack":4, "defense": 1},
-   "user class": "Knight"},
+   "impact": {"hp":0, "mp":0, "attack":4, "defense": 1}
+  },
   {"name": "Dragon Shield",
    "description": "A sturdy metal shield",
    "impact": {"hp":0, "mp": 0,"attack":0,"defense": 3}},
