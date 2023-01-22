@@ -6,9 +6,8 @@
     "items":
         [
             {
-                "name": "key",
-                "collectible": true,
-                "hidden": true
+                "name": "Key",
+                "collectible": true
                 },
           {     "name": "wooden door",
                 "description": "A sturdy wooden door"
