@@ -1,6 +1,7 @@
 import sys
 from file_manager import FileManager
 from item import Item
+from scene import Scene
 
 
 class GamePlay:
@@ -28,10 +29,30 @@ class GamePlay:
                 print('This is not a valid choice!')
 
     @classmethod
-    def start_game(cls):
+    def initialize(cls):
         pass
 
     @classmethod
-    def finish_game(cls):
+    def play(cls):
+        while True:
+            print(f'Available commands: {"".join(cls.game_commands)}')
+            command = input()
+            if command not in cls.game_commands:
+                print('Sorry I don\'t know this command. Please choose again!')
+            else:
+                match command:
+                    case 'H':
+                        cls.show_menu()
+                    case 'D':
+                        pass # describe place
+                    case 'I':
+                        pass # show inventory
+                    case 'T': #take item
+                        pass
+                    case 'Q':
+                        break
+
+
         pass
+
 
