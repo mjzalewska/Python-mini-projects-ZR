@@ -23,7 +23,7 @@ class Scene:
                         (item_type not in weapons):
                     print(item)
         else:
-            return "Nothing interesting here for you..."
+            print("Nothing interesting here for you...")
 
 
 

@@ -1,0 +1,8 @@
+[
+  {"H": "HELP",
+   "D": "DESCRIBE SCENE",
+   "I": "SHOW INVENTORY",
+   "T": "TAKE ITEM",
+   "Q": "QUIT GAME"
+}
+]
