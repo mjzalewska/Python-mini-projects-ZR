@@ -2,11 +2,16 @@ import sys
 from file_manager import FileManager
 from item import Item
 from scene import Scene
+from character import Hero
 
 
 class GamePlay:
 
     game_commands = ['H', 'D', 'I', 'T', 'Q']
+
+    @classmethod
+    def show_wellcome_screen(cls): # add greeting
+        print('...')
 
     @classmethod
     def show_menu(cls):
@@ -29,8 +34,16 @@ class GamePlay:
                 print('This is not a valid choice!')
 
     @classmethod
-    def initialize(cls):
-        pass
+    def initialize_scene(cls):
+        scene_values = FileManager.load_json_file(r'..\setup_files\scene1.json')
+        current_scene = Scene(**scene_values)
+        return current_scene
+
+    @classmethod
+    def initialize_hero(cls):
+        character_values = FileManager.load_json_file(r'..\setup_files\{}'.format(cls.choose_character()))
+        current_character = Hero(**character_values)
+        return current_character
 
     @classmethod
     def play(cls):
@@ -44,10 +57,10 @@ class GamePlay:
                     case 'H':
                         cls.show_menu()
                     case 'D':
-                        pass # describe place
+                        cls.initialize_scene().__str__()
                     case 'I':
-                        pass # show inventory
-                    case 'T': #take item
+                        cls.initialize_hero().show_inventory()
+                    case 'T': #potencjalnie do usunięcia
                         pass
                     case 'Q':
                         break
