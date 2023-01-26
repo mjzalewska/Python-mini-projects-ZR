@@ -12,5 +12,6 @@
           {     "name": "wooden door",
                 "description": "A sturdy wooden door"
           }
-        ]
+        ],
+    "next scene": 3
 }

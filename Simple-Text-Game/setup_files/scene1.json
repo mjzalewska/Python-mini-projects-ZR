@@ -29,5 +29,6 @@
                 "name": "A Burning Torch",
                 "collectible": true
             }
-                ]
+                ],
+        "next scene": 2
 }
