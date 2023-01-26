@@ -12,15 +12,6 @@ class FileManager:
             return 1
 
     @classmethod
-    def load_txt_file(cls, path):
-        try:
-            with open(path, 'r', encoding='utf-8') as file:
-                data = file.read()
-                return data
-        except FileNotFoundError:
-            return 1
-
-    @classmethod
     def update_char_stats(cls, path, values):
         with open(path, 'r+') as file:
             data = cls.load_scene_json(path)
