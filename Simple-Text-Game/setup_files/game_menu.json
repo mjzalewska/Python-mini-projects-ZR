@@ -1,5 +1,6 @@
 [
-  {"H": "HELP",
+  {"P": "PLAY",
+   "M": "MAIN MENU",
    "D": "DESCRIBE SCENE",
    "I": "SHOW INVENTORY",
    "T": "TAKE ITEM",
