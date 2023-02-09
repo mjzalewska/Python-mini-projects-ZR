@@ -16,3 +16,27 @@ class Item:
         for key, value in self.impact.items():
             character.stats[key] = character.stats[key] + self.impact[key]
         return character.stats
+
+    def take_item(self, scene, hero):
+        if scene.items:
+            print('You can only choose one item. Choose wisely!')
+            while True:
+                chosen_item = input('Which item would you like to take?').title()
+                if chosen_item not in scene.items():
+                    print('Sorry, no such item here!')
+                else:
+                    hero.add_item(chosen_item)
+                    break
+
+    def use_item(self, hero):
+        print("Your inventory:")
+        hero.show_inventory()
+        print("Which item would you like to use?")
+        while True:
+            item_choice = input().title()
+            if item_choice not in hero.inventory():
+                print('Sorry there\'s nothing like that in your backpack!')
+            else:
+                return item_choice
+
+
