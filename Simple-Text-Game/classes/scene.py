@@ -4,6 +4,7 @@ class Scene:
         self.name = kwargs['name']
         self.intro = kwargs['intro']
         self.description = kwargs['description']
+        self.next_scene = kwargs['next scene']
 
         self.items = [item['name'] for item in kwargs['items']]
 
@@ -25,5 +26,7 @@ class Scene:
         else:
             print("Nothing interesting here for you...")
 
+    def remove_item(self, item):
+        self.items.remove(item)
 
 
