@@ -12,8 +12,20 @@ class FileManager:
             return 1
 
     @classmethod
-    def update_char_stats(cls, path, values):
-        with open(path, 'r+') as file:
-            data = cls.load_scene_json(path)
-            data["stats"] = values
-            json.dump(data, file, indent=4)
+    def update_json_file(cls, path, values):
+        try:
+            with open(path, 'r+') as file:
+                data = cls.load_json_file(path)
+                data["stats"] = values
+                json.dump(data, file, indent=4)
+        except FileNotFoundError:
+            return 1
+
+    @classmethod
+    def is_scene_available(cls, path):
+        try:
+            open(path, 'r')
+            return True
+        except FileNotFoundError:
+            return False
+
