@@ -14,9 +14,5 @@
     "max inventory":5,
     "description": "Highly skilled in magic, elixir- and potion making. Limited weapon-wielding skills ",
     "inventory":
-        [
-          {     "name": "Mage Staff",
-                "description": "An ancient, elaborately carved wooden staff"
-          }
-        ]
+        ["Mage Staff"]
 }
