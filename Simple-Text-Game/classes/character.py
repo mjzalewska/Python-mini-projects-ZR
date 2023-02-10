@@ -33,10 +33,12 @@ class Hero(Character):
 
     def show_inventory(self):
         if len(self.inventory) > 0:
+            print('----INVENTORY----')
             for item in self.inventory:
-                return item
+                print(item)
+            print('-----------------')
         else:
-            return "There's nothing in your backpack"
+            print("There's nothing in your backpack")
 
 
 class Enemy(Character):
