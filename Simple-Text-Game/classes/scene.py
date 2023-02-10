@@ -9,7 +9,8 @@ class Scene:
         self.items = [item['name'] for item in kwargs['items']]
 
     def show_intro(self):
-        return self.intro
+        for line in self.intro.split('.'):
+            print(line)
 
     def __str__(self):
         return self.description
