@@ -7,6 +7,10 @@ class Character:
     def __str__(self):
         return self.description
 
+    def show_stats(self):
+        print(f"level:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n"
+              f"ATTACK:{self.stats['attack']}\nDEFENCE{self.stats['defence']}")
+
 
 class Hero(Character):
 
