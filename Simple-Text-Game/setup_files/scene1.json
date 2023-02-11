@@ -6,16 +6,13 @@
     "items":
         [
             {
-                "name": "Steel Sword",
-                "collectible": true
+                "name": "Steel Sword"
              },
             {
-                "name": "Dragon Shield",
-                "collectible": true
+                "name": "Dragon Shield"
             },
           {
             "name": "Health Potion",
-            "collectible": true,
             "description": "A strange bluish liquid in a slender flask",
             "stats": [
               {
@@ -26,8 +23,7 @@
             ]
           },
             {
-                "name": "A Burning Torch",
-                "collectible": true
+                "name": "A Burning Torch"
             }
                 ],
         "next scene": 2
