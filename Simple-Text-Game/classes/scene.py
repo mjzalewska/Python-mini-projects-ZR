@@ -27,7 +27,7 @@ class Scene:
         else:
             print("Nothing interesting here for you...")
 
-    def remove_item(self, item):
-        self.items.remove(item)
+    def remove_items(self):
+        self.items.clear()
 
 
