@@ -27,7 +27,10 @@ class Hero(Character):
 
     def add_item(self, item):
         if len(self.inventory) < self.max_inventory:
-            self.inventory.append(item)
+            if item not in self.inventory:
+                self.inventory.append(item)
+            else:
+                print("You already have this item!")
         else:
             print("You cannot carry any more items!")
 
