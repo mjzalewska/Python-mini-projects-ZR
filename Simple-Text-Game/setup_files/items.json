@@ -1,18 +1,19 @@
 {
-
 "items":[
   {
     "name": "Buster Sword",
+    "type": "Sword",
     "description": "A long steel broadsword, very powerful in close-range combat",
     "impact": {
       "hp": 0,
       "mp": 0,
       "attack": 7,
       "defense": 3
-    }
+      }
   },
   {
     "name": "Silver Bow",
+    "type": "Bow",
     "description": "A silver emerald-encrusted bow",
     "impact": {
       "hp": 0,
@@ -23,6 +24,7 @@
   },
   {
     "name": "Mage Staff",
+    "type": "Staff",
     "description": "An ancient, elaborately carved wooden staff",
     "impact": {
       "hp": 0,
@@ -33,6 +35,7 @@
   },
   {
     "name": "Steel Sword",
+    "type": "Sword",
     "description": "A steel sword with a decorative handle",
     "impact": {
       "hp": 0,
@@ -43,6 +46,7 @@
   },
   {
     "name": "Dragon Shield",
+    "type": "Other",
     "description": "A sturdy metal shield",
     "impact": {
       "hp": 0,
@@ -53,6 +57,7 @@
   },
   {
     "name": "Health Potion",
+    "type": "Other",
     "description": "A strange bluish liquid in a slender flask",
     "impact": {
       "hp": 5,
@@ -62,7 +67,8 @@
     }
   },
   {
-    "name": "A Burning Torch",
+    "name": "Burning Torch",
+    "type": "Other",
     "description": "a burning torch mounted on the wall",
     "impact": {
       "hp": 0,
@@ -73,6 +79,7 @@
   },
   {
     "name": "Key",
+    "type": "Other",
     "description": "A rusty old key",
     "impact":{
       "hp": 0,
@@ -87,6 +94,7 @@
   },
   {
     "name": "Wooden door",
+    "type": "Setting",
     "description": "A sturdy wooden door",
     "impact":{
       "hp": 0,
@@ -97,6 +105,7 @@
   },
   {
     "name": "iron bars grate",
+    "type": "Setting",
     "description": "Rusty, yet strong iron bars grate at the canal's outlet",
     "impact":{
       "hp": 0,
