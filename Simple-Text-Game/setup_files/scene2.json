@@ -3,6 +3,7 @@
     "name": "The goblin's lair",
     "intro": "The awful smell greets you even before you can see it. A goblin! So big you can barely see the wall on the other side of the room! Guess you'll need to fight it!",
     "description": "A strange, ominous, dark place full off half-eaten animal remains",
+    "enemy": true,
     "items":
         [
             {
