@@ -1,34 +1,109 @@
-[
-  {"name": "Buster Sword",
-   "description": "A long steel broadsword, very powerful in close-range combat",
-   "impact": {"hp":0, "mp":0, "attack":7, "defense":3}
+{
+
+"items":[
+  {
+    "name": "Buster Sword",
+    "description": "A long steel broadsword, very powerful in close-range combat",
+    "impact": {
+      "hp": 0,
+      "mp": 0,
+      "attack": 7,
+      "defense": 3
+    }
   },
-  {"name": "Silver Bow",
-   "description": "A silver emerald-encrusted bow",
-   "impact": {"hp":0, "mp":2, "attack":4, "defense":0}
+  {
+    "name": "Silver Bow",
+    "description": "A silver emerald-encrusted bow",
+    "impact": {
+      "hp": 0,
+      "mp": 2,
+      "attack": 4,
+      "defense": 0
+    }
   },
-  {"name": "Mage Staff",
+  {
+    "name": "Mage Staff",
     "description": "An ancient, elaborately carved wooden staff",
-    "impact:":{"hp":0, "mp":5, "attack":5, "defense":5}
+    "impact": {
+      "hp": 0,
+      "mp": 5,
+      "attack": 5,
+      "defense": 5
+    }
   },
-  {"name": "Steel Sword",
-   "description": "A steel sword with a decorative handle",
-   "impact": {"hp":0, "mp":0, "attack":4, "defense": 1}
+  {
+    "name": "Steel Sword",
+    "description": "A steel sword with a decorative handle",
+    "impact": {
+      "hp": 0,
+      "mp": 0,
+      "attack": 4,
+      "defense": 1
+    }
   },
-  {"name": "Dragon Shield",
-   "description": "A sturdy metal shield",
-   "impact": {"hp":0, "mp": 0,"attack":0,"defense": 3}},
-  {"name": "Health Potion",
-   "description": "A strange bluish liquid in a slender flask",
-   "impact": {"hp":5, "mp":0, "attack":0, "defense": 0}},
-  {"name": "A Burning Torch",
-   "description": "a burning torch mounted on the wall"},
-  {"name": "Key",
-   "description": "A rusty old key",
-    "actions": {"target": "iron bars crate",
-                "result": "The key fits the lock! You've opened the grate and can move on"}},
-  {"name": "Wooden door",
-   "description": "A sturdy wooden door"},
-  {"name": "iron bars grate",
-    "description": "Rusty, yet strong iron bars grate at the canal's outlet"}
-   ]
+  {
+    "name": "Dragon Shield",
+    "description": "A sturdy metal shield",
+    "impact": {
+      "hp": 0,
+      "mp": 0,
+      "attack": 0,
+      "defense": 3
+    }
+  },
+  {
+    "name": "Health Potion",
+    "description": "A strange bluish liquid in a slender flask",
+    "impact": {
+      "hp": 5,
+      "mp": 0,
+      "attack": 0,
+      "defense": 0
+    }
+  },
+  {
+    "name": "A Burning Torch",
+    "description": "a burning torch mounted on the wall",
+    "impact": {
+      "hp": 0,
+      "mp": 0,
+      "attack": 0,
+      "defense": 0
+    }
+  },
+  {
+    "name": "Key",
+    "description": "A rusty old key",
+    "impact":{
+      "hp": 0,
+      "mp": 0,
+      "attack": 0,
+      "defense": 0
+    },
+    "actions": {
+      "target": "iron bars crate",
+      "result": "The key fits the lock! You've opened the grate and can move on"
+    }
+  },
+  {
+    "name": "Wooden door",
+    "description": "A sturdy wooden door",
+    "impact":{
+      "hp": 0,
+      "mp": 0,
+      "attack": 0,
+      "defense": 0
+    }
+  },
+  {
+    "name": "iron bars grate",
+    "description": "Rusty, yet strong iron bars grate at the canal's outlet",
+    "impact":{
+      "hp": 0,
+      "mp": 0,
+      "attack": 0,
+      "defense": 0
+    }
+  }
+]
+}
