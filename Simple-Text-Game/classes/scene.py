@@ -1,3 +1,5 @@
+from item import Item
+
 class Scene:
     def __init__(self, **kwargs):
         self.no = kwargs['no']
@@ -20,19 +22,13 @@ class Scene:
     def __str__(self):
         return self.description
 
-    def enumerate_items(self, character):
+    def enumerate_items(self):
         if len(self.items) > 0:
             print("There are some interesting items here...")
             for item in self.items:
-                item_type = item.lower().split()[1]
-                weapons = ['bow', 'sword', 'staff']
-                if (item_type == character.weapon.lower()) or \
-                        (item_type not in weapons):
-                    print(item)
+                print(item)
         else:
             print("Nothing interesting here for you...")
 
-    def remove_items(self):
-        self.items.clear()
 
 
