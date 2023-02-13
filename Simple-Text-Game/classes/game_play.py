@@ -1,15 +1,17 @@
 from file_manager import FileManager
 from item import Item
 from scene import Scene
-from character import Hero
+from character import Hero, Enemy
 from time import sleep
 
 
 class GamePlay:
     game_state = 'initializing'
     hero = None
+    enemy = None
+    item = None
     current_scene = None
-    available_commands = ['M', 'D', 'I', 'T', 'Q']
+    available_commands = ['M', 'D', 'E', 'B', 'I', 'T', 'S', 'Q']
 
     @classmethod
     def show_welcome_screen(cls):
@@ -20,17 +22,21 @@ class GamePlay:
     @classmethod
     def show_menu(cls):
         print('\n-----GAME MENU-----')
-        menu_items = FileManager()
-        menu = menu_items.load_json_file(r'..\setup_files\game_menu.json')[0]
-        for key, value in menu.items():
-            print(f'{key} : {value}')
+        if cls.current_scene.has_enemy():
+            menu = FileManager().load_json_file(r'..\setup_files\game_menu.json')['enemies']
+            for key, value in menu.items():
+                print(f'{key} : {value}')
+        else:
+            menu = FileManager().load_json_file(r'..\setup_files\game_menu.json')['no_enemies']
+            for key, value in menu.items():
+                print(f'{key} : {value}')
 
     @classmethod
     def choose_character(cls):
         character_types = ['elf', 'mage', 'knight']
         print('\nChoose your character: Elf, Mage, Knight ')
         while True:
-            character_choice = input().casefold()
+            character_choice = input('>>').casefold()
             if character_choice in character_types:
                 print(f'You have chosen: {character_choice.capitalize()}\n')
                 return character_choice
@@ -43,6 +49,11 @@ class GamePlay:
             cls.show_welcome_screen()
             scene_values = FileManager.load_json_file(r'..\setup_files\scene1.json')
             cls.current_scene = Scene(**scene_values)
+            if cls.current_scene.has_enemy():
+                enemy_values = FileManager.load_json_file(r'..\setup_files\goblin.json')
+                cls.enemy = Enemy(**enemy_values)
+            else:
+                cls.available_commands = ['M', 'D', 'B', 'I', 'T', 'S', 'Q']
             hero_values = FileManager.load_json_file(r'..\setup_files\{}.json'.format(cls.choose_character()))
             cls.hero = Hero(**hero_values)
             cls.current_scene.show_intro()
@@ -70,26 +81,40 @@ class GamePlay:
                 if command not in cls.available_commands:
                     print('Sorry I don\'t know this command. Please choose again!')
                 else:
-                    match command: # add show hero stats and show enemy stats
+                    match command:
                         case 'M':
                             cls.show_menu()
                         case 'D':
                             print(cls.current_scene)
-                        case 'I':
+                        case 'E':
+                            cls.enemy.show_stats()
+                        case 'B':
                             cls.hero.show_inventory()
+                        case 'I':
+                            print('Please type the name of the item whose stats you would like to see')
+                            item_to_see = input().title()
+                            item_values = FileManager.load_json_file(r'..\setup_files\items.json')[item_to_see]
+                            cls.item = Item(**item_values)
+                            cls.item.show_item_stats(item_to_see)
                         case 'T':
                             if cls.current_scene.items:
-                                print('Which item would you like to take. You can only take one!')
-                                cls.current_scene.enumerate_items(cls.hero)
-                                item_choice = input().title()
+                                print('Which item would you like to take. Choose wisely. You can only take one!')
+                                cls.current_scene.enumerate_items()
+                                item_choice = input('>>').title()
+                                item_values = FileManager.load_json_file(r'..\setup_files\items.json')[item_choice]
+                                cls.item = Item(**item_values)
                                 if item_choice in cls.current_scene.items:
-                                    cls.hero.add_item(item_choice)
-                                    cls.current_scene.remove_item(item_choice)
-                                    # when item taken should boost stats
+                                    if item_choice.split()[1] == cls.hero.weapon: #nie można dodać itemów innych niż broń
+                                        cls.hero.add_item(item_choice)
+                                        cls.item.boost_char_stats(cls.hero)
+                                    else:
+                                        print('Are you sure you know how to use this? Better choose something else.')
                                 else:
                                     print('No such item here!')
                             else:
                                 print('Nothing interesting here...')
+                        case 'S':
+                            cls.hero.show_stats()
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
@@ -97,3 +122,6 @@ class GamePlay:
 
 
 GamePlay.play()
+# add move_to_next_scene after item taken
+# move directly to the next scene after item chosen
+# import setup_files instead of path
