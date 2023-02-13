@@ -7,7 +7,7 @@
     "items":
         [
             {
-                "name": "Buster Sword"
+                "name": "Steel Sword"
              },
             {
                 "name": "Dragon Shield"
@@ -24,7 +24,7 @@
             ]
           },
             {
-                "name": "A Burning Torch"
+                "name": "Burning Torch"
             }
                 ],
         "next scene": 2
