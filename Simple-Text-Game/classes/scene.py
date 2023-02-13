@@ -1,5 +1,3 @@
-from item import Item
-
 class Scene:
     def __init__(self, **kwargs):
         self.no = kwargs['no']
