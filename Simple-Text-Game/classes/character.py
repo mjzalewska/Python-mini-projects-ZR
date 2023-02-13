@@ -1,6 +1,7 @@
 class Character:
 
     def __init__(self, **kwargs):
+        self.cl_name = kwargs['class']
         self.stats = kwargs['stats']
         self.description = kwargs['description']
 
@@ -8,8 +9,9 @@ class Character:
         return self.description
 
     def show_stats(self):
-        print(f"level:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n"
-              f"ATTACK:{self.stats['attack']}\nDEFENCE{self.stats['defence']}")
+        print(f"---{self.cl_name}---")
+        print(f"LVL:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n"
+              f"ATTACK:{self.stats['attack']}\nDEFENSE{self.stats['defense']}")
 
 
 class Hero(Character):
@@ -53,7 +55,3 @@ class Enemy(Character):
 
     def __str__(self):
         return self.description
-
-    def show_stats(self):
-        return f"level:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n" \
-               f"ATTACK:{self.stats['attack']}\nDEFENCE{self.stats['defence']}"
