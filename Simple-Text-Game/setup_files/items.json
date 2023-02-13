@@ -1,7 +1,5 @@
 {
-"items":[
-  {
-    "name": "Buster Sword",
+  "Buster Sword": {
     "type": "Sword",
     "description": "A long steel broadsword, very powerful in close-range combat",
     "impact": {
@@ -9,10 +7,9 @@
       "mp": 0,
       "attack": 7,
       "defense": 3
-      }
+    }
   },
-  {
-    "name": "Silver Bow",
+  "Silver Bow": {
     "type": "Bow",
     "description": "A silver emerald-encrusted bow",
     "impact": {
@@ -22,8 +19,7 @@
       "defense": 0
     }
   },
-  {
-    "name": "Mage Staff",
+  "Mage Staff": {
     "type": "Staff",
     "description": "An ancient, elaborately carved wooden staff",
     "impact": {
@@ -33,8 +29,7 @@
       "defense": 5
     }
   },
-  {
-    "name": "Steel Sword",
+  "Steel Sword": {
     "type": "Sword",
     "description": "A steel sword with a decorative handle",
     "impact": {
@@ -44,8 +39,7 @@
       "defense": 1
     }
   },
-  {
-    "name": "Dragon Shield",
+  "Dragon Shield": {
     "type": "Other",
     "description": "A sturdy metal shield",
     "impact": {
@@ -55,8 +49,7 @@
       "defense": 3
     }
   },
-  {
-    "name": "Health Potion",
+  "Health Potion": {
     "type": "Other",
     "description": "A strange bluish liquid in a slender flask",
     "impact": {
@@ -66,8 +59,7 @@
       "defense": 0
     }
   },
-  {
-    "name": "Burning Torch",
+  "Burning Torch": {
     "type": "Other",
     "description": "a burning torch mounted on the wall",
     "impact": {
@@ -77,11 +69,10 @@
       "defense": 0
     }
   },
-  {
-    "name": "Key",
+  "Key": {
     "type": "Other",
     "description": "A rusty old key",
-    "impact":{
+    "impact": {
       "hp": 0,
       "mp": 0,
       "attack": 0,
@@ -92,27 +83,24 @@
       "result": "The key fits the lock! You've opened the grate and can move on"
     }
   },
-  {
-    "name": "Wooden door",
+  "Wooden door": {
     "type": "Setting",
     "description": "A sturdy wooden door",
-    "impact":{
+    "impact": {
       "hp": 0,
       "mp": 0,
       "attack": 0,
       "defense": 0
     }
   },
-  {
-    "name": "iron bars grate",
+  "Iron bars grate": {
     "type": "Setting",
     "description": "Rusty, yet strong iron bars grate at the canal's outlet",
-    "impact":{
+    "impact": {
       "hp": 0,
       "mp": 0,
       "attack": 0,
       "defense": 0
     }
   }
-]
 }
