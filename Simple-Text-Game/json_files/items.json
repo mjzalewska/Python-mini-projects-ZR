@@ -91,7 +91,7 @@
       "result": "The key fits the lock! You've opened the grate and can move on"
     }
   },
-  "Wooden door": {
+  "Wooden Door": {
     "type": "Other",
     "collectible": false,
     "description": "A sturdy wooden door",
