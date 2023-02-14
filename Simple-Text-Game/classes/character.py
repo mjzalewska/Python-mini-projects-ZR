@@ -11,7 +11,7 @@ class Character:
     def show_stats(self):
         print(f"---{self.cl_name}---")
         print(f"LVL:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n"
-              f"ATTACK:{self.stats['attack']}\nDEFENSE{self.stats['defense']}")
+              f"ATTACK:{self.stats['attack']}\nDEFENSE:{self.stats['defense']}")
 
 
 class Hero(Character):
@@ -58,3 +58,4 @@ class Enemy(Character):
 
     def __str__(self):
         return self.description
+
