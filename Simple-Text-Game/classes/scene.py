@@ -8,6 +8,9 @@ class Scene:
         self.next_scene = kwargs['next scene']
         self.items = [item['name'] for item in kwargs['items']]
 
+    def __str__(self):
+        return self.description
+
     def show_intro(self):
         for line in self.intro.split('.'):
             print(line)
@@ -16,9 +19,6 @@ class Scene:
         if self.enemy:
             return True
         return False
-
-    def __str__(self):
-        return self.description
 
     def enumerate_items(self):
         if len(self.items) > 0:

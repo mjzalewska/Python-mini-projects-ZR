@@ -1,9 +1,9 @@
 class Item:
     def __init__(self, **kwargs):
-        self.name = kwargs.keys()
         self.type = kwargs['type']
         self.description = kwargs['description']
         self.impact = kwargs['impact']
+        self.is_collectible = kwargs['collectible']
 
     def __str__(self):
         print(self.description)
@@ -41,3 +41,6 @@ class Item:
                 print('Sorry there\'s nothing like that in your backpack!')
             else:
                 return item_choice
+
+
+
