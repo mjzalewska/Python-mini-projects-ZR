@@ -23,11 +23,11 @@ class GamePlay:
     def show_menu(cls):
         print('\n-----GAME MENU-----')
         if cls.current_scene.has_enemy():
-            menu = FileManager().load_json_file(r'..\setup_files\game_menu.json')['enemies']
+            menu = FileManager().load_json_file(r'..\json_files\game_menu.json')['enemies']
             for key, value in menu.items():
                 print(f'{key} : {value}')
         else:
-            menu = FileManager().load_json_file(r'..\setup_files\game_menu.json')['no_enemies']
+            menu = FileManager().load_json_file(r'..\json_files\game_menu.json')['no_enemies']
             for key, value in menu.items():
                 print(f'{key} : {value}')
 
@@ -45,16 +45,16 @@ class GamePlay:
 
     @classmethod
     def initialize(cls):
-        if FileManager.is_scene_available(r'..\setup_files\scene1.json'):
+        if FileManager.is_scene_available(r'..\json_files\scene1.json'):
             cls.show_welcome_screen()
-            scene_values = FileManager.load_json_file(r'..\setup_files\scene1.json')
+            scene_values = FileManager.load_json_file(r'..\json_files\scene1.json')
             cls.current_scene = Scene(**scene_values)
             if cls.current_scene.has_enemy():
-                enemy_values = FileManager.load_json_file(r'..\setup_files\goblin.json')
+                enemy_values = FileManager.load_json_file(r'..\json_files\goblin.json')
                 cls.enemy = Enemy(**enemy_values)
             else:
                 cls.available_commands = ['M', 'D', 'B', 'I', 'T', 'S', 'Q']
-            hero_values = FileManager.load_json_file(r'..\setup_files\{}.json'.format(cls.choose_character()))
+            hero_values = FileManager.load_json_file(r'..\json_files\{}.json'.format(cls.choose_character()))
             cls.hero = Hero(**hero_values)
             cls.current_scene.show_intro()
             cls.show_menu()
@@ -69,6 +69,18 @@ class GamePlay:
                     cls.play()
                 else:
                     exit()
+
+    @classmethod
+    def sort_game_items(cls,**kwargs):
+        collectibles = {'Other collectibles': [], 'Weapons': []}
+
+        for key, value in kwargs.items():
+            if value['collectible']:
+                if value['type'] in ['Other']:
+                    collectibles['Other collectibles'].append(key)
+                elif value['type'] in ['Weapon']:
+                    collectibles['Weapons'].append(key)
+        return collectibles
 
     @classmethod
     def play(cls):
@@ -93,7 +105,7 @@ class GamePlay:
                         case 'I':
                             print('Please type the name of the item whose stats you would like to see')
                             item_to_see = input().title()
-                            item_values = FileManager.load_json_file(r'..\setup_files\items.json')[item_to_see]
+                            item_values = FileManager.load_json_file(r'..\json_files\items.json')[item_to_see]
                             cls.item = Item(**item_values)
                             cls.item.show_item_stats(item_to_see)
                         case 'T':
@@ -101,14 +113,17 @@ class GamePlay:
                                 print('Which item would you like to take. Choose wisely. You can only take one!')
                                 cls.current_scene.enumerate_items()
                                 item_choice = input('>>').title()
-                                item_values = FileManager.load_json_file(r'..\setup_files\items.json')[item_choice]
+                                items = FileManager.load_json_file(r'..\json_files\items.json')
+                                item_values = items[item_choice]
                                 cls.item = Item(**item_values)
+                                collectibles = cls.sort_game_items(**items)
                                 if item_choice in cls.current_scene.items:
-                                    if item_choice.split()[1] == cls.hero.weapon: #nie można dodać itemów innych niż broń
+                                    if item_choice.split()[1] == cls.hero.weapon or \
+                                            item_choice in collectibles['Other collectibles']:
                                         cls.hero.add_item(item_choice)
                                         cls.item.boost_char_stats(cls.hero)
                                     else:
-                                        print('Are you sure you know how to use this? Better choose something else.')
+                                        print('You cannot take that. Better choose something else.')
                                 else:
                                     print('No such item here!')
                             else:
@@ -120,8 +135,13 @@ class GamePlay:
                             sleep(3)
                             break
 
+    @classmethod
+    def load_next(cls):
+        if cls.current_scene.next_scene:
+            cls.game_state = 'initializing'
+    # add move_to_next_scene after item taken
+    # move directly to the next scene after item chosen
+    # import json_files instead of path
+
 
 GamePlay.play()
-# add move_to_next_scene after item taken
-# move directly to the next scene after item chosen
-# import setup_files instead of path
