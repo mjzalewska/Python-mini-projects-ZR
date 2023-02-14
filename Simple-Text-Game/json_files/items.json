@@ -1,6 +1,7 @@
 {
   "Buster Sword": {
-    "type": "Sword",
+    "type": "Weapon",
+    "collectible": true,
     "description": "A long steel broadsword, very powerful in close-range combat",
     "impact": {
       "hp": 0,
@@ -10,7 +11,8 @@
     }
   },
   "Silver Bow": {
-    "type": "Bow",
+    "type": "Weapon",
+    "collectible": true,
     "description": "A silver emerald-encrusted bow",
     "impact": {
       "hp": 0,
@@ -20,7 +22,8 @@
     }
   },
   "Mage Staff": {
-    "type": "Staff",
+    "type": "Weapon",
+    "collectible": true,
     "description": "An ancient, elaborately carved wooden staff",
     "impact": {
       "hp": 0,
@@ -30,7 +33,8 @@
     }
   },
   "Steel Sword": {
-    "type": "Sword",
+    "type": "Weapon",
+    "collectible": true,
     "description": "A steel sword with a decorative handle",
     "impact": {
       "hp": 0,
@@ -41,6 +45,7 @@
   },
   "Dragon Shield": {
     "type": "Other",
+    "collectible": true,
     "description": "A sturdy metal shield",
     "impact": {
       "hp": 0,
@@ -51,6 +56,7 @@
   },
   "Health Potion": {
     "type": "Other",
+    "collectible": true,
     "description": "A strange bluish liquid in a slender flask",
     "impact": {
       "hp": 5,
@@ -61,6 +67,7 @@
   },
   "Burning Torch": {
     "type": "Other",
+    "collectible": true,
     "description": "a burning torch mounted on the wall",
     "impact": {
       "hp": 0,
@@ -71,6 +78,7 @@
   },
   "Key": {
     "type": "Other",
+    "collectible": true,
     "description": "A rusty old key",
     "impact": {
       "hp": 0,
@@ -84,7 +92,8 @@
     }
   },
   "Wooden door": {
-    "type": "Setting",
+    "type": "Other",
+    "collectible": false,
     "description": "A sturdy wooden door",
     "impact": {
       "hp": 0,
@@ -94,7 +103,8 @@
     }
   },
   "Iron bars grate": {
-    "type": "Setting",
+    "type": "Other",
+    "collectible": false,
     "description": "Rusty, yet strong iron bars grate at the canal's outlet",
     "impact": {
       "hp": 0,

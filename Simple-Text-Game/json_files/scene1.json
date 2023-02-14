@@ -13,15 +13,7 @@
                 "name": "Dragon Shield"
             },
           {
-            "name": "Health Potion",
-            "description": "A strange bluish liquid in a slender flask",
-            "stats": [
-              {
-                "hp": 1,
-                "attack": 0,
-                "defense": 0
-              }
-            ]
+            "name": "Health Potion"
           },
             {
                 "name": "Burning Torch"
