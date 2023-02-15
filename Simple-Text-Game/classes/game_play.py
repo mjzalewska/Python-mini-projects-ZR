@@ -153,3 +153,4 @@ class GamePlay:
 
 
 GamePlay.play()
+# when choosing item to take - if something else is typed instead, error is thrown (add error handling)
