@@ -1,15 +1,12 @@
 {
     "class": "Mage",
     "stats":
-        [
           {"level": 10,
            "hp": 10,
            "mp" : 20,
            "attack": 8,
            "defense": 8
-          }
-
-        ],
+          },
     "weapon type": "Staff",
     "max inventory":5,
     "description": "Highly skilled in magic, elixir- and potion making. Limited weapon-wielding skills ",
