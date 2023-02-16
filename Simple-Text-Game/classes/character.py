@@ -1,3 +1,6 @@
+from random import choice, randint
+
+
 class Character:
 
     def __init__(self, **kwargs):
@@ -49,13 +52,54 @@ class Hero(Character):
         else:
             print("There's nothing in your backpack")
 
+    @staticmethod
+    def run_from_enemy():
+        hero_luck = choice([True, False])
+        if hero_luck:
+            print('You were lucky! You\'ve ran away!')
+            return hero_luck
+        else:
+            print('The goblin caught you! Game over...')
+            return hero_luck
+
+    def fight_enemy(self, enemy):
+        hero_strength = self.stats['mp'] + self.stats['attack'] + randint(1, 6)
+        enemy_stamina = enemy.stats['hp']
+        if hero_strength > enemy_stamina:
+            print('You win!')
+            print(f'The {enemy.enemy_class} has dropped a {enemy.special_item}!')
+            self.add_item(enemy.special_item)
+            print(f'{enemy.special_item} has been added to your inventory')
+            return True
+        else:
+            print('You\'ve lost! Game over...')
+            return False
+
+    def encounter_enemy(self, enemy):
+        if enemy.weakness in self.inventory:
+            print(f'The {enemy.enemy_class} has dropped a {enemy.special_item}!')
+            self.add_item(enemy.special_item)
+            print(f'{enemy.special_item} has been added to your inventory')
+        else:
+            print('What do you want to do? Fight or run?')
+            while True:
+                player_decision = input('>>').casefold()
+                if player_decision not in ['fight', 'run']:
+                    print('Sorry, I didn\'t understand that!')
+                else:
+                    match player_decision:
+                        case 'fight':
+                            self.fight_enemy()
+                        case 'run':
+                            self.run_from_enemy()
 
 class Enemy(Character):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.enemy_class = kwargs['class']
+        self.weakness = kwargs['weak against']
+        self.special_item = kwargs['drops']
 
     def __str__(self):
         return self.description
-
