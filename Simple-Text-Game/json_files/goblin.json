@@ -7,7 +7,7 @@
            "attack": 15,
            "defense": 5
           },
-    "description": "Not a very intelligent, yet strong and tireless creature. Dwells in the darkness, hates light",
+    "description": "Not very intelligent, yet strong and tireless creature. Dwells in the darkness, hates light",
     "weak against": "Burning Torch",
     "drops": "Rusty Key"
 }
