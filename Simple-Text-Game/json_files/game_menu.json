@@ -2,20 +2,22 @@
  "enemies": {
   "M": "MAIN MENU",
   "D": "DESCRIBE SCENE",
-  "E": "SHOW ENEMY STATS",
   "B": "SHOW INVENTORY/ BACKPACK",
+  "S": "SHOW CHARACTER STATS",
+  "E": "SHOW ENEMY STATS",
+  "F": "FIGHT ENEMY",
+  "R": "RUN",
   "I": "SHOW ITEM STATS",
   "T": "TAKE ITEM",
-  "S": "SHOW CHARACTER STATS",
   "Q": "QUIT GAME"
  },
  "no_enemies":{
   "M": "MAIN MENU",
   "D": "DESCRIBE SCENE",
   "B": "SHOW INVENTORY/ BACKPACK",
+  "S": "SHOW CHARACTER STATS",
   "I": "SHOW ITEM STATS",
   "T": "TAKE ITEM",
-  "S": "SHOW CHARACTER STATS",
   "Q": "QUIT GAME"
  }
 }
