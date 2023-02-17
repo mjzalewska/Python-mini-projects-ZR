@@ -93,6 +93,7 @@ class Hero(Character):
                         case 'run':
                             self.run_from_enemy()
 
+
 class Enemy(Character):
 
     def __init__(self, **kwargs):
