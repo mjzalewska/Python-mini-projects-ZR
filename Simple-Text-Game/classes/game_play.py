@@ -52,9 +52,9 @@ class GamePlay:
             if cls.current_scene.has_enemy():
                 enemy_values = FileManager.load_json_file(r'..\json_files\goblin.json')
                 cls.enemy = Enemy(**enemy_values)
-                cls.available_commands = ['M', 'D', 'E', 'B', 'I', 'T', 'S', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'Q']
             else:
-                cls.available_commands = ['M', 'D', 'B', 'I', 'T', 'S', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'I', 'T', 'Q']
             cls.current_scene.show_intro()
             cls.show_menu()
 
@@ -88,11 +88,11 @@ class GamePlay:
                 print('Which item would you like to take. Choose wisely. You can only take one!')
                 cls.current_scene.enumerate_items()
                 item_choice = input('>>').title()
-                items = FileManager.load_json_file(r'..\json_files\items.json')
-                item_values = items[item_choice]
-                cls.item = Item(**item_values)
-                collectibles = cls.sort_game_items(**items)
                 if item_choice in cls.current_scene.items:
+                    items = FileManager.load_json_file(r'..\json_files\items.json')
+                    item_values = items[item_choice]
+                    cls.item = Item(**item_values)
+                    collectibles = cls.sort_game_items(**items)
                     if item_choice.split()[1] == cls.hero.weapon or \
                             item_choice in collectibles['Other collectibles']:
                         cls.hero.add_item(item_choice)
@@ -101,8 +101,8 @@ class GamePlay:
                     else:
                         print('You cannot take that. Better choose something else.')
                 else:
-                    print('No such item here!')
-                    return True
+                    print('No such item here!Try again.')
+                    continue
             else:
                 print('Nothing interesting here...')
                 return True
@@ -113,7 +113,6 @@ class GamePlay:
             cls.game_state = 'initializing'
             cls.scene_number = cls.current_scene.next_scene
             cls.initialize()
-
 
     @classmethod
     def play(cls):
@@ -136,6 +135,10 @@ class GamePlay:
                             print(cls.current_scene)
                         case 'E':
                             cls.enemy.show_stats()
+                        case 'F':
+                            pass
+                        case 'R':
+                            pass
                         case 'B':
                             cls.hero.show_inventory()
                         case 'I':
@@ -160,6 +163,6 @@ class GamePlay:
 
 
 GamePlay.play()
-# when choosing item to take - if something else is typed instead, error is thrown (add error handling)
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
-# if item_choice.split()[1] == cls.hero.weapon  - tutaj jest problem, jeśli item ma jednoczłonową nazwę
+# - in the second scene this will block progress
+# if item_choice.split()[1] == cls.hero.weapon  - działa, jeśli item ma jednoczłonową nazwę
