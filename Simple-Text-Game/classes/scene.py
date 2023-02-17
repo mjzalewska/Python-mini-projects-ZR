@@ -22,7 +22,6 @@ class Scene:
 
     def enumerate_items(self):
         if len(self.items) > 0:
-            print("There are some interesting items here...")
             for item in self.items:
                 print(item)
         else:
