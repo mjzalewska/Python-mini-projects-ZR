@@ -97,15 +97,15 @@ class GamePlay:
                             item_choice in collectibles['Other collectibles']:
                         cls.hero.add_item(item_choice)
                         cls.item.boost_char_stats(cls.hero)
-                        break
+                        return True
                     else:
                         print('You cannot take that. Better choose something else.')
                 else:
                     print('No such item here!')
-                    break
+                    return True
             else:
                 print('Nothing interesting here...')
-                break
+                return True
 
     @classmethod
     def load_next(cls):
@@ -145,12 +145,14 @@ class GamePlay:
                             cls.item = Item(**item_values)
                             cls.item.show_item_stats(item_to_see)
                         case 'T':
-                            cls.collect_items()
-                            print("\nLoading next scene...")
-                            sleep(3)
-                            cls.load_next()
+                            if cls.collect_items():
+                                print("\nLoading next scene...")
+                                sleep(3)
+                                cls.load_next()
+                            else:
+                                cls.collect_items()
                         case 'S':
-                            cls.hero.show_stats() # wywala się
+                            cls.hero.show_stats()
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
@@ -159,6 +161,5 @@ class GamePlay:
 
 GamePlay.play()
 # when choosing item to take - if something else is typed instead, error is thrown (add error handling)
-# even if char chooses item they cannot take, the game skips to the next scene
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
-# if item_choice.split()[1] == cls.hero.weapon  - tutaj jest problem, jeśli item ma jednoczłonwą nazwę
+# if item_choice.split()[1] == cls.hero.weapon  - tutaj jest problem, jeśli item ma jednoczłonową nazwę
