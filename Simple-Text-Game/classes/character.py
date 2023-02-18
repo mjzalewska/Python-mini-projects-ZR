@@ -57,8 +57,10 @@ class Hero(Character):
         hero_luck = choice([True, False])
         if hero_luck:
             print('You were lucky! You\'ve ran away!')
+            return True
         else:
             print('The goblin caught you! Game over...')
+            return False
 
     def fight_enemy(self, enemy):
         if enemy.weakness in self.inventory:

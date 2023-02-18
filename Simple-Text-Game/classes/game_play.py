@@ -136,9 +136,19 @@ class GamePlay:
                         case 'E':
                             cls.enemy.show_stats()
                         case 'F':
-                            pass
+                            if cls.hero.fight_enemy(cls.enemy):
+                                print("\nLoading next scene...")
+                                sleep(3)
+                                cls.load_next()
+                            else:
+                                exit()
                         case 'R':
-                            pass
+                            if cls.hero.run_from_enemy():
+                                print("\nLoading next scene...")
+                                sleep(3)
+                                cls.load_next()
+                            else:
+                                exit()
                         case 'B':
                             cls.hero.show_inventory()
                         case 'I':
@@ -165,4 +175,5 @@ class GamePlay:
 GamePlay.play()
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
 # - in the second scene this will block progress
-# if item_choice.split()[1] == cls.hero.weapon  - działa, jeśli item ma jednoczłonową nazwę
+
+# jeśli pozbędzie się przedmiotu, to statystyki powinny wracać do defaultu
