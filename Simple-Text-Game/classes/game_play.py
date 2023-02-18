@@ -52,9 +52,9 @@ class GamePlay:
             if cls.current_scene.has_enemy():
                 enemy_values = FileManager.load_json_file(r'..\json_files\goblin.json')
                 cls.enemy = Enemy(**enemy_values)
-                cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'L', 'Q']
             else:
-                cls.available_commands = ['M', 'D', 'B', 'S', 'I', 'T', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'I', 'T', 'L', 'Q']
             cls.current_scene.show_intro()
             cls.show_menu()
 
@@ -71,7 +71,7 @@ class GamePlay:
 
     @classmethod
     def sort_game_items(cls, **kwargs):
-        collectibles = {'Other collectibles': [], 'Weapons': []}
+        collectibles = {'Weapons': [], 'Other collectibles': [], 'Non-collectibles': []}
 
         for key, value in kwargs.items():
             if value['collectible']:
@@ -79,6 +79,8 @@ class GamePlay:
                     collectibles['Other collectibles'].append(key)
                 elif value['type'] in ['Weapon']:
                     collectibles['Weapons'].append(key)
+            else:
+                collectibles['Non-collectibles'].append(key)
         return collectibles
 
     @classmethod
@@ -87,7 +89,7 @@ class GamePlay:
             if cls.current_scene.items:
                 print('Which item would you like to take. Choose wisely. You can only take one!')
                 cls.current_scene.enumerate_items()
-                item_choice = input('>>').title()
+                item_choice = input('>> ').title()
                 if item_choice in cls.current_scene.items:
                     items = FileManager.load_json_file(r'..\json_files\items.json')
                     item_values = items[item_choice]
@@ -99,13 +101,31 @@ class GamePlay:
                         cls.item.boost_char_stats(cls.hero)
                         return True
                     else:
-                        print('You cannot take that. Better choose something else.')
+                        print('\nYou cannot take that. Better choose something else.')
                 else:
                     print('No such item here!Try again.')
                     continue
             else:
                 print('Nothing interesting here...')
                 return True
+
+    @classmethod
+    def leave_items(cls):
+        if len(cls.hero.inventory) > 0:
+            print('Type the name of the item you\'d like to remove from your backpack')
+            while True:
+                item_to_remove = input('>> ').title()
+                if item_to_remove in cls.hero.inventory:
+                    items = FileManager.load_json_file(r'..\json_files\items.json')
+                    item_values = items[item_to_remove]
+                    cls.item = Item(**item_values)
+                    cls.hero.remove_item(item_to_remove)
+                    cls.item.reduce_char_stats(cls.hero)
+                    break
+                else:
+                    print('There is no such item in your backpack')
+        else:
+            print('Your backpack is empty!')
 
     @classmethod
     def load_next(cls):
@@ -137,14 +157,14 @@ class GamePlay:
                             cls.enemy.show_stats()
                         case 'F':
                             if cls.hero.fight_enemy(cls.enemy):
-                                print("\nLoading next scene...")
+                                print("\nLoading next scene...\n")
                                 sleep(3)
                                 cls.load_next()
                             else:
                                 exit()
                         case 'R':
                             if cls.hero.run_from_enemy():
-                                print("\nLoading next scene...")
+                                print("\nLoading next scene...\n")
                                 sleep(3)
                                 cls.load_next()
                             else:
@@ -159,13 +179,15 @@ class GamePlay:
                             cls.item.show_item_stats(item_to_see)
                         case 'T':
                             if cls.collect_items():
-                                print("\nLoading next scene...")
+                                print("\nLoading next scene...\n")
                                 sleep(3)
                                 cls.load_next()
                             else:
                                 cls.collect_items()
                         case 'S':
                             cls.hero.show_stats()
+                        case 'L':
+                            cls.leave_items()
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
@@ -176,4 +198,5 @@ GamePlay.play()
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
 # - in the second scene this will block progress
 
-# jeśli pozbędzie się przedmiotu, to statystyki powinny wracać do defaultu
+# use item from backpack to do something
+# when opens grate using key - end of game, ask if wants to play again
