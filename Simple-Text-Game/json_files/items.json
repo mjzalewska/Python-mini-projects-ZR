@@ -4,6 +4,7 @@
     "collectible": true,
     "description": "A long steel broadsword, very powerful in close-range combat",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -16,6 +17,7 @@
     "collectible": true,
     "description": "A silver emerald-encrusted bow",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 2,
@@ -28,6 +30,7 @@
     "collectible": true,
     "description": "An ancient, elaborately carved wooden staff",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 5,
@@ -40,6 +43,7 @@
     "collectible": true,
     "description": "A steel sword with a decorative handle",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -52,6 +56,7 @@
     "collectible": true,
     "description": "A sturdy metal shield",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -64,6 +69,7 @@
     "collectible": true,
     "description": "A strange bluish liquid in a slender flask",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 5,
       "mp": 0,
@@ -76,6 +82,7 @@
     "collectible": true,
     "description": "a burning torch mounted on the wall",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -88,6 +95,7 @@
     "collectible": true,
     "description": "A rusty old key",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -104,6 +112,7 @@
     "collectible": false,
     "description": "A sturdy wooden door",
     "complementary item": "None",
+    "result":"None",
     "impact": {
       "hp": 0,
       "mp": 0,
