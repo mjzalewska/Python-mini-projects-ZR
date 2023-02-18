@@ -38,10 +38,7 @@ class Hero(Character):
             print("You cannot carry any more items!")
 
     def remove_item(self, item):
-        try:
-            self.inventory.remove(item)
-        except ValueError:
-            print("Your backpack is empty!")
+        self.inventory.remove(item)
 
     def show_inventory(self):
         if len(self.inventory) > 0:
