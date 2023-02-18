@@ -129,9 +129,9 @@ class GamePlay:
                         items = FileManager.load_json_file(r'..\json_files\items.json')
                         item_values = items[target_item]
                         cls.target_item = Item(**item_values)
-                        if item_to_use == cls.item.complementary_item: ## tutaj jest problem
+                        if item_to_use == cls.target_item.complementary_item:
                             print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
-                            print(f'{cls.item.action_result}')
+                            print(f'{cls.target_item.action_result}')
                             break
                         else:
                             print('This will not work. Try something else.')
@@ -234,7 +234,7 @@ GamePlay.play()
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
 # - in the second scene this will block progress
 
-# use item doesn't work !
 # when opens grate using key - end of game, ask if wants to play again
+# can't exit the while loop - after the gate open still in thc choose item loop
 
 # close Item instantiation in a function to reduce code repeatability (use helper function)
