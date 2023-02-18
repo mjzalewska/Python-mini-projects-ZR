@@ -11,6 +11,7 @@ class GamePlay:
     hero = None
     enemy = None
     item = None
+    target_item = None
     current_scene = None
     available_commands = None
 
@@ -52,9 +53,9 @@ class GamePlay:
             if cls.current_scene.has_enemy():
                 enemy_values = FileManager.load_json_file(r'..\json_files\goblin.json')
                 cls.enemy = Enemy(**enemy_values)
-                cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'L', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'L', 'U', 'Q']
             else:
-                cls.available_commands = ['M', 'D', 'B', 'S', 'I', 'T', 'L', 'Q']
+                cls.available_commands = ['M', 'D', 'B', 'S', 'I', 'T', 'L', 'U', 'Q']
             cls.current_scene.show_intro()
             cls.show_menu()
 
@@ -108,6 +109,36 @@ class GamePlay:
             else:
                 print('Nothing interesting here...')
                 return True
+
+    @classmethod
+    def use_items(cls):
+        print("Your inventory:")
+        cls.hero.show_inventory()
+        print("Which item would you like to use?")
+        while True:
+            item_to_use = input('>> ').title()
+            if item_to_use not in cls.hero.inventory:
+                print('Sorry there\'s nothing like that in your backpack!')
+            else:
+                print(f'Which item would you like to use {item_to_use} on?\n')
+                print('Your options: ')
+                cls.current_scene.enumerate_items()
+                while True:
+                    target_item = input('>> ').title()
+                    if target_item in cls.current_scene.items:
+                        items = FileManager.load_json_file(r'..\json_files\items.json')
+                        item_values = items[target_item]
+                        cls.target_item = Item(**item_values)
+                        if item_to_use == cls.item.complementary_item: ## tutaj jest problem
+                            print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
+                            print(f'{cls.item.action_result}')
+                            break
+                        else:
+                            print('This will not work. Try something else.')
+                            break
+                    else:
+                        print('There\'s nothing like that here!')
+                        break
 
     @classmethod
     def leave_items(cls):
@@ -188,6 +219,11 @@ class GamePlay:
                             cls.hero.show_stats()
                         case 'L':
                             cls.leave_items()
+                        case 'U':
+                            cls.use_items()
+                            print("\nLoading next scene...\n")
+                            sleep(3)
+                            cls.load_next()
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
@@ -198,5 +234,7 @@ GamePlay.play()
 # even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
 # - in the second scene this will block progress
 
-# use item from backpack to do something
+# use item doesn't work !
 # when opens grate using key - end of game, ask if wants to play again
+
+# close Item instantiation in a function to reduce code repeatability (use helper function)
