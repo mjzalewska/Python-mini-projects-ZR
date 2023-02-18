@@ -1,7 +1,7 @@
 {
     "no": 3,
     "name": "Canals",
-    "intro": "You've been walking knee deep in dirty water for what seems like hours.It's dark and your torch has long burned out.You're lucky no weird, out of this world creatures have spotted you yet.Suddenly you see a faint light.As you walk closer, you can see it's where the canal joins the castle moat.But it's closed off with sturdy iron bars grate. If only you could open them somehow",
+    "intro": "You've been walking knee deep in dirty water for what seems like hours.It's dark and your torch has long burned out.You're lucky no weird, out of this world creatures have spotted you yet.Suddenly you see a faint light.As you walk closer, you can see it's where the canal joins the castle moat.But it's closed off with sturdy iron bars grate.If only you could open them somehow",
     "description": "Dark and dirty canals full of rats",
     "enemy": false,
     "items":

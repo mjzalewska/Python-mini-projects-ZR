@@ -3,6 +3,7 @@
     "type": "Weapon",
     "collectible": true,
     "description": "A long steel broadsword, very powerful in close-range combat",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -14,6 +15,7 @@
     "type": "Weapon",
     "collectible": true,
     "description": "A silver emerald-encrusted bow",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 2,
@@ -25,6 +27,7 @@
     "type": "Weapon",
     "collectible": true,
     "description": "An ancient, elaborately carved wooden staff",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 5,
@@ -36,6 +39,7 @@
     "type": "Weapon",
     "collectible": true,
     "description": "A steel sword with a decorative handle",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -47,6 +51,7 @@
     "type": "Other",
     "collectible": true,
     "description": "A sturdy metal shield",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -58,6 +63,7 @@
     "type": "Other",
     "collectible": true,
     "description": "A strange bluish liquid in a slender flask",
+    "complementary item": "None",
     "impact": {
       "hp": 5,
       "mp": 0,
@@ -69,6 +75,7 @@
     "type": "Other",
     "collectible": true,
     "description": "a burning torch mounted on the wall",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -80,6 +87,7 @@
     "type": "Other",
     "collectible": true,
     "description": "A rusty old key",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -95,6 +103,7 @@
     "type": "Other",
     "collectible": false,
     "description": "A sturdy wooden door",
+    "complementary item": "None",
     "impact": {
       "hp": 0,
       "mp": 0,
@@ -102,11 +111,12 @@
       "defense": 0
     }
   },
-  "Iron bars grate": {
+  "Iron Bars Grate": {
     "type": "Other",
     "collectible": false,
     "description": "Rusty, yet strong iron bars grate at the canal's outlet",
-    "complimentary item": "Rusty Key",
+    "complementary item": "Rusty Key",
+    "result": "The grate is open!",
     "impact": {
       "hp": 0,
       "mp": 0,

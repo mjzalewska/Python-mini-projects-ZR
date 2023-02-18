@@ -10,6 +10,7 @@
   "I": "SHOW ITEM STATS",
   "T": "TAKE ITEM",
   "L": "DROP/LEAVE ITEM",
+  "U": "USE ITEM",
   "Q": "QUIT GAME"
  },
  "no_enemies":{
@@ -20,6 +21,7 @@
   "I": "SHOW ITEM STATS",
   "T": "TAKE ITEM",
   "L": "DROP/LEAVE ITEM",
+  "U": "USE ITEM",
   "Q": "QUIT GAME"
  }
 }
