@@ -18,6 +18,11 @@ class Item:
             character.stats[key] = character.stats[key] + self.impact[key]
         return character.stats
 
+    def reduce_char_stats(self, character):
+        for key, value in self.impact.items():
+            character.stats[key] = character.stats[key] - self.impact[key]
+        return character.stats
+
     @staticmethod
     def take_item(scene, hero):
         if scene.items:
