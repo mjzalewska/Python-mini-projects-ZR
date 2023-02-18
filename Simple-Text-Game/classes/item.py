@@ -4,6 +4,7 @@ class Item:
         self.description = kwargs['description']
         self.impact = kwargs['impact']
         self.is_collectible = kwargs['collectible']
+        self.complementary_item = kwargs['complementary item']
 
     def __str__(self):
         print(self.description)
@@ -34,18 +35,3 @@ class Item:
                 else:
                     hero.add_item(chosen_item)
                     break
-
-    @staticmethod
-    def use_item(hero):
-        print("Your inventory:")
-        hero.show_inventory()
-        print("Which item would you like to use?")
-        while True:
-            item_choice = input().title()
-            if item_choice not in hero.inventory():
-                print('Sorry there\'s nothing like that in your backpack!')
-            else:
-                return item_choice
-
-
-

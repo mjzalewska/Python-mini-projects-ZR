@@ -61,9 +61,11 @@ class Hero(Character):
 
     def fight_enemy(self, enemy):
         if enemy.weakness in self.inventory:
+            print(f'{enemy.enemy_class} if afraid of {enemy.weakness} and has ran away!')
             print(f'The {enemy.enemy_class} has dropped a {enemy.special_item}!')
             self.add_item(enemy.special_item)
             print(f'{enemy.special_item} has been added to your inventory')
+            return True
         else:
             hero_strength = self.stats['mp'] + self.stats['attack'] + randint(1, 6)
             enemy_stamina = enemy.stats['hp']
