@@ -106,6 +106,7 @@
     "type": "Other",
     "collectible": false,
     "description": "Rusty, yet strong iron bars grate at the canal's outlet",
+    "complimentary item": "Rusty Key",
     "impact": {
       "hp": 0,
       "mp": 0,

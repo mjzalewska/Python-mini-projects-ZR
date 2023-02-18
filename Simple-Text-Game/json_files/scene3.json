@@ -6,9 +6,7 @@
     "enemy": false,
     "items":
         [
-          { "name": "Iron Bars Grate",
-            "description": "Rusty, yet strong iron bars grate at the canal's outlet",
-            "complimentary item": "Rusty Key"
+          { "name": "Iron Bars Grate"
           }
         ],
     "next scene": 0
