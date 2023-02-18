@@ -5,6 +5,7 @@ class Item:
         self.impact = kwargs['impact']
         self.is_collectible = kwargs['collectible']
         self.complementary_item = kwargs['complementary item']
+        self.action_result = kwargs['result']
 
     def __str__(self):
         print(self.description)
