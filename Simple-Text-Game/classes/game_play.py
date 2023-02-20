@@ -60,15 +60,6 @@ class GamePlay:
             cls.show_menu()
 
             cls.game_state = 'playing'
-        else:
-            if not cls.current_scene.next_scene():
-                print('Congratulations, you have finished the game!')
-                print('Do you want to play again?Y/N')
-                replay = input()
-                if replay[0].casefold() == 'y':
-                    cls.play()
-                else:
-                    exit()
 
     @classmethod
     def sort_game_items(cls, **kwargs):
@@ -123,22 +114,21 @@ class GamePlay:
                 print(f'Which item would you like to use {item_to_use} on?\n')
                 print('Your options: ')
                 cls.current_scene.enumerate_items()
-                while True:
-                    target_item = input('>> ').title()
-                    if target_item in cls.current_scene.items:
-                        items = FileManager.load_json_file(r'..\json_files\items.json')
-                        item_values = items[target_item]
-                        cls.target_item = Item(**item_values)
-                        if item_to_use == cls.target_item.complementary_item:
-                            print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
-                            print(f'{cls.target_item.action_result}')
-                            break
-                        else:
-                            print('This will not work. Try something else.')
-                            break
-                    else:
-                        print('There\'s nothing like that here!')
+                # while True:
+                target_item = input('>> ').title()
+                if target_item in cls.current_scene.items:
+                    items = FileManager.load_json_file(r'..\json_files\items.json')
+                    item_values = items[target_item]
+                    cls.target_item = Item(**item_values)
+                    if item_to_use == cls.target_item.complementary_item:
+                        print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
+                        print(f'{cls.target_item.action_result}')
                         break
+                    else:
+                        print('This will not work. Try something else.')
+                else:
+                    print('There\'s nothing like that here!')
+                    break
 
     @classmethod
     def leave_items(cls):
@@ -163,12 +153,22 @@ class GamePlay:
         if cls.current_scene.next_scene:
             cls.game_state = 'initializing'
             cls.scene_number = cls.current_scene.next_scene
+            print("\nLoading next scene...\n")
+            sleep(3)
             cls.initialize()
+        else:
+            print('Congratulations, you have finished the game!')
+            print('Do you want to play again?Y/N')
+            replay = input()
+            if replay[0].casefold() == 'y':
+                cls.play()
+            else:
+                exit()
 
     @classmethod
     def play(cls):
         cls.show_welcome_screen()
-        hero_values = FileManager.load_json_file(r'..\json_files\{}.json'.format(cls.choose_character()))
+        hero_values = FileManager.load_json_file(rf'..\json_files\{cls.choose_character()}.json')
         cls.hero = Hero(**hero_values)
         while True:
             if cls.game_state == 'initializing':
@@ -188,15 +188,11 @@ class GamePlay:
                             cls.enemy.show_stats()
                         case 'F':
                             if cls.hero.fight_enemy(cls.enemy):
-                                print("\nLoading next scene...\n")
-                                sleep(3)
                                 cls.load_next()
                             else:
                                 exit()
                         case 'R':
                             if cls.hero.run_from_enemy():
-                                print("\nLoading next scene...\n")
-                                sleep(3)
                                 cls.load_next()
                             else:
                                 exit()
@@ -210,8 +206,6 @@ class GamePlay:
                             cls.item.show_item_stats(item_to_see)
                         case 'T':
                             if cls.collect_items():
-                                print("\nLoading next scene...\n")
-                                sleep(3)
                                 cls.load_next()
                             else:
                                 cls.collect_items()
@@ -221,20 +215,16 @@ class GamePlay:
                             cls.leave_items()
                         case 'U':
                             cls.use_items()
-                            print("\nLoading next scene...\n")
-                            sleep(3)
                             cls.load_next()
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
-                            break
+                            exit()
 
 
 GamePlay.play()
-# even if no items to take the message is the same "Which item would you like to take...There are some interesting..."
+# even if no items to take the message is the same "Which item would you like to take"
 # - in the second scene this will block progress
 
-# when opens grate using key - end of game, ask if wants to play again
-# can't exit the while loop - after the gate open still in thc choose item loop
-
 # close Item instantiation in a function to reduce code repeatability (use helper function)
+
