@@ -24,15 +24,3 @@ class Item:
         for key, value in self.impact.items():
             character.stats[key] = character.stats[key] - self.impact[key]
         return character.stats
-
-    @staticmethod
-    def take_item(scene, hero):
-        if scene.items:
-            print('You can only choose one item. Choose wisely!')
-            while True:
-                chosen_item = input('Which item would you like to take?').title()
-                if chosen_item not in scene.items():
-                    print('Sorry, no such item here!')
-                else:
-                    hero.add_item(chosen_item)
-                    break
