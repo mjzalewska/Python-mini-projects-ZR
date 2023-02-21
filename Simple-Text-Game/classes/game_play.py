@@ -92,7 +92,6 @@ class GamePlay:
                     if item_choice in cls.current_scene.items:
                         item_values = items[item_choice]
                         cls.item = Item(**item_values)
-
                         if item_choice.split()[1] == cls.hero.weapon or \
                                 item_choice in collectibles['Other collectibles']:
                             cls.hero.add_item(item_choice)
@@ -120,11 +119,9 @@ class GamePlay:
                 print(f'Which item would you like to use {item_to_use} on?\n')
                 print('Your options: ')
                 cls.current_scene.enumerate_items()
-                # while True:
                 target_item = input('>> ').title()
                 if target_item in cls.current_scene.items:
-                    items = FileManager.load_json_file(r'..\json_files\items.json')
-                    item_values = items[target_item]
+                    item_values = FileManager.load_json_file(r'..\json_files\items.json')[target_item]
                     cls.target_item = Item(**item_values)
                     if item_to_use == cls.target_item.complementary_item:
                         print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
@@ -143,8 +140,7 @@ class GamePlay:
             while True:
                 item_to_remove = input('>> ').title()
                 if item_to_remove in cls.hero.inventory:
-                    items = FileManager.load_json_file(r'..\json_files\items.json')
-                    item_values = items[item_to_remove]
+                    item_values = FileManager.load_json_file(r'..\json_files\items.json')[item_to_remove]
                     cls.item = Item(**item_values)
                     cls.hero.remove_item(item_to_remove)
                     cls.item.reduce_char_stats(cls.hero)
@@ -229,9 +225,4 @@ class GamePlay:
                             sleep(3)
                             exit()
 
-
-GamePlay.play()
-# enclose Item instantiation in a function to reduce code repeatability (use helper function)
-# add a simple readme
-# record video and post
 
