@@ -21,11 +21,9 @@ class Scene:
         return False
 
     def enumerate_items(self):
-        if len(self.items) > 0:
-            for item in self.items:
-                print(item)
-        else:
-            print("Nothing interesting here for you...")
+        for item in self.items:
+            print(item)
+
 
 
 
