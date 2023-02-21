@@ -79,24 +79,30 @@ class GamePlay:
     def collect_items(cls):
         while True:
             if cls.current_scene.items:
-                print('Which item would you like to take. Choose wisely. You can only take one!')
-                cls.current_scene.enumerate_items()
-                item_choice = input('>> ').title()
-                if item_choice in cls.current_scene.items:
-                    items = FileManager.load_json_file(r'..\json_files\items.json')
-                    item_values = items[item_choice]
-                    cls.item = Item(**item_values)
-                    collectibles = cls.sort_game_items(**items)
-                    if item_choice.split()[1] == cls.hero.weapon or \
-                            item_choice in collectibles['Other collectibles']:
-                        cls.hero.add_item(item_choice)
-                        cls.item.boost_char_stats(cls.hero)
-                        return True
-                    else:
-                        print('\nYou cannot take that. Better choose something else.')
+                items = FileManager.load_json_file(r'..\json_files\items.json')
+                collectibles = cls.sort_game_items(**items)
+                if all([True if item in collectibles['Non-collectibles'] else False for item in
+                        cls.current_scene.items]):
+                    print("Nothing interesting here...")
+                    break
                 else:
-                    print('No such item here!Try again.')
-                    continue
+                    print('Which item would you like to take. Choose wisely. You can only take one!')
+                    cls.current_scene.enumerate_items()
+                    item_choice = input('>> ').title()
+                    if item_choice in cls.current_scene.items:
+                        item_values = items[item_choice]
+                        cls.item = Item(**item_values)
+
+                        if item_choice.split()[1] == cls.hero.weapon or \
+                                item_choice in collectibles['Other collectibles']:
+                            cls.hero.add_item(item_choice)
+                            cls.item.boost_char_stats(cls.hero)
+                            return True
+                        else:
+                            print('\nYou cannot take that. Better choose something else.')
+                    else:
+                        print('No such item here!Try again.')
+                        continue
             else:
                 print('Nothing interesting here...')
                 return True
@@ -208,7 +214,7 @@ class GamePlay:
                             if cls.collect_items():
                                 cls.load_next()
                             else:
-                                cls.collect_items()
+                                continue
                         case 'S':
                             cls.hero.show_stats()
                         case 'L':
@@ -223,8 +229,8 @@ class GamePlay:
 
 
 GamePlay.play()
-# even if no items to take the message is the same "Which item would you like to take"
-# - in the second scene this will block progress
+# enlose Item instantiation in a function to reduce code repeatability (use helper function)
+# add a simple readme
+# record video and post
 
-# close Item instantiation in a function to reduce code repeatability (use helper function)
-
+# replay is not working - skips to the final scene
