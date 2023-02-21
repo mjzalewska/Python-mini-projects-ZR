@@ -116,22 +116,29 @@ class GamePlay:
             if item_to_use not in cls.hero.inventory:
                 print('Sorry there\'s nothing like that in your backpack!')
             else:
-                print(f'Which item would you like to use {item_to_use} on?\n')
-                print('Your options: ')
-                cls.current_scene.enumerate_items()
-                target_item = input('>> ').title()
-                if target_item in cls.current_scene.items:
-                    item_values = FileManager.load_json_file(r'.\json_files\items.json')[target_item]
-                    cls.target_item = Item(**item_values)
-                    if item_to_use == cls.target_item.complementary_item:
-                        print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
-                        print(f'{cls.target_item.action_result}')
-                        break
+                items = FileManager.load_json_file(r'.\json_files\items.json')
+                collectibles = cls.sort_game_items(**items)
+                if (any([True if item in collectibles['Non-collectibles'] else False for item in
+                        cls.current_scene.items])):
+                    print(f'Which item would you like to use {item_to_use} on?\n')
+                    print('Your options: ')
+                    cls.current_scene.enumerate_items()
+                    target_item = input('>> ').title()
+                    if target_item in cls.current_scene.items:
+                        item_values = FileManager.load_json_file(r'.\json_files\items.json')[target_item]
+                        cls.target_item = Item(**item_values)
+                        if item_to_use == cls.target_item.complementary_item:
+                            print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
+                            print(f'{cls.target_item.action_result}')
+                            return True
+                        else:
+                            print('This will not work. Try something else.')
                     else:
-                        print('This will not work. Try something else.')
+                        print('There\'s nothing like that here!')
+                        return False
                 else:
-                    print('There\'s nothing like that here!')
-                    break
+                    print('Nothing to use this on')
+                    return False
 
     @classmethod
     def leave_items(cls):
@@ -218,8 +225,10 @@ class GamePlay:
                         case 'L':
                             cls.leave_items()
                         case 'U':
-                            cls.use_items()
-                            cls.load_next()
+                            if cls.use_items():
+                                cls.load_next()
+                            else:
+                                continue
                         case 'Q':
                             print('Exiting the game...')
                             sleep(3)
