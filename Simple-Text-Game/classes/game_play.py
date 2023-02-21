@@ -1,7 +1,7 @@
-from file_manager import FileManager
-from item import Item
-from scene import Scene
-from character import Hero, Enemy
+from .file_manager import FileManager
+from .item import Item
+from .scene import Scene
+from .character import Hero, Enemy
 from time import sleep
 
 
@@ -25,11 +25,11 @@ class GamePlay:
     def show_menu(cls):
         print('\n-----GAME MENU-----')
         if cls.current_scene.has_enemy():
-            menu = FileManager().load_json_file(r'..\json_files\game_menu.json')['enemies']
+            menu = FileManager().load_json_file(r'.\json_files\game_menu.json')['enemies']
             for key, value in menu.items():
                 print(f'{key} : {value}')
         else:
-            menu = FileManager().load_json_file(r'..\json_files\game_menu.json')['no_enemies']
+            menu = FileManager().load_json_file(r'.\json_files\game_menu.json')['no_enemies']
             for key, value in menu.items():
                 print(f'{key} : {value}')
 
@@ -47,11 +47,11 @@ class GamePlay:
 
     @classmethod
     def initialize(cls):
-        if FileManager.is_scene_available(rf'..\json_files\scene{cls.scene_number}.json'):
-            scene_values = FileManager.load_json_file(fr'..\json_files\scene{cls.scene_number}.json')
+        if FileManager.is_scene_available(rf'.\json_files\scene{cls.scene_number}.json'):
+            scene_values = FileManager.load_json_file(fr'.\json_files\scene{cls.scene_number}.json')
             cls.current_scene = Scene(**scene_values)
             if cls.current_scene.has_enemy():
-                enemy_values = FileManager.load_json_file(r'..\json_files\goblin.json')
+                enemy_values = FileManager.load_json_file(r'.\json_files\goblin.json')
                 cls.enemy = Enemy(**enemy_values)
                 cls.available_commands = ['M', 'D', 'B', 'S', 'E', 'F', 'R', 'I', 'T', 'L', 'U', 'Q']
             else:
@@ -79,7 +79,7 @@ class GamePlay:
     def collect_items(cls):
         while True:
             if cls.current_scene.items:
-                items = FileManager.load_json_file(r'..\json_files\items.json')
+                items = FileManager.load_json_file(r'.\json_files\items.json')
                 collectibles = cls.sort_game_items(**items)
                 if all([True if item in collectibles['Non-collectibles'] else False for item in
                         cls.current_scene.items]):
@@ -121,7 +121,7 @@ class GamePlay:
                 cls.current_scene.enumerate_items()
                 target_item = input('>> ').title()
                 if target_item in cls.current_scene.items:
-                    item_values = FileManager.load_json_file(r'..\json_files\items.json')[target_item]
+                    item_values = FileManager.load_json_file(r'.\json_files\items.json')[target_item]
                     cls.target_item = Item(**item_values)
                     if item_to_use == cls.target_item.complementary_item:
                         print(f'You\'ve used {item_to_use} on {target_item}. It worked!')
@@ -140,7 +140,7 @@ class GamePlay:
             while True:
                 item_to_remove = input('>> ').title()
                 if item_to_remove in cls.hero.inventory:
-                    item_values = FileManager.load_json_file(r'..\json_files\items.json')[item_to_remove]
+                    item_values = FileManager.load_json_file(r'.\json_files\items.json')[item_to_remove]
                     cls.item = Item(**item_values)
                     cls.hero.remove_item(item_to_remove)
                     cls.item.reduce_char_stats(cls.hero)
@@ -172,7 +172,7 @@ class GamePlay:
     @classmethod
     def play(cls):
         cls.show_welcome_screen()
-        hero_values = FileManager.load_json_file(rf'..\json_files\{cls.choose_character()}.json')
+        hero_values = FileManager.load_json_file(rf'.\json_files\{cls.choose_character()}.json')
         cls.hero = Hero(**hero_values)
         while True:
             if cls.game_state == 'initializing':
@@ -205,7 +205,7 @@ class GamePlay:
                         case 'I':
                             print('Please type the name of the item whose stats you would like to see')
                             item_to_see = input().title()
-                            item_values = FileManager.load_json_file(r'..\json_files\items.json')[item_to_see]
+                            item_values = FileManager.load_json_file(r'.\json_files\items.json')[item_to_see]
                             cls.item = Item(**item_values)
                             cls.item.show_item_stats(item_to_see)
                         case 'T':
@@ -224,5 +224,3 @@ class GamePlay:
                             print('Exiting the game...')
                             sleep(3)
                             exit()
-
-
