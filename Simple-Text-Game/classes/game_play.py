@@ -167,6 +167,8 @@ class GamePlay:
             print('Do you want to play again?Y/N')
             replay = input()
             if replay[0].casefold() == 'y':
+                cls.scene_number = 1
+                cls.game_state = 'initializing'
                 cls.play()
             else:
                 exit()
@@ -229,8 +231,7 @@ class GamePlay:
 
 
 GamePlay.play()
-# enlose Item instantiation in a function to reduce code repeatability (use helper function)
+# enclose Item instantiation in a function to reduce code repeatability (use helper function)
 # add a simple readme
 # record video and post
 
-# replay is not working - skips to the final scene

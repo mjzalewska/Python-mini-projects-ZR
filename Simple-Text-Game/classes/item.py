@@ -24,3 +24,5 @@ class Item:
         for key, value in self.impact.items():
             character.stats[key] = character.stats[key] - self.impact[key]
         return character.stats
+
+
