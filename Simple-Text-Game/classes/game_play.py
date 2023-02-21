@@ -88,7 +88,7 @@ class GamePlay:
                 else:
                     print('Which item would you like to take. Choose wisely. You can only take one!')
                     cls.current_scene.enumerate_items()
-                    item_choice = input('>> ').title()
+                    item_choice = input('>> ').casefold().title()
                     if item_choice in cls.current_scene.items:
                         item_values = items[item_choice]
                         cls.item = Item(**item_values)
@@ -112,7 +112,7 @@ class GamePlay:
         cls.hero.show_inventory()
         print("Which item would you like to use?")
         while True:
-            item_to_use = input('>> ').title()
+            item_to_use = input('>> ').casefold().title()
             if item_to_use not in cls.hero.inventory:
                 print('Sorry there\'s nothing like that in your backpack!')
             else:
@@ -123,7 +123,7 @@ class GamePlay:
                     print(f'Which item would you like to use {item_to_use} on?\n')
                     print('Your options: ')
                     cls.current_scene.enumerate_items()
-                    target_item = input('>> ').title()
+                    target_item = input('>> ').casefold().title()
                     if target_item in cls.current_scene.items:
                         item_values = FileManager.load_json_file(r'.\json_files\items.json')[target_item]
                         cls.target_item = Item(**item_values)
@@ -145,7 +145,7 @@ class GamePlay:
         if len(cls.hero.inventory) > 0:
             print('Type the name of the item you\'d like to remove from your backpack')
             while True:
-                item_to_remove = input('>> ').title()
+                item_to_remove = input('>> ').casefold().title()
                 if item_to_remove in cls.hero.inventory:
                     item_values = FileManager.load_json_file(r'.\json_files\items.json')[item_to_remove]
                     cls.item = Item(**item_values)
@@ -211,7 +211,7 @@ class GamePlay:
                             cls.hero.show_inventory()
                         case 'I':
                             print('Please type the name of the item whose stats you would like to see')
-                            item_to_see = input().title()
+                            item_to_see = input().casefold().title()
                             item_values = FileManager.load_json_file(r'.\json_files\items.json')[item_to_see]
                             cls.item = Item(**item_values)
                             cls.item.show_item_stats(item_to_see)
