@@ -28,6 +28,12 @@ class Hero(Character):
     def __str__(self):
         return self.description
 
+    def show_stats(self):
+        print(f"------{self.cl_name}------")
+        print(f"LVL:{self.stats['level']}\nHP:{self.stats['hp']}\nMP:{self.stats['mp']}\n"
+              f"ATTACK:{self.stats['attack']}\nDEFENSE:{self.stats['defense']}\n"
+              f"MAX INVENTORY:{self.max_inventory}")
+
     def add_item(self, item):
         if len(self.inventory) < self.max_inventory:
             if item not in self.inventory:
