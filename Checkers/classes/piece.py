@@ -1,8 +1,8 @@
 class Piece:
     def __init__(self, color):
-        self.symbol = 'M'
+        self.symbol = 'P'
         self.color = color
-        self.rank = 'man'
+        self.rank = 'pawn'
         self.status = 'active'
         self.position = None
         self.movement_type = None  # should be a default param, to change for the dame class
@@ -19,7 +19,7 @@ class Piece:
     def set_movement(self):
         pass
 
-    def set_symmol(self):
+    def set_symbol(self):
         pass
 
 
