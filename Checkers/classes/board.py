@@ -6,13 +6,13 @@ class Board:
     promotion_line = get_promotion_line_fields(playable_fields)
 
     @classmethod
+    def get_vacant_cells(cls, playable_fields):
+        return {k: v for k, v in playable_fields.items() if not v}
+
+    @classmethod
     def display_board(cls, playable_fields):
         pass
 
-    @classmethod
-    def get_vacant_cells(cls, playable_fields):
-        pass
 
 
-print(Board.promotion_line)
 
