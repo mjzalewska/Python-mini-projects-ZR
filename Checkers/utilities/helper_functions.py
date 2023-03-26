@@ -7,9 +7,9 @@ def get_playable_fields():
     for letter in string.ascii_uppercase[:8]:
         for num in range(2, 10, 2):
             if letter in ['A', 'C', 'E', 'G']:
-                playable_fields[f'{letter}{num}'] = '_'
+                playable_fields[f'{letter}{num}'] = ''
             else:
-                playable_fields[f'{letter}{num - 1}'] = '_'
+                playable_fields[f'{letter}{num - 1}'] = ''
     return playable_fields
 
 

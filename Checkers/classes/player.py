@@ -1,6 +1,7 @@
 class Player:
     def __init__(self):
         self.type = None
+        self.sign = None
         self.pieces = 12
         self.score = 0
         self.dames = 0
@@ -19,9 +20,11 @@ class Human(Player):
     def __init__(self):
         super().__init__()
         self.type = 'human'
+        self.sign = 'P' #add num based on instance num
 
 
 class Computer(Player):
     def __init__(self):
         super().__init__()
         self.type = 'computer'
+        self.sign = 'C'
