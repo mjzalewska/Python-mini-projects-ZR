@@ -1,13 +1,18 @@
+from Checkers.utilities.helper_functions import get_playable_fields, get_promotion_line_fields
+
+
 class Board:
-    playable_fields = None  # dark only
-    promotion_line = None  # last line
+    playable_fields = get_playable_fields()
+    promotion_line = get_promotion_line_fields(playable_fields)
 
     @classmethod
-    def draw_board(cls):
+    def display_board(cls, playable_fields):
         pass
 
     @classmethod
-    def get_free_cells(cls):
+    def get_vacant_cells(cls, playable_fields):
         pass
 
+
+print(Board.promotion_line)
 
