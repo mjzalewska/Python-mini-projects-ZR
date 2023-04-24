@@ -12,7 +12,6 @@ def get_playable_fields():
                 playable_fields[f'{letter}{num - 1}'] = ' '
     return playable_fields
 
-
 # get promotion line fields
 def get_promotion_line_fields(playable_fields):
     promotion_line = {}
