@@ -1,11 +1,21 @@
 class Piece:
     def __init__(self, color):
-        self.symbol = 'P'
         self.color = color
+        self.position = None
+        self.name = None
         self.rank = 'pawn'
         self.status = 'active'
-        self.position = None
-        self.movement_type = None  # should be a default param, to change for the dame class
+
+    def set_name(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+    def move(self):
+        pass
+        # if moving only - +1, if moving and capturing +2
+        # needs to 'know' if another piece in its way
 
     def set_status(self):
         pass
@@ -21,8 +31,3 @@ class Piece:
 
     def set_symbol(self):
         pass
-
-
-
-
-
