@@ -8,33 +8,52 @@ class Game:
     board = None
 
     @classmethod
-    def initialize(cls):
-        player_1 = Player('human')
-        player_2 = Player('human')
+    def show_welcome_screen(cls):
+        pass
 
+    @classmethod
+    def show_menu(cls):
+        pass
+
+    @classmethod
+    def choose_game_mode(cls):
+        pass
+
+    @classmethod
+    def take_input(cls):
+        pass
+
+    @classmethod
+    def initialize(cls):
+        # initialize players
+        player_1 = Player('human')
+        player_2 = Player('human') # change to reflect player's choice (vs comp or vs human)
+
+        # initialize game board
         cls.board = Board()
 
-        for num in range(1, 25):
-            if num <= 12:
-                piece = Piece('white')
-                piece.name = 'w' + str(num)
-                # assign position on board and assign to board
-                player_1.pieces.append(piece)
+        # initialize pawns
+        for num in range(1, 13):
+            piece_w = Piece('white')
+            piece_w.set_name('w')
+            player_1.pieces.append(piece_w)
+            piece_b = Piece('black')
+            piece_b.set_name('b')
+            player_2.pieces.append(piece_b)
+            # change board display func
 
-            else:
-                piece = Piece('black')
-                piece.name = 'b' + str(num)
-                # assign position on board and assign  to board
-                player_2.pieces.append(piece)
+        # assign pieces to initial positions on board
+        for i in range(len(list(Board.p_fields.keys())[:12])):
+            Board.p_fields[list(Board.p_fields.keys())[i]] = player_1.pieces[i]
+        for j in range(len(list(Board.p_fields.keys())[20:])):
+            Board.p_fields[list(Board.p_fields.keys())[j+20]] = player_2.pieces[j]
 
-        for key in Board.p_fields.keys():
-            if key[0] in ['A', 'B', 'C']:
-                pass
-            elif key[0] in ['F', 'G', 'H']:
-                pass
+        cls.game_state = 'playing'
 
-        print(player_1.pieces)
-        print(len(player_1.pieces))
+    @classmethod
+    def play(cls):
+        pass
 
 
 Game.initialize()
+Board.display_board(Board.p_fields)
