@@ -1,3 +1,4 @@
+from art import tprint
 from classes.piece import Piece
 from classes.player import Player
 from classes.board import Board
@@ -9,7 +10,9 @@ class Game:
 
     @classmethod
     def show_welcome_screen(cls):
-        pass
+        tprint('Checkers', font='tarty1') # tarty9
+        print()
+        print('Welcome to the game of Python Checkers! Let\'s start!')
 
     @classmethod
     def show_menu(cls):
@@ -17,7 +20,11 @@ class Game:
 
     @classmethod
     def choose_game_mode(cls):
-        pass
+        print('Please choose your game mode')
+        print('1 - Player vs Player')
+        print('2 - Player vs Computer')
+        while True:
+            pass
 
     @classmethod
     def take_input(cls):
@@ -54,6 +61,4 @@ class Game:
     def play(cls):
         pass
 
-
-Game.initialize()
-Board.display_board(Board.p_fields)
+Game.show_welcome_screen()
