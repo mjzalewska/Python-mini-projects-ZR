@@ -12,23 +12,29 @@ class Game:
     def show_welcome_screen(cls):
         tprint('Checkers', font='tarty1') # tarty9
         print()
-        print('Welcome to the game of Python Checkers! Let\'s start!')
-
-    @classmethod
-    def show_menu(cls):
-        pass
+        print('Welcome to the game of Python Checkers! Let\'s start!\n')
 
     @classmethod
     def choose_game_mode(cls):
+        modes = ['1', '2']
         print('Please choose your game mode')
         print('1 - Player vs Player')
         print('2 - Player vs Computer')
         while True:
-            pass
+            mode_choice = input()
+            try:
+                if mode_choice in modes:
+                    return mode_choice
+                else:
+                    raise IndexError
+            except IndexError:
+                print('Incorrect input. Please choose 1 or 2')
 
     @classmethod
     def take_input(cls):
         pass
+
+
 
     @classmethod
     def initialize(cls):
@@ -61,4 +67,6 @@ class Game:
     def play(cls):
         pass
 
-Game.show_welcome_screen()
+
+Game.choose_game_mode()
+
