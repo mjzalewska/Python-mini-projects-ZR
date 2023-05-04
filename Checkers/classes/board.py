@@ -1,17 +1,9 @@
 import string
-
-from Checkers.utilities.helper_functions import get_playable_fields, get_promotion_line_fields
+from Checkers.utils.helper_functions import get_playable_fields, get_promotion_line_fields
 
 
 class Board:
     p_fields = get_playable_fields()
-    # test dict
-    # p_fields = {'A2': 'o', 'A4': 'o', 'A6': 'o', 'A8': 'o', 'B1': 'o', 'B3': 'o', 'B5': 'o', 'B7': 'o', 'C2': 'o',
-    #             'C4': 'o', 'C6': 'o',
-    #             'C8': 'o', 'D1': ' ', 'D3': ' ', 'D5': ' ', 'D7': ' ', 'E2': ' ', 'E4': ' ', 'E6': ' ', 'E8': ' ',
-    #             'F1': 'o', 'F3': 'o',
-    #             'F5': 'o', 'F7': 'o', 'G2': 'o', 'G4': 'o', 'G6': 'o', 'G8': 'o', 'H1': 'o', 'H3': 'o', 'H5': 'o',
-    #             'H7': 'o'}
     promotion_line = get_promotion_line_fields(p_fields)
 
     @classmethod

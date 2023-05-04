@@ -12,6 +12,7 @@ def get_playable_fields():
                 playable_fields[f'{letter}{num - 1}'] = ' '
     return playable_fields
 
+
 # get promotion line fields
 def get_promotion_line_fields(playable_fields):
     promotion_line = {}
@@ -19,5 +20,11 @@ def get_promotion_line_fields(playable_fields):
         if key[0] in ['A', 'H']:
             promotion_line[key] = value
     return promotion_line
+
+
+def validate_choice(choice, options, message):
+    if choice not in options:
+        raise IndexError(message)
+    return choice
 
 

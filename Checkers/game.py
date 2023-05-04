@@ -10,7 +10,7 @@ class Game:
 
     @classmethod
     def show_welcome_screen(cls):
-        tprint('Checkers', font='tarty1') # tarty9
+        tprint('Checkers', font='tarty1')  # tarty9
         print()
         print('Welcome to the game of Python Checkers! Let\'s start!\n')
 
@@ -31,16 +31,28 @@ class Game:
                 print('Incorrect input. Please choose 1 or 2')
 
     @classmethod
-    def take_input(cls):
-        pass
-
-
+    def take_coordinates(cls):  # osobno target i source? # define in pawn.move
+        print("Which pawn would you like to move? Please name the source and target fields")
+        while True:
+            source_field = input("Move from: ")
+            target_field = input("Move to: ")
+            try:
+                if source_field.upper() and target_field.upper() in Board.p_fields.keys():
+                    return source_field, target_field
+                else:
+                    raise KeyError
+            except KeyError:
+                print("Incorrect input. Either the source or target field number is incorrect. Please try again")
 
     @classmethod
     def initialize(cls):
         # initialize players
-        player_1 = Player('human')
-        player_2 = Player('human') # change to reflect player's choice (vs comp or vs human)
+        if Game.choose_game_mode() == '1':
+            player_1 = Player('human')
+            player_2 = Player('human')
+        else:
+            player_1 = Player('human')
+            player_2 = Player('computer')
 
         # initialize game board
         cls.board = Board()
@@ -53,13 +65,23 @@ class Game:
             piece_b = Piece('black')
             piece_b.set_name('b')
             player_2.pieces.append(piece_b)
-            # change board display func
 
         # assign pieces to initial positions on board
         for i in range(len(list(Board.p_fields.keys())[:12])):
             Board.p_fields[list(Board.p_fields.keys())[i]] = player_1.pieces[i]
         for j in range(len(list(Board.p_fields.keys())[20:])):
-            Board.p_fields[list(Board.p_fields.keys())[j+20]] = player_2.pieces[j]
+            Board.p_fields[list(Board.p_fields.keys())[j + 20]] = player_2.pieces[j]
+
+        # assign  initial board position to pieces
+        for piece in player_1.pieces:
+            for key in Board.p_fields.keys():
+                if Board.p_fields[key] == piece:
+                    piece.set_initial_position(key)
+
+        for piece in player_2.pieces:
+            for key in Board.p_fields.keys():
+                if Board.p_fields[key] == piece:
+                    piece.set_initial_position(key)
 
         cls.game_state = 'playing'
 
@@ -68,5 +90,8 @@ class Game:
         pass
 
 
-Game.choose_game_mode()
+# manual test code
+# Game.choose_game_mode()
+Game.initialize()
+# Board.display_board(Board.p_fields)
 
