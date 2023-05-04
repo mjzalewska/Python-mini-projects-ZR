@@ -22,9 +22,3 @@ def get_promotion_line_fields(playable_fields):
     return promotion_line
 
 
-def validate_choice(choice, options, message):
-    if choice not in options:
-        raise IndexError(message)
-    return choice
-
-

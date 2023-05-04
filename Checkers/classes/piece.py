@@ -1,3 +1,6 @@
+from board import Board
+
+
 class Piece:
     def __init__(self, color):
         self.color = color
@@ -12,22 +15,21 @@ class Piece:
     def __str__(self):
         return self.name
 
-    def move(self):
-        pass
-        # if moving only - +1, if moving and capturing +2
-        # needs to 'know' if another piece in its way
+    def set_initial_position(self, position):
+        self.position = position
 
-    def set_status(self):
+    def move(self, new_position):
+        self.position = new_position
+        Board.p_fields[new_position] = self
+
+    def remove_from_gameplay(self, new_status, player):
+        self.status = new_status
+        player.pieces.remove(self)
+        player.update_pieces_count()
+
+    def set_new_rank(self, new_rank):
+        self.rank = new_rank
+
+    def set_movement_type(self):
         pass
 
-    def set_position(self):
-        pass
-
-    def set_rank(self):
-        pass
-
-    def set_movement(self):
-        pass
-
-    def set_symbol(self):
-        pass
