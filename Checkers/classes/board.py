@@ -11,6 +11,16 @@ class Board:
         return {k: v for k, v in p_fields.items() if not v}
 
     @classmethod
+    def is_cell_vacant(cls, cell):
+        if not Board.p_fields[cell]:
+            return True
+        return False
+
+
+
+
+
+    @classmethod
     def display_board(cls, p_fields):
         for num in range(1, 9):
             print(f'  {num}', end="")
