@@ -1,4 +1,5 @@
-from board import Board
+from .board import Board
+from .player import Player
 
 
 class Piece:
@@ -32,4 +33,14 @@ class Piece:
 
     def set_movement_type(self):
         pass
+
+    def is_opponent_piece(self, other_piece, player):
+        if other_piece in player.pieces:
+            return True
+        return False
+
+    def can_capture_multiple(self):
+        pass
+
+
 
