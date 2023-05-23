@@ -34,7 +34,8 @@ class Piece:
     def set_movement_type(self):
         pass
 
-    def is_opponent_piece(self, other_piece, player):
+    @staticmethod
+    def is_opponent_piece(other_piece, player):
         if other_piece in player.pieces:
             return True
         return False

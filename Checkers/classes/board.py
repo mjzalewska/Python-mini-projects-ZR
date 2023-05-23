@@ -16,9 +16,9 @@ class Board:
             return True
         return False
 
-
-
-
+    @classmethod
+    def get_next_cell(cls, cell): # change to calculate cells backwards (now it will only calc cells forwards)
+        return f"{chr(ord(cell[0])+1)}{str(int(cell[1])+1)}"
 
     @classmethod
     def display_board(cls, p_fields):
@@ -32,3 +32,6 @@ class Board:
             else:
                 print(f'{letter} {p_fields[f"{letter}1"]}  \u25A0  {p_fields[f"{letter}3"]}  \u25A0  '
                       f'{p_fields[f"{letter}5"]}  \u25A0  {p_fields[f"{letter}7"]}  \u25A0  ')
+
+
+print(Board.get_next_cell("A2"))
