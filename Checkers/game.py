@@ -47,7 +47,7 @@ class Game:
                 cls.player_1 = Player('human')
                 cls.player_2 = Player('computer')
 
-        # initialize game board
+        # initialize game field_list
         cls.board = Board()
 
         # initialize pawns
@@ -59,13 +59,13 @@ class Game:
             piece_b.set_name('b')
             cls.player_2.pieces.append(piece_b)
 
-        # assign pieces to initial positions on board
+        # assign pieces to initial positions on field_list
         for i in range(len(list(Board.p_fields.keys())[:12])):
             Board.p_fields[list(Board.p_fields.keys())[i]] = cls.player_1.pieces[i]
         for j in range(len(list(Board.p_fields.keys())[20:])):
             Board.p_fields[list(Board.p_fields.keys())[j + 20]] = cls.player_2.pieces[j]
 
-        # assign  initial board position to pieces
+        # assign  initial field_list position to pieces
         for piece in cls.player_1.pieces:
             for key in Board.p_fields.keys():
                 if Board.p_fields[key] == piece:
@@ -100,7 +100,7 @@ class Game:
                 print("Sorry, you can only move your own pawns. Try again!")
 
     @classmethod
-    def check_if_neighbour(cls, field_no):
+    def check_neighbours(cls, field_no):
         pass
 
     @classmethod
@@ -122,10 +122,12 @@ class Game:
         cls.check_owner(pawn_address)
 
         target_field = input("Where would you like to move your pawn? Please indicate target position: ")
-        # check if target next to source
+        # check if target next to source - check_neighbours
 
-        # check if fields forwards or backwards
-        # check if target empty
+        # check if fields forwards or backwards - check if included in array[row+1:] -
+        # #TODO: func or include in piece constructor
+        # check if target empty - check if cell vacant - func done
+        # then move and change position - move -done
         try:
 
             if not Board.is_cell_vacant(target_field):

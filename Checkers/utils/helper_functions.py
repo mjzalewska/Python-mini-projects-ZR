@@ -1,7 +1,7 @@
 import string
 
 
-# generate a dict of playable board fields (dark only)
+# generate a dict of playable field_list fields (dark only)
 def get_playable_fields():
     playable_fields = {}
     for letter in string.ascii_uppercase[:8]:
@@ -20,5 +20,3 @@ def get_promotion_line_fields(playable_fields):
         if key[0] in ['A', 'H']:
             promotion_line[key] = value
     return promotion_line
-
-

@@ -2,6 +2,7 @@ import string
 from Checkers.utils.helper_functions import get_playable_fields, get_promotion_line_fields
 
 
+# TODO: include game fields, forbidden and promotion line definitions into Board definition
 class Board:
     p_fields = get_playable_fields()
     promotion_line = get_promotion_line_fields(p_fields)
@@ -17,8 +18,8 @@ class Board:
         return False
 
     @classmethod
-    def get_next_cell(cls, cell): # change to calculate cells backwards (now it will only calc cells forwards)
-        return f"{chr(ord(cell[0])+1)}{str(int(cell[1])+1)}"
+    def get_next_cell(cls, cell):  # change to calculate cells backwards (now it will only calc cells forwards)
+        return f"{chr(ord(cell[0]) + 1)}{str(int(cell[1]) + 1)}"
 
     @classmethod
     def display_board(cls, p_fields):
