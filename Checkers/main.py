@@ -1,5 +1,5 @@
 # pawn color is assigned randomly or
-# pawn color can be chosen (?)
+# pawn color can be chosen (choose)
 
 # logic for Player vs Player and Player vs Comp
 
