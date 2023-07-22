@@ -1,38 +1,48 @@
 import string
-from Checkers.utils.helper_functions import get_playable_fields, get_promotion_line_fields
+from Checkers.utilities.utilities import convert
 
 
-# TODO: include game fields, forbidden and promotion line definitions into Board definition
 class Board:
-    p_fields = get_playable_fields()
-    promotion_line = get_promotion_line_fields(p_fields)
+    board_fields = [[' 1', '2', '3', '4', '5', '6', '7', '8'],
+                    ['A', '\u25A0', ' ', '\u25A0', 'o', '\u25A0', 'w', '\u25A0', 'x'],
+                    ['B', 'd', '\u25A0', 'a', '\u25A0', 'b', '\u25A0', 'w', '\u25A0'],
+                    ['C', '\u25A0', 'c', '\u25A0', 'm', '\u25A0', 'w', '\u25A0', 'z'],
+                    ['D', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0'],
+                    ['E', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' '],
+                    ['F', 'b', '\u25A0', 'b', '\u25A0', 'b', '\u25A0', 'b', '\u25A0'],
+                    ['G', '\u25A0', 'b', '\u25A0', 'b', '\u25A0', 'b', '\u25A0', 'b'],
+                    ['H', 'b', '\u25A0', 'y', '\u25A0', 'b', '\u25A0', 'b', '\u25A0'],
+                    ]
+    promotion_lines = [board_fields[1], board_fields[-1]]
 
     @classmethod
-    def get_vacant_cells(cls, p_fields):
-        return {k: v for k, v in p_fields.items() if not v}
+    def get_vacant_cells(cls):
+        vacant_cells = []
+        for line in range(len(cls.board_fields)):
+            for column in range(len(cls.board_fields[line])):
+                if cls.board_fields[line][column] == ' ':
+                    vacant_cells.append((line, column))
+        return vacant_cells
 
     @classmethod
-    def is_cell_vacant(cls, cell):
-        if not Board.p_fields[cell]:
-            return True
+    def is_cell_vacant(cls, cell): # tutaj użyć convert, bo program nie wie o  co chodzi z cell
+        cell_line, cell_col = convert(field=cell)
+        for line in range(len(cls.board_fields)):
+            for column in range(len(cls.board_fields[line])):
+                if cls.board_fields[cell_line][cell_col] == ' ':
+                    return True
         return False
 
-    @classmethod
+    @classmethod ### poprawić. Czy to w ogóle potrzebne?
     def get_next_cell(cls, cell):  # change to calculate cells backwards (now it will only calc cells forwards)
         return f"{chr(ord(cell[0]) + 1)}{str(int(cell[1]) + 1)}"
 
     @classmethod
-    def display_board(cls, p_fields):
-        for num in range(1, 9):
-            print(f'  {num}', end="")
-        print(' ')
-        for letter in string.ascii_uppercase[:8]:
-            if letter in ['A', 'C', 'E', 'G']:
-                print(f'{letter} \u25A0  {p_fields[f"{letter}2"]}  \u25A0  {p_fields[f"{letter}4"]}  \u25A0  '
-                      f'{p_fields[f"{letter}6"]}  \u25A0  {p_fields[f"{letter}8"]}')
-            else:
-                print(f'{letter} {p_fields[f"{letter}1"]}  \u25A0  {p_fields[f"{letter}3"]}  \u25A0  '
-                      f'{p_fields[f"{letter}5"]}  \u25A0  {p_fields[f"{letter}7"]}  \u25A0  ')
+    def display_board(cls):
+        print(f'  {"  ".join(cls.board_fields[0])}')
+        for matrix in cls.board_fields[1:]:
+            print('  '.join(matrix))
 
 
-print(Board.get_next_cell("A2"))
+# print(Board.is_cell_vacant('A1'))
+
