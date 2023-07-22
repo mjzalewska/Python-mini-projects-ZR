@@ -1,22 +1,24 @@
 import string
 
 
-# generate a dict of playable field_list fields (dark only)
-def get_playable_fields():
-    playable_fields = {}
-    for letter in string.ascii_uppercase[:8]:
-        for num in range(2, 10, 2):
-            if letter in ['A', 'C', 'E', 'G']:
-                playable_fields[f'{letter}{num}'] = ' '
+def convert(index: tuple = None, field: str = None):
+    rows_dict = {letter: string.ascii_uppercase[:8].index(letter) for letter in string.ascii_uppercase[:8]}
+    while True:
+        try:
+            if index is not None and field is None:
+                row, column = index
+                field_no = ''
+                for k, v in rows_dict.items():
+                    if v == row:
+                        field_no += k
+                field_no += str(column + 1)
+                return field_no
+            elif field is not None and index is None:
+                return rows_dict[field[0]], int(field[1]) - 1
             else:
-                playable_fields[f'{letter}{num - 1}'] = ' '
-    return playable_fields
+                raise TypeError
+        except TypeError:
+            print("Only one argument - index or field no - should be specified!")
+            break
 
 
-# get promotion line fields
-def get_promotion_line_fields(playable_fields):
-    promotion_line = {}
-    for key, value in playable_fields.items():
-        if key[0] in ['A', 'H']:
-            promotion_line[key] = value
-    return promotion_line
