@@ -1,5 +1,6 @@
-from .board import Board
-from .player import Player
+from Checkers.classes.board import Board
+from Checkers.classes.player import Player
+from Checkers.utilities.utilities import convert
 
 
 class Piece:
@@ -21,7 +22,10 @@ class Piece:
 
     def move(self, new_position):
         self.position = new_position
-        Board.p_fields[new_position] = self
+        new_position_index = convert(field=self.position)
+        print(new_position_index)
+        new_line, new_col = new_position_index
+        Board.board_fields[new_line+1][new_col+1] = self
 
     def remove_from_gameplay(self, new_status, player):
         self.status = new_status
@@ -42,6 +46,4 @@ class Piece:
 
     def can_capture_multiple(self):
         pass
-
-
 
