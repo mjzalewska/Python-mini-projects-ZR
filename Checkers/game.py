@@ -2,6 +2,7 @@ from art import tprint
 from classes.piece import Piece
 from classes.player import Player
 from classes.board import Board
+from Checkers.utilities.utilities import convert
 
 
 class Game:
@@ -10,6 +11,7 @@ class Game:
     player_1 = None
     player_2 = None
 
+    # TODO: add rules ?
     @classmethod
     def show_welcome_screen(cls):
         tprint('Checkers', font='tarty1')  # tarty9
@@ -23,7 +25,7 @@ class Game:
     @classmethod
     def choose_game_mode(cls):
         modes = ['1', '2']
-        print('Please choose your game mode')
+        print('Please choose how you want to play: ')
         print('1 - Player vs Player')
         print('2 - Player vs Computer')
         while True:
@@ -47,37 +49,47 @@ class Game:
                 cls.player_1 = Player('human')
                 cls.player_2 = Player('computer')
 
-        # initialize game field_list
+        # initialize game board
         cls.board = Board()
 
         # initialize pawns
         for num in range(1, 13):
             piece_w = Piece('white')
-            piece_w.set_name('w')
+            piece_w.set_name('0x25CB')  # white
             cls.player_1.pieces.append(piece_w)
             piece_b = Piece('black')
-            piece_b.set_name('b')
+            piece_b.set_name('0x25D9')  # black/ inverse white
             cls.player_2.pieces.append(piece_b)
 
-        # assign pieces to initial positions on field_list
-        for i in range(len(list(Board.p_fields.keys())[:12])):
-            Board.p_fields[list(Board.p_fields.keys())[i]] = cls.player_1.pieces[i]
-        for j in range(len(list(Board.p_fields.keys())[20:])):
-            Board.p_fields[list(Board.p_fields.keys())[j + 20]] = cls.player_2.pieces[j]
+        # TODO: test code
+        # assign pieces to initial positions on board
+        for line in range(len(cls.board.board_fields[1:4])):
+            for column in range(len(cls.board.board_fields[line])):
+                if cls.board.board_fields[line][column] == ' ':
+                    cls.board.board_fields[line][column] = next(iter(cls.player_1.pieces))
+
+        # TODO: test code
+        for line in range(len(cls.board.board_fields[6:9])):
+            for column in range(len(cls.board.board_fields[line])):
+                if cls.board.board_fields[line][column] == ' ':
+                    cls.board.board_fields[line][column] = next(iter(cls.player_2.pieces))
 
         # assign  initial field_list position to pieces
         for piece in cls.player_1.pieces:
-            for key in Board.p_fields.keys():
-                if Board.p_fields[key] == piece:
-                    piece.set_initial_position(key)
+            for line in range(len(cls.board.board_fields[1:4])):
+                for column in range(len(cls.board.board_fields[line])):
+                    if cls.board.board_fields[line][column] == piece:
+                        piece.set_initial_position(convert(index=(line, column)))
 
-        for piece in cls.player_2.pieces:
-            for key in Board.p_fields.keys():
-                if Board.p_fields[key] == piece:
-                    piece.set_initial_position(key)
+        for piece in cls.player_1.pieces:
+            for line in range(len(cls.board.board_fields[6:9])):
+                for column in range(len(cls.board.board_fields[line])):
+                    if cls.board.board_fields[line][column] == piece:
+                        piece.set_initial_position(convert(index=(line, column)))
 
         cls.game_state = 'playing'
 
+    # TODO: refactor code below
     @classmethod
     def check_coordinates(cls, field_no):
         while True:
@@ -186,7 +198,4 @@ class Game:
 
 # manual test code
 Game.initialize()
-Board.display_board(Board.p_fields)
-Game.show_current_score()
-
-Game.play_vs_human()
+Game.board.display_board()
