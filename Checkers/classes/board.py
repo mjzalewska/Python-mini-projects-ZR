@@ -1,4 +1,4 @@
-from Checkers.utilities.utilities import convert
+from Checkers.utilities.utilities import convert, Piece
 
 
 class Board:
@@ -40,6 +40,9 @@ class Board:
 
     @classmethod
     def display_board(cls):
-        print(f'  {"  ".join(cls.board_fields[0])}')
-        for matrix in cls.board_fields[1:]:
-            print('  '.join(matrix))
+        str_matrix = []
+        for line in cls.board_fields:
+            str_matrix.append([str(column) for column in line])
+        print(f'  {"  ".join(str_matrix[0])}')
+        for line in str_matrix[1:]:
+            print('  '.join(line))
