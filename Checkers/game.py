@@ -55,34 +55,33 @@ class Game:
         # initialize pawns
         for num in range(1, 13):
             piece_w = Piece('white')
-            piece_w.set_name('0x25CB')  # white
+            piece_w.set_name('\u25C9')  # white
             cls.player_1.pieces.append(piece_w)
+
             piece_b = Piece('black')
-            piece_b.set_name('0x25D9')  # black/ inverse white
+            piece_b.set_name('\u25CB')  # black
             cls.player_2.pieces.append(piece_b)
 
-        # TODO: test code
-        # assign pieces to initial positions on board
-        for line in range(len(cls.board.board_fields[1:4])):
+        # assign pawns to initial positions on board
+        for line in range(len(cls.board.board_fields[:4])):
             for column in range(len(cls.board.board_fields[line])):
                 if cls.board.board_fields[line][column] == ' ':
                     cls.board.board_fields[line][column] = next(iter(cls.player_1.pieces))
 
-        # TODO: test code
-        for line in range(len(cls.board.board_fields[6:9])):
+        for line in range(len(cls.board.board_fields[5:])):
             for column in range(len(cls.board.board_fields[line])):
-                if cls.board.board_fields[line][column] == ' ':
-                    cls.board.board_fields[line][column] = next(iter(cls.player_2.pieces))
+                if cls.board.board_fields[-line][column] == ' ':
+                    cls.board.board_fields[-line][column] = next(iter(cls.player_2.pieces))
 
         # assign  initial field_list position to pieces
         for piece in cls.player_1.pieces:
-            for line in range(len(cls.board.board_fields[1:4])):
+            for line in range(len(cls.board.board_fields[:4])):
                 for column in range(len(cls.board.board_fields[line])):
                     if cls.board.board_fields[line][column] == piece:
                         piece.set_initial_position(convert(index=(line, column)))
 
         for piece in cls.player_1.pieces:
-            for line in range(len(cls.board.board_fields[6:9])):
+            for line in range(len(cls.board.board_fields[5:])):
                 for column in range(len(cls.board.board_fields[line])):
                     if cls.board.board_fields[line][column] == piece:
                         piece.set_initial_position(convert(index=(line, column)))

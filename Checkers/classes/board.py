@@ -1,4 +1,4 @@
-from Checkers.utilities.utilities import convert, Piece
+from Checkers.utilities.utilities import convert
 
 
 class Board:
@@ -24,7 +24,7 @@ class Board:
         return vacant_cells
 
     @classmethod
-    def is_cell_vacant(cls, cell):  # nie działa
+    def is_cell_vacant(cls, cell):
         cell_line, cell_col = convert(field=cell)
         if cls.board_fields[cell_line + 1][cell_col + 1] == ' ':
             return True
@@ -43,6 +43,6 @@ class Board:
         str_matrix = []
         for line in cls.board_fields:
             str_matrix.append([str(column) for column in line])
-        print(f'  {"  ".join(str_matrix[0])}')
+        print(f"  {'  '.join(str_matrix[0])}")
         for line in str_matrix[1:]:
             print('  '.join(line))
