@@ -1,3 +1,5 @@
+# Welcome screen --> Menu (game mode, exit, start)
+
 # pawn color is assigned randomly or
 # pawn color can be chosen (choose)
 

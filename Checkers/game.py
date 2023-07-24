@@ -1,3 +1,5 @@
+import string
+
 from art import tprint
 from classes.piece import Piece
 from classes.player import Player
@@ -88,12 +90,12 @@ class Game:
 
         cls.game_state = 'playing'
 
-    # TODO: refactor code below
     @classmethod
-    def check_coordinates(cls, field_no):
+    def check_input(cls, field_no):
+        board_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
         while True:
             try:
-                if field_no.upper() in Board.p_fields.keys():
+                if field_no.upper() in board_field_list:
                     return field_no
                 else:
                     raise KeyError
@@ -101,12 +103,13 @@ class Game:
                 print("Incorrect input. The number you have provided is out of range!")
 
     @classmethod
-    def check_owner(cls, field_no):
+    def check_owner(cls, field_no, player):
+        field_line, field_col = convert(field=field_no)
         while True:
             try:
-                if Board.p_fields[field_no] not in cls.player_1.pieces:
+                if Board.board_fields[field_line][field_col] not in player.pieces:
                     raise ValueError
-                return
+                return True
             except ValueError:
                 print("Sorry, you can only move your own pawns. Try again!")
 
@@ -124,12 +127,14 @@ class Game:
         except ValueError:
             print("This field is occupied. Please choose another field!")
 
+
+###############################################3
     @classmethod
     def play_vs_human(cls):
         # Player 1 move
         print("Player 1, Your turn!")
         pawn_address = input("Which pawn would you like to move? Please indicate its position: ")
-        cls.check_coordinates(pawn_address)
+        cls.check_input(pawn_address)
         cls.check_owner(pawn_address)
 
         target_field = input("Where would you like to move your pawn? Please indicate target position: ")
