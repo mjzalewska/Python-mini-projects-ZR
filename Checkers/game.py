@@ -1,7 +1,7 @@
 import string
 
 from art import tprint
-from classes.piece import Piece
+from classes.piece import WhitePawn,BlackPawn, WhiteKing, BlackKing
 from classes.player import Player
 from classes.board import Board
 from Checkers.utilities.utilities import convert
@@ -56,13 +56,11 @@ class Game:
 
         # initialize pawns
         for num in range(1, 13):
-            piece_w = Piece('white')
-            piece_w.set_name('\u25C9')  # white
-            cls.player_1.pieces.append(piece_w)
+            w_piece = WhitePawn()
+            cls.player_1.pieces.append(w_piece)
 
-            piece_b = Piece('black')
-            piece_b.set_name('\u25CB')  # black
-            cls.player_2.pieces.append(piece_b)
+            b_piece_b = BlackPawn()
+            cls.player_2.pieces.append(b_piece_b)
 
         # assign pawns to initial positions on board
         for line in range(len(cls.board.board_fields[:4])):
@@ -100,7 +98,7 @@ class Game:
                 else:
                     raise KeyError
             except KeyError:
-                print("Incorrect input. The number you have provided is out of range!")
+                print("Incorrect input. No such field number on the board!")
 
     @classmethod
     def check_owner(cls, field_no, player):
@@ -133,7 +131,7 @@ class Game:
     def play_vs_human(cls):
         # Player 1 move
         print("Player 1, Your turn!")
-        pawn_address = input("Which pawn would you like to move? Please indicate its position: ")
+        pawn_address = input("Which pawn would you like to move? Please indicate position (current field number): ")
         cls.check_input(pawn_address)
         cls.check_owner(pawn_address)
 
