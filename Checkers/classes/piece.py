@@ -4,15 +4,15 @@ from Checkers.utilities.utilities import convert
 
 
 class Piece:
-    def __init__(self, color):
-        self.color = color
+    def __init__(self):
+        self.color = None
         self.position = None
         self.name = None
-        self.rank = 'pawn'
+        self.rank = None
         self.status = 'active'
 
-    def set_name(self, name):
-        self.name = name
+    def __repr__(self):
+        return str(self.name)
 
     def __str__(self):
         return str(self.name)
@@ -32,9 +32,6 @@ class Piece:
         player.pieces.remove(self)
         player.update_pieces_count()
 
-    def set_new_rank(self, new_rank):
-        self.rank = new_rank
-
     def set_movement_type(self):
         pass
 
@@ -46,4 +43,48 @@ class Piece:
 
     def can_capture_multiple(self):
         pass
+
+
+class Pawn(Piece):
+    def __init__(self):
+        super().__init__()
+
+
+class WhitePawn(Pawn):
+    def __init__(self):
+        super().__init__()
+        self.name = '\u23FA'
+        self.rank = 'pawn'
+
+
+class BlackPawn(Pawn):
+    def __init__(self):
+        super().__init__()
+        self.name = '\U0001F785'
+        self.rank = 'pawn'
+
+
+class King(Piece):
+    def __init__(self):
+        super().__init__()
+
+
+class WhiteKing(King):
+    def __init__(self):
+        super().__init__()
+        self.name = '\u265A'
+        self.rank = 'king'
+
+
+class BlackKing(King):
+    def __init__(self):
+        super().__init__()
+        self.name = '\u2654'
+        self.rank = 'king'
+
+
+
+
+
+
 
