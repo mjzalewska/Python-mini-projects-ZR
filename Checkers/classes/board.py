@@ -1,21 +1,24 @@
+import string
 from Checkers.utilities.utilities import convert
 
 
 class Board:
-    board_fields = [[' 1', '2', '3', '4', '5', '6', '7', '8'],
-                    ['A', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' '],
-                    ['B', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0'],
-                    ['C', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' '],
-                    ['D', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0'],
-                    ['E', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' '],
-                    ['F', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0'],
-                    ['G', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' '],
-                    ['H', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0', ' ', '\u25A0'],
-                    ]
-    promotion_lines = [board_fields[1], board_fields[-1]]
+    w_box = '\u25A0'
+
+    board_fields = [
+        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
+        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
+        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
+        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
+        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
+        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
+        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
+        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
+    ]
+    promotion_lines = [board_fields[0], board_fields[-1]]
 
     @classmethod
-    def get_vacant_cells(cls):
+    def get_vacant_cells(cls):  ## redundant ??
         vacant_cells = []
         for line in range(len(cls.board_fields)):
             for column in range(len(cls.board_fields[line])):
@@ -26,7 +29,7 @@ class Board:
     @classmethod
     def is_cell_vacant(cls, cell):
         cell_line, cell_col = convert(field=cell)
-        if cls.board_fields[cell_line + 1][cell_col + 1] == ' ':
+        if cls.board_fields[cell_line][cell_col] == ' ':
             return True
         return False
 
@@ -38,11 +41,44 @@ class Board:
     def get_preceding_cell(cls, cell):
         return f"{chr(ord(cell[0]) - 1)}{str(int(cell[1]) - 1)}"
 
+    # TODO: return two lists of letter+num fields which are in the same line, should not return border line chars (letters/ nums)
+    @classmethod
+    def _get_diagonals(cls, field):
+        diagonal_elements = [[], []]
+        field_line, field_column = convert(field=field)
+
+        # first diag
+        for line_idx in range(len(cls.board_fields)):
+            for col_idx in range(len(cls.board_fields[line_idx])):
+                if col_idx == -line_idx + (field_line + field_column):
+                    diagonal_elements[0].append(cls.board_fields[line_idx][col_idx])
+
+        # second diag
+        for line_idx in range(len(cls.board_fields)):
+            for col_idx in range(len(cls.board_fields[line_idx])):
+                if col_idx == line_idx - (field_line - field_column):
+                    diagonal_elements[1].append(cls.board_fields[line_idx][col_idx])
+
+        return diagonal_elements
+
+    @classmethod
+    def is_cell_in_line(cls, source_field, target_field):
+        for diagonal in cls._get_diagonals(source_field):
+            if target_field in diagonal:
+                return True
+            return False
+
+    @classmethod
+    def is_next_cell(cls, source_field, target_field):
+        pass
+
     @classmethod
     def display_board(cls):
         str_matrix = []
         for line in cls.board_fields:
             str_matrix.append([str(column) for column in line])
-        print(f"  {'  '.join(str_matrix[0])}")
-        for line in str_matrix[1:]:
-            print('  '.join(line))
+        print('   ' + '  '.join([str(num) for num in range(1, 9)]))
+        letters = string.ascii_uppercase[:8]
+        for i in range(len(letters)):
+            print(f"{letters[i]}  {'  '.join(str_matrix[i])}")
+
