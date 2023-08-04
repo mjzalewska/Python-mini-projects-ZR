@@ -1,6 +1,9 @@
 from Checkers.classes.board import Board
 from Checkers.classes.player import Player
 from Checkers.utilities.utilities import convert
+from colorama import just_fix_windows_console, Fore
+
+just_fix_windows_console()
 
 
 class Piece:
@@ -32,17 +35,12 @@ class Piece:
         player.pieces.remove(self)
         player.update_pieces_count()
 
-    def set_movement_type(self):
-        pass
-
     @staticmethod
-    def is_opponent_piece(other_piece, player):
-        if other_piece in player.pieces:
+    def is_own_piece(piece_location, player, board):
+        field_line, field_col = convert(field=piece_location)
+        if board[field_line][field_col] in player.pieces:
             return True
         return False
-
-    def can_capture_multiple(self):
-        pass
 
 
 class Pawn(Piece):
@@ -75,6 +73,12 @@ class WhiteKing(King):
         self.name = '\u265A'
         self.rank = 'king'
 
+    def __repr__(self):
+        return str(Fore.RED + self.name)
+
+    def __str__(self):
+        return str(Fore.RED + self.name)
+
 
 class BlackKing(King):
     def __init__(self):
@@ -82,9 +86,11 @@ class BlackKing(King):
         self.name = '\u2654'
         self.rank = 'king'
 
+    def __repr__(self):
+        return str(Fore.BLUE + self.name)
 
-
-
+    def __str__(self):
+        return str(Fore.BLUE + self.name)
 
 
 
