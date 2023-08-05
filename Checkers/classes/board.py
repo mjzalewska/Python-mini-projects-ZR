@@ -73,6 +73,13 @@ class Board:
         pass
 
     @classmethod
+    def get_piece_coordinates(cls, piece_obj):
+        coordinates = [(line, column) for line in range(len(cls.board_fields))
+                       for column in range(len(cls.board_fields[line]))
+                       if cls.board_fields[line][column] == piece_obj]
+        return coordinates
+
+    @classmethod
     def display_board(cls):
         str_matrix = []
         for line in cls.board_fields:
@@ -81,4 +88,3 @@ class Board:
         letters = string.ascii_uppercase[:8]
         for i in range(len(letters)):
             print(f"{letters[i]}  {'  '.join(str_matrix[i])}")
-
