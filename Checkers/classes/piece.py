@@ -1,10 +1,9 @@
 from Checkers.classes.board import Board
-from Checkers.classes.player import Player
 from Checkers.utilities.utilities import convert
-from colorama import just_fix_windows_console, Fore
+from colorama import Fore
 
-just_fix_windows_console()
 
+# just_fix_windows_console()
 
 class Piece:
     def __init__(self):
@@ -91,6 +90,3 @@ class BlackKing(King):
 
     def __str__(self):
         return str(Fore.BLUE + self.name)
-
-
-
