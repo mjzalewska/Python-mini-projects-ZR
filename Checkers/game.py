@@ -166,13 +166,31 @@ class Game:
                 cls.initialize()
             else:
                 print('Player 1, your turn!')
-                for item in cls.player_1.pieces:
-                    if cls.scan_for_mandatory_jumps(item):
-                        for field in cls.scan_for_mandatory_jumps(item):
-                            print(f'Mandatory jump! You must move your piece in: {field}')
-                            # check if movement made (block other moves)
-                            # check for multiple jumps
-                            # check for promotion line
+                for checker in cls.player_1.pieces:
+                    if cls.scan_for_mandatory_jumps(checker):
+                        print('Mandatory jump! You must move one of the following pieces:')
+                        for checker_field in cls.scan_for_mandatory_jumps(checker):
+                            print(f'{checker_field}')
+                        while True:
+                            pawn_location = cls.get_field_no(
+                                'Which piece would you like to move? Please indicate position '
+                                'on the board: ')
+                            try:
+                                if pawn_location in cls.scan_for_mandatory_jumps(checker):
+                                    # move & check for multiple jumps
+
+                                    pass
+
+
+                                else:
+                                    raise ValueError
+                            except ValueError:
+                                print(f'You can only make a move from one of the following fields: '
+                                      f'{",".join(cls.scan_for_mandatory_jumps(checker))}')
+
+                        # check if movement made (block other moves)
+                        # check for multiple jumps
+                        # check for promotion line
                         pass
                     else:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
@@ -190,6 +208,7 @@ class Game:
 
         # add a scan for compulsory capture
         # always check if moved to promotion line - promote if yes
+        # win if other side no more moves available
 
     @classmethod
     def show_current_score(cls):
