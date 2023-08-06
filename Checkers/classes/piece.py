@@ -25,9 +25,8 @@ class Piece:
     def move(self, new_position):
         self.position = new_position
         new_position_index = convert(field=self.position)
-        print(new_position_index)
         new_line, new_col = new_position_index
-        Board.board_fields[new_line + 1][new_col + 1] = self
+        Board.board_fields[new_line][new_col] = self
 
     def remove_from_gameplay(self, new_status, player):
         self.status = new_status
