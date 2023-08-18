@@ -96,33 +96,35 @@ class Game:
         cls.game_state = 'playing'
 
     @classmethod
-    def scan_for_mandatory_jumps(cls, piece):
+    def scan_for_mandatory_jumps(cls, piece, player):
         mandatory_moves = []
         piece_coordinates = cls.board.get_piece_coordinates(piece)
+        line, column = piece_coordinates[0]
 
-        for coordinates in piece_coordinates:
-            line, column = coordinates
-            if line in range(0, len(cls.board.board_fields) - 1) and column in range(0, len(
-                    cls.board.board_fields[line]) - 1):
-                left_bottom_node = cls.board.board_fields[line + 1][column + 1]
-                right_bottom_node = cls.board.board_fields[line + 1][column - 1]
-                left_top_node = cls.board.board_fields[line - 1][column - 1]
-                right_top_node = cls.board.board_fields[line - 1][column + 1]
+        if line in range(0, len(cls.board.board_fields) - 1) and column in range(0, len(
+                cls.board.board_fields[line]) - 1):
+            left_down = cls.board.board_fields[line + 1][column - 1]
+            right_down = cls.board.board_fields[line + 1][column + 1]
+            left_top = cls.board.board_fields[line - 1][column - 1]
+            right_top = cls.board.board_fields[line - 1][column + 1]
 
-                if piece.rank == 'pawn':
-                    if left_bottom_node and left_bottom_node in cls.player_2.pieces or \
-                            right_bottom_node and right_bottom_node in cls.player_2.pieces:
-                        mandatory_moves.extend([convert(cls.board.get_piece_coordinates(left_bottom_node)),
-                                                convert(cls.board.get_piece_coordinates(right_bottom_node))])
-                elif piece.rank == 'king':
-                    if left_bottom_node and left_bottom_node in cls.player_2.pieces or \
-                            right_bottom_node and right_bottom_node in cls.player_2.pieces or \
-                            left_top_node and left_top_node in cls.player_2.pieces or \
-                            right_top_node and right_top_node in cls.player_2.pieces:
-                        mandatory_moves.extend([convert(cls.board.get_piece_coordinates(left_bottom_node)),
-                                                convert(cls.board.get_piece_coordinates(right_bottom_node)),
-                                                convert(cls.board.get_piece_coordinates(left_top_node)),
-                                                convert(cls.board.get_piece_coordinates(right_top_node))])
+            next_left_down = cls.board.board_fields[line + 2][column - 2]
+            next_right_down = cls.board.board_fields[line + 2][column + 2]
+            next_left_top = cls.board.board_fields[line - 2][column - 2]
+            next_right_top = cls.board.board_fields[line - 2][column + 2]
+
+            if piece.rank == 'pawn':
+                if left_down and left_down in player.pieces and next_left_down == ' ' or \
+                        right_down and right_down in player.pieces and next_right_down == ' ':
+                    mandatory_moves.append(convert(index=piece_coordinates[0]))
+
+            elif piece.rank == 'king':
+                if left_down and left_down in player.pieces and next_left_down == ' ' or \
+                        right_down and right_down in player.pieces and next_right_down == ' ' or \
+                        left_top and left_top in player.pieces and next_left_top == ' ' or \
+                        right_top and right_top in player.pieces and next_right_top == ' ':
+                    mandatory_moves.append(convert(index=piece_coordinates[0]))
+
         return mandatory_moves
 
     @classmethod
@@ -166,27 +168,29 @@ class Game:
                 cls.initialize()
             else:
                 print('Player 1, your turn!')
-                for checker in cls.player_1.pieces:
-                    if cls.scan_for_mandatory_jumps(checker):
+                for piece in cls.player_1.pieces:
+                    if cls.scan_for_mandatory_jumps(piece):  # warunek i kolejne pole jest puste
                         print('Mandatory jump! You must move one of the following pieces:')
-                        for checker_field in cls.scan_for_mandatory_jumps(checker):
+                        for checker_field in cls.scan_for_mandatory_jumps(piece):
                             print(f'{checker_field}')
                         while True:
                             pawn_location = cls.get_field_no(
                                 'Which piece would you like to move? Please indicate position '
                                 'on the board: ')
                             try:
-                                if pawn_location in cls.scan_for_mandatory_jumps(checker):
-                                    # move & check for multiple jumps
-
+                                if pawn_location in cls.scan_for_mandatory_jumps(piece):
+                                    target_location = cls.get_field_no(
+                                        'Where would you like to move your pawn? Please indicate '
+                                        'position on the board: ')
                                     pass
-
-
+                                    # # check if distance correct (next field)
+                                    # if the piece can jump this way (pawns only forwards, king - both ways)
+                                    # check if empty
                                 else:
                                     raise ValueError
                             except ValueError:
                                 print(f'You can only make a move from one of the following fields: '
-                                      f'{",".join(cls.scan_for_mandatory_jumps(checker))}')
+                                      f'{",".join(cls.scan_for_mandatory_jumps(piece))}')
 
                         # check if movement made (block other moves)
                         # check for multiple jumps
@@ -230,5 +234,3 @@ class Game:
 # manual test code
 Game.initialize()
 Game.board.display_board()
-for piece in Game.player_1.pieces:
-    print(Game.scan_for_mandatory_jumps(piece=piece))
