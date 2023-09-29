@@ -17,7 +17,6 @@ class Game:
     def show_welcome_screen(cls):
         tprint('Checkers', font='tarty1')  # tarty9
         print()
-        print('Welcome to the game of Python Checkers! Let\'s start!\n')
 
     @classmethod
     def game_over(cls):
@@ -34,7 +33,7 @@ class Game:
     @classmethod
     def choose_game_mode(cls):
         modes = ['1', '2']
-        print('Please choose how you want to play: ')
+        print('Please choose game mode: ')
         print('1 - Player vs Player')
         print('2 - Player vs Computer')
         while True:
@@ -138,7 +137,7 @@ class Game:
                 else:
                     return field_no
             except ValueError:
-                print('The position you provided is not on the board. Try another field')
+                print('The location is not on the board. Try again!')
 
     @classmethod
     def check_piece_owner(cls, field_no, player):
@@ -169,7 +168,7 @@ class Game:
             else:
                 print('Player 1, your turn!')
                 for piece in cls.player_1.pieces:
-                    if cls.scan_for_mandatory_jumps(piece):  # warunek i kolejne pole jest puste
+                    if cls.scan_for_mandatory_jumps(piece):
                         print('Mandatory jump! You must move one of the following pieces:')
                         for checker_field in cls.scan_for_mandatory_jumps(piece):
                             print(f'{checker_field}')
@@ -182,20 +181,31 @@ class Game:
                                     target_location = cls.get_field_no(
                                         'Where would you like to move your pawn? Please indicate '
                                         'position on the board: ')
-                                    pass
-                                    # # check if distance correct (next field)
-                                    # if the piece can jump this way (pawns only forwards, king - both ways)
-                                    # check if empty
+                                    for item in cls.board.get_board_diagonals(pawn_location):
+                                        # check if target field is next to the current field and empty or target field is
+                                        # two fields from the current one, enemy pawn is in the way and the target field is empty
+                                        try:
+                                            if (item.index(target_location) == item.index(pawn_location) + 1 and not
+                                            item[item.index(target_location)]) or \
+                                                    (item.index(target_location) == item.index(pawn_location) + 2 and
+                                                     item[item.index(target_location) - 1] and not item[
+                                                                item.index(target_location)]):
+                                                # move and remove from gameplay
+                                                pass
+                                            else:
+                                                raise ValueError
+                                        except ValueError:
+                                            print("Forbidden move!")
+
+                                            # czy pion obok to pion przeciwnika (powinno być item[item.index(target_location)-1] jest pionem przecienika)
+                                            # różnicowanie ruchu pion vs damka
+                                            # wielobicie
+                                            # spr czy osiągnięta linia przemiany
                                 else:
                                     raise ValueError
                             except ValueError:
-                                print(f'You can only make a move from one of the following fields: '
+                                print(f'You can only move one of the following pawns: '
                                       f'{",".join(cls.scan_for_mandatory_jumps(piece))}')
-
-                        # check if movement made (block other moves)
-                        # check for multiple jumps
-                        # check for promotion line
-                        pass
                     else:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
                                                          'on the board: ')
