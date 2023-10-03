@@ -8,6 +8,7 @@ from Checkers.utilities.utilities import convert
 
 class Game:
     game_state = 'initializing'
+    game_over = False
     board = None
     player_1 = None
     player_2 = None
@@ -28,6 +29,10 @@ class Game:
 
     @classmethod
     def show_rules(cls):
+        pass
+
+    @classmethod
+    def choose_color(cls):
         pass
 
     @classmethod
@@ -137,18 +142,19 @@ class Game:
                 else:
                     return field_no
             except ValueError:
-                print('The location is not on the board. Try again!')
+                print('The location is not on the board!')
 
     @classmethod
-    def check_piece_owner(cls, field_no, player):
+    def validate_piece_owner(cls, field_no, player):
         field_line, field_col = convert(field=field_no)
+        piece = cls.board.board_fields[field_line][field_col]
         while True:
             try:
-                if Board.board_fields[field_line][field_col] not in player.pieces:
-                    raise ValueError
-                return True
+                if piece.is_own_piece((field_line, field_col), player, cls.board):
+                    return True
+                raise ValueError
             except ValueError:
-                print("Sorry, you can only move your own pawns. Try again!")
+                print("You can only move your own pawns!")
 
     @classmethod
     def check_vacancy(cls, field_no):
@@ -161,7 +167,36 @@ class Game:
             print("This field is occupied. Please choose another field!")
 
     @classmethod
+    def is_move_valid(cls, starting_coordinates, ending_coordinates, player):
+        start_line, start_column = convert(field=starting_coordinates)
+        end_line, end_column = convert(field=ending_coordinates)
+        current_piece = cls.board.board_fields[start_line][start_column]
+        if cls.validate_piece_owner(starting_coordinates, player): # tutaj zmienić starting coord
+            if current_piece.rank == "pawn":
+                pass
+            elif current_piece.rank == "king":
+                pass
+
+
+
+        # field current +1 or current +2 AND opponent's piece on +1
+        # target field empty
+        # movement in line with figure movement (piece vs king)
+
+
+        pass
+
+    def switch_players(self):
+        pass
+
+    @classmethod
     def play_vs_human(cls):
+        ## first check mandatory jumps then move
+        ## validate movement
+        ## check promotion
+        ## check if any movements left
+        ## check if any pawns left
+        ## switch sides
         while True:
             if cls.game_state == 'initializing':
                 cls.initialize()
@@ -196,7 +231,7 @@ class Game:
                                                 raise ValueError
                                         except ValueError:
                                             print("Forbidden move!")
-
+                                            ### przepisać to z wykorzystaniem obiektu Piece
                                             # czy pion obok to pion przeciwnika (powinno być item[item.index(target_location)-1] jest pionem przecienika)
                                             # różnicowanie ruchu pion vs damka
                                             # wielobicie
@@ -210,7 +245,7 @@ class Game:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
                                                          'on the board: ')
                         if not cls.board.is_cell_vacant(pawn_location) and \
-                                cls.check_piece_owner(pawn_location, cls.player_1):
+                                cls.validate_piece_owner(pawn_location, cls.player_1):
                             pass
 
                         target_location = cls.get_field_no('Where would you like to jump your pawn? Please indicate '
@@ -224,20 +259,13 @@ class Game:
         # always check if moved to promotion line - promote if yes
         # win if other side no more moves available
 
-    @classmethod
-    def show_current_score(cls):
-        print()
-        print("Current score".center(30, '-'))
-        print(f"    Player 1: {cls.player_1.score}".center(30))
-        print(f"    Player 2: {cls.player_2.score}".center(30))
-        print()
 
     @classmethod
     def human_vs_comp(cls):
         pass
 
     @classmethod
-    def play_game(cls):
+    def play(cls):
         pass
 
 
