@@ -145,12 +145,12 @@ class Game:
                 print('The location is not on the board!')
 
     @classmethod
-    def validate_piece_owner(cls, field_no, player):
-        field_line, field_col = convert(field=field_no)
-        piece = cls.board.board_fields[field_line][field_col]
+    def is_piece_owner_valid(cls, piece, player):
+        # field_line, field_col = convert(field=field_no)
+        # piece = cls.board.board_fields[field_line][field_col]
         while True:
             try:
-                if piece.is_own_piece((field_line, field_col), player, cls.board):
+                if piece.is_own_piece(player, cls.board):
                     return True
                 raise ValueError
             except ValueError:
@@ -171,20 +171,14 @@ class Game:
         start_line, start_column = convert(field=starting_coordinates)
         end_line, end_column = convert(field=ending_coordinates)
         current_piece = cls.board.board_fields[start_line][start_column]
-        if cls.validate_piece_owner(starting_coordinates, player): # tutaj zmienić starting coord
+        if cls.is_piece_owner_valid(current_piece, player):
             if current_piece.rank == "pawn":
                 pass
             elif current_piece.rank == "king":
                 pass
 
-
-
-        # field current +1 or current +2 AND opponent's piece on +1
+        # field current +1 or current +2 AND opponent's piece on +1 AND
         # target field empty
-        # movement in line with figure movement (piece vs king)
-
-
-        pass
 
     def switch_players(self):
         pass
@@ -245,7 +239,7 @@ class Game:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
                                                          'on the board: ')
                         if not cls.board.is_cell_vacant(pawn_location) and \
-                                cls.validate_piece_owner(pawn_location, cls.player_1):
+                                cls.is_piece_owner_valid(pawn_location, cls.player_1):
                             pass
 
                         target_location = cls.get_field_no('Where would you like to jump your pawn? Please indicate '

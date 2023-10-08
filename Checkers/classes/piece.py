@@ -12,6 +12,7 @@ class Piece:
         self.name = None
         self.rank = None
         self.status = 'active'
+        self.allowed_moves = None
 
     def __repr__(self):
         return str(self.name)
@@ -28,15 +29,13 @@ class Piece:
         new_line, new_col = new_position_index
         Board.board_fields[new_line][new_col] = self
 
-    def remove_from_gameplay(self, new_status, player):
+    def remove_from_game(self, new_status, player):
         self.status = new_status
         player.pieces.remove(self)
         player.update_pieces_count()
 
-    @staticmethod
-    def is_own_piece(piece_location, player, board):
-        field_line, field_col = convert(field=piece_location)
-        if board[field_line][field_col] in player.pieces:
+    def is_own_piece(self, player):
+        if self in player.pieces:
             return True
         return False
 
@@ -51,6 +50,7 @@ class WhitePawn(Pawn):
         super().__init__()
         self.name = '\u23FA'
         self.rank = 'pawn'
+        self.allowed_moves = []
 
 
 class BlackPawn(Pawn):
@@ -58,6 +58,7 @@ class BlackPawn(Pawn):
         super().__init__()
         self.name = '\U0001F785'
         self.rank = 'pawn'
+        self.allowed_moves = []
 
 
 class King(Piece):
