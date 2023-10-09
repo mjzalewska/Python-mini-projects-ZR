@@ -15,7 +15,8 @@ class Board:
         [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
         [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
     ]
-    promotion_lines = [board_fields[0], board_fields[-1]]
+    white_promotion_line = board_fields[0]
+    black_promotion_line = board_fields[-1]
 
     @classmethod
     def get_vacant_cells(cls):  ## redundant ??
