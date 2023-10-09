@@ -8,9 +8,14 @@ class Player:
     def update_pieces_count(self):
         pass
 
-    def update_score(self):  # depends on other player's pieces count, if decrease - score increase
-        pass
+    def update_kings_count(self):
+        self.kings += 1
 
-    def update_kings(self):
+    def is_piece_left(self):
+        if len(self.pieces) > 0:
+            return True
+        return False
+
+    def is_movement_left(self):
         pass
 
