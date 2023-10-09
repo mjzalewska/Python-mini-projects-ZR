@@ -57,7 +57,15 @@ class Pawn(Piece):
             return False
 
     def is_promoted(self):
-        pass
+        if self.color == 'white' and self in Board.black_promotion_line:
+            return True
+        elif self.color == 'black' and self in Board.white_promotion_line:
+            return True
+        return False
+
+    def promote_pawn(self):
+        if self.is_promoted():
+            self.rank = 'king'
 
 
 class WhitePawn(Pawn):
@@ -103,6 +111,7 @@ class WhiteKing(King):
 
     def __str__(self):
         return str(Fore.RED + self.name)
+
 
 class BlackKing(King):
     def __init__(self):
