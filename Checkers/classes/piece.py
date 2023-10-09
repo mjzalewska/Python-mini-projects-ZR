@@ -12,7 +12,6 @@ class Piece:
         self.name = None
         self.rank = None
         self.status = 'active'
-        self.allowed_moves = None
 
     def __repr__(self):
         return str(self.name)
@@ -25,11 +24,10 @@ class Piece:
 
     def move(self, new_position):
         self.position = new_position
-        new_position_index = convert(field=self.position)
-        new_line, new_col = new_position_index
+        new_line, new_col = new_position
         Board.board_fields[new_line][new_col] = self
 
-    def remove_from_game(self, new_status, player):
+    def retire(self, new_status, player):
         self.status = new_status
         player.pieces.remove(self)
         player.update_pieces_count()
@@ -41,8 +39,25 @@ class Piece:
 
 
 class Pawn(Piece):
+
     def __init__(self):
         super().__init__()
+
+    @staticmethod
+    def is_move_allowed(board, other_piece, starting_position, ending_position):
+        start_line, start_column = starting_position
+        end_line, end_column = ending_position
+        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
+        if end_line - start_line in [-1, 1] and end_column - start_column == 1:
+            return True
+        elif end_line - start_line in [-2, 2] and end_column - start_column == 2 and \
+                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece():
+            return True
+        else:
+            return False
+
+    def is_promoted(self):
+        pass
 
 
 class WhitePawn(Pawn):
@@ -50,7 +65,6 @@ class WhitePawn(Pawn):
         super().__init__()
         self.name = '\u23FA'
         self.rank = 'pawn'
-        self.allowed_moves = []
 
 
 class BlackPawn(Pawn):
@@ -58,12 +72,24 @@ class BlackPawn(Pawn):
         super().__init__()
         self.name = '\U0001F785'
         self.rank = 'pawn'
-        self.allowed_moves = []
 
 
 class King(Piece):
     def __init__(self):
         super().__init__()
+
+    @staticmethod
+    def is_move_allowed(board, other_piece, starting_position, ending_position):
+        start_line, start_column = starting_position
+        end_line, end_column = ending_position
+        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
+        if abs(end_line - start_line) == 1 and abs(end_column - start_column) == 1:
+            return True
+        elif abs(end_line - start_line) == 2 and abs(end_column - start_column) == 2 and \
+                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece():
+            return True
+        else:
+            return False
 
 
 class WhiteKing(King):
@@ -77,7 +103,6 @@ class WhiteKing(King):
 
     def __str__(self):
         return str(Fore.RED + self.name)
-
 
 class BlackKing(King):
     def __init__(self):
