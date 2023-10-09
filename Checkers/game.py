@@ -89,13 +89,13 @@ class Game:
             for line in range(len(cls.board.board_fields[:4])):
                 for column in range(len(cls.board.board_fields[line])):
                     if cls.board.board_fields[line][column] == item:
-                        item.set_initial_position(convert(index=(line, column)))
+                        item.set_initial_position((line, column))
 
         for item in cls.player_2.pieces:
             for line in range(len(cls.board.board_fields[5:])):
                 for column in range(len(cls.board.board_fields[line])):
                     if cls.board.board_fields[line][column] == item:
-                        item.set_initial_position(convert(index=(line, column)))
+                        item.set_initial_position((line, column))
 
         cls.game_state = 'playing'
 
@@ -145,9 +145,7 @@ class Game:
                 print('The location is not on the board!')
 
     @classmethod
-    def is_piece_owner_valid(cls, piece, player):
-        # field_line, field_col = convert(field=field_no)
-        # piece = cls.board.board_fields[field_line][field_col]
+    def is_owner_valid(cls, piece, player):
         while True:
             try:
                 if piece.is_own_piece(player, cls.board):
@@ -167,18 +165,29 @@ class Game:
             print("This field is occupied. Please choose another field!")
 
     @classmethod
-    def is_move_valid(cls, starting_coordinates, ending_coordinates, player):
-        start_line, start_column = convert(field=starting_coordinates)
-        end_line, end_column = convert(field=ending_coordinates)
+    def is_move_valid(cls, starting_position, ending_position, player):
+        start_line, start_column = convert(field=starting_position)
+        end_line, end_column = convert(field=ending_position)
+        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
         current_piece = cls.board.board_fields[start_line][start_column]
-        if cls.is_piece_owner_valid(current_piece, player):
+        other_piece = cls.board.board_fields[mid_line][mid_column]
+        if cls.is_owner_valid(current_piece, player):
             if current_piece.rank == "pawn":
-                pass
+                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, starting_position, ending_position):
+                    return True
             elif current_piece.rank == "king":
-                pass
+                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, starting_position, ending_position):
+                    return True
+            return False
+        return False
 
-        # field current +1 or current +2 AND opponent's piece on +1 AND
-        # target field empty
+    @classmethod
+    def is_movement_left(cls):
+        pass
+
+    @classmethod
+    def is_piece_left(cls):
+        pass
 
     def switch_players(self):
         pass
@@ -239,7 +248,7 @@ class Game:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
                                                          'on the board: ')
                         if not cls.board.is_cell_vacant(pawn_location) and \
-                                cls.is_piece_owner_valid(pawn_location, cls.player_1):
+                                cls.is_owner_valid(pawn_location, cls.player_1):
                             pass
 
                         target_location = cls.get_field_no('Where would you like to jump your pawn? Please indicate '
