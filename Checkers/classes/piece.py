@@ -27,7 +27,7 @@ class Piece:
         new_line, new_col = new_position
         Board.board_fields[new_line][new_col] = self
 
-    def retire(self, new_status, player):
+    def remove(self, new_status, player):
         self.status = new_status
         player.pieces.remove(self)
         player.update_pieces_count()
@@ -43,15 +43,16 @@ class Pawn(Piece):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def is_move_allowed(board, other_piece, starting_position, ending_position):
-        start_line, start_column = starting_position
-        end_line, end_column = ending_position
-        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
-        if end_line - start_line in [-1, 1] and end_column - start_column == 1:
+    def is_move_allowed(self, board, other_piece, new_position):
+        old_line, old_column = self.position
+        new_line, new_column = new_position
+        mid_line, mid_column = old_line + new_line / 2, old_column + new_column / 2
+        if new_line - old_line == 1 and new_column - old_column in [-1, 1] and \
+                board.board_fields[new_line][new_column] == ' ':
             return True
-        elif end_line - start_line in [-2, 2] and end_column - start_column == 2 and \
-                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece():
+        elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
+                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece() and \
+                board.board_fields[new_line][new_column] == ' ':
             return True
         else:
             return False
@@ -86,15 +87,16 @@ class King(Piece):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def is_move_allowed(board, other_piece, starting_position, ending_position):
-        start_line, start_column = starting_position
-        end_line, end_column = ending_position
-        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
-        if abs(end_line - start_line) == 1 and abs(end_column - start_column) == 1:
+    def is_move_allowed(self, board, other_piece, new_position):
+        old_line, old_column = self.position
+        new_line, new_column = new_position
+        mid_line, mid_column = old_line + new_line / 2, old_column + new_column / 2
+        if abs(new_line - old_line) == 1 and abs(new_column - old_column) == 1 and \
+                board.board_fields[new_line][new_column] == ' ':
             return True
-        elif abs(end_line - start_line) == 2 and abs(end_column - start_column) == 2 and \
-                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece():
+        elif abs(new_line - old_line) == 2 and abs(new_column - old_column) == 2 and \
+                board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece() and \
+                board.board_fields[new_line][new_column] == ' ':
             return True
         else:
             return False
