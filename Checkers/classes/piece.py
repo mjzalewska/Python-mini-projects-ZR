@@ -3,11 +3,12 @@ from math import ceil
 from Checkers.classes.board import Board
 from colorama import Fore
 
+
 # just_fix_windows_console()
 
 class Piece:
     def __init__(self):
-        self.color = None # no color added in white and black pieces classes
+        self.color = None  # no color added in white and black pieces classes
         self.position = None
         self.name = None
         self.rank = None
@@ -43,28 +44,31 @@ class Pawn(Piece):
     def __init__(self):
         super().__init__()
 
-    def is_move_allowed(self, board, new_position, turn):
+    def is_move_allowed(self, board, new_position, player, turn):
         old_line, old_column = self.position
         new_line, new_column = new_position
-        mid_line, mid_column = ceil((old_line + new_line)/2), ceil((old_column + new_column)/2)
+        mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
         other_piece = board.board_fields[mid_line][mid_column]
-        if turn == 'white':
-            if new_line - old_line == 1 and new_column - old_column in [-1, 1] and \
-                    board.board_fields[new_line][new_column] == ' ':
-                return True
-            elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
-                    board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece() and \
-                    board.board_fields[new_line][new_column] == ' ':
-                return True
-            return False
+        if 0 <= new_line <= 7 and 0 <= new_column <= 7:
+            if turn == 'white':
+                if new_line - old_line == 1 and new_column - old_column in [-1, 1] and \
+                        board.board_fields[new_line][new_column] == ' ':
+                    return True
+                elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
+                        board.board_fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
+                        board.board_fields[new_line][new_column] == ' ':
+                    return True
+                return False
+            else:
+                if new_line - old_line == -1 and new_column - old_column in [-1, 1] and \
+                        board.board_fields[new_line][new_column] == ' ':
+                    return True
+                elif new_line - old_line == -2 and new_column - old_column in [-2, 2] and \
+                        board.board_fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
+                        board.board_fields[new_line][new_column] == ' ':
+                    return True
+                return False
         else:
-            if new_line - old_line == -1 and new_column - old_column in [-1, 1] and \
-                    board.board_fields[new_line][new_column] == ' ':
-                return True
-            elif new_line - old_line == -2 and new_column - old_column in [-2, 2] and \
-                    board.board_fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece() and \
-                    board.board_fields[new_line][new_column] == ' ':
-                return True
             return False
 
     def is_promoted(self):
