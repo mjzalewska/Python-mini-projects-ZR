@@ -1,4 +1,7 @@
+import random
 import string
+from math import ceil
+
 from art import tprint
 from classes.piece import WhitePawn, BlackPawn, WhiteKing, BlackKing
 from classes.player import Player
@@ -12,28 +15,16 @@ class Game:
     board = None
     player_1 = None
     player_2 = None
+    current_player = None
 
-    # TODO: add rules ?
     @classmethod
     def show_welcome_screen(cls):
         tprint('Checkers', font='tarty1')  # tarty9
         print()
 
     @classmethod
-    def game_over(cls):
+    def print_game_over(cls):
         tprint('Game over', font='tarty1')
-
-    @classmethod
-    def show_menu(cls):
-        pass
-
-    @classmethod
-    def show_rules(cls):
-        pass
-
-    @classmethod
-    def choose_color(cls):
-        pass
 
     @classmethod
     def choose_game_mode(cls):
@@ -52,15 +43,19 @@ class Game:
                 print('Incorrect input. Please choose 1 or 2')
 
     @classmethod
+    def choose_color(cls):
+        return random.choice(["white", "black"])
+
+    @classmethod
     def initialize(cls):
         # initialize players
         match Game.choose_game_mode():
             case '1':
-                cls.player_1 = Player('human')
-                cls.player_2 = Player('human')
+                cls.player_1 = Player('human', 'white')
+                cls.player_2 = Player('human', 'black')
             case '2':
-                cls.player_1 = Player('human')
-                cls.player_2 = Player('CPU')
+                cls.player_1 = Player('human', 'white')
+                cls.player_2 = Player('CPU', 'black')
 
         # initialize game board
         cls.board = Board()
@@ -100,8 +95,8 @@ class Game:
         cls.game_state = 'playing'
 
     @classmethod
-    def scan_for_mandatory_jumps(cls, piece, player):
-        mandatory_moves = []
+    def scan_for_mandatory_captures(cls, piece, player):
+        mandatory_captures = []
         piece_coordinates = cls.board.get_piece_coordinates(piece)
         line, column = piece_coordinates[0]
 
@@ -120,16 +115,16 @@ class Game:
             if piece.rank == 'pawn':
                 if left_down and left_down in player.pieces and next_left_down == ' ' or \
                         right_down and right_down in player.pieces and next_right_down == ' ':
-                    mandatory_moves.append(convert(index=piece_coordinates[0]))
+                    mandatory_captures.append(convert(index=piece_coordinates[0]))
 
             elif piece.rank == 'king':
                 if left_down and left_down in player.pieces and next_left_down == ' ' or \
                         right_down and right_down in player.pieces and next_right_down == ' ' or \
                         left_top and left_top in player.pieces and next_left_top == ' ' or \
                         right_top and right_top in player.pieces and next_right_top == ' ':
-                    mandatory_moves.append(convert(index=piece_coordinates[0]))
+                    mandatory_captures.append(convert(index=piece_coordinates[0]))
 
-        return mandatory_moves
+        return mandatory_captures
 
     @classmethod
     def get_field_no(cls, prompt):
@@ -155,7 +150,7 @@ class Game:
                 print("You can only move your own pawns!")
 
     @classmethod
-    def check_vacancy(cls, field_no):
+    def check_if_field_vacant(cls, field_no):
         try:
             if not Board.is_cell_vacant(field_no):
                 raise ValueError
@@ -165,35 +160,31 @@ class Game:
             print("This field is occupied. Please choose another field!")
 
     @classmethod
-    def is_move_valid(cls, starting_position, ending_position, player):
-        start_line, start_column = convert(field=starting_position)
-        end_line, end_column = convert(field=ending_position)
-        mid_line, mid_column = start_line + end_line / 2, start_column + end_column / 2
-        current_piece = cls.board.board_fields[start_line][start_column]
+    def is_move_valid(cls, old_position, new_position, player):
+        old_line, old_column = convert(field=old_position)
+        new_line, new_column = convert(field=new_position)
+        mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
+        current_piece = cls.board.board_fields[old_line][old_column]
         other_piece = cls.board.board_fields[mid_line][mid_column]
-        if cls.is_owner_valid(current_piece, player):
+        if current_piece != ' ' and cls.is_owner_valid(current_piece, player):
             if current_piece.rank == "pawn":
-                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, starting_position, ending_position):
+                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, old_position):
                     return True
             elif current_piece.rank == "king":
-                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, starting_position, ending_position):
+                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, old_position):
                     return True
             return False
         return False
 
     @classmethod
-    def is_movement_left(cls):
-        pass
-
-    @classmethod
-    def is_piece_left(cls):
-        pass
-
-    def switch_players(self):
-        pass
+    def switch_players(cls):
+        if cls.current_player == "white":
+            cls.current_player = "black"
+        cls.current_player = "white"
 
     @classmethod
     def play_vs_human(cls):
+        ## change Piece code, change mandatory jumps code
         ## first check mandatory jumps then move
         ## validate movement
         ## check promotion
@@ -206,16 +197,16 @@ class Game:
             else:
                 print('Player 1, your turn!')
                 for piece in cls.player_1.pieces:
-                    if cls.scan_for_mandatory_jumps(piece):
+                    if cls.scan_for_mandatory_captures(piece, ):
                         print('Mandatory jump! You must move one of the following pieces:')
-                        for checker_field in cls.scan_for_mandatory_jumps(piece):
+                        for checker_field in cls.scan_for_mandatory_captures(piece, ):
                             print(f'{checker_field}')
                         while True:
                             pawn_location = cls.get_field_no(
                                 'Which piece would you like to move? Please indicate position '
                                 'on the board: ')
                             try:
-                                if pawn_location in cls.scan_for_mandatory_jumps(piece):
+                                if pawn_location in cls.scan_for_mandatory_captures(piece, ):
                                     target_location = cls.get_field_no(
                                         'Where would you like to move your pawn? Please indicate '
                                         'position on the board: ')
@@ -243,7 +234,7 @@ class Game:
                                     raise ValueError
                             except ValueError:
                                 print(f'You can only move one of the following pawns: '
-                                      f'{",".join(cls.scan_for_mandatory_jumps(piece))}')
+                                      f'{",".join(cls.scan_for_mandatory_captures(piece, ))}')
                     else:
                         pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
                                                          'on the board: ')
@@ -253,14 +244,6 @@ class Game:
 
                         target_location = cls.get_field_no('Where would you like to jump your pawn? Please indicate '
                                                            'position on the board: ')
-
-        # check if distance correct (next field)
-        # if the piece can jump this way (pawns only forwards, king - both ways)
-        # check if empty
-
-        # add a scan for compulsory capture
-        # always check if moved to promotion line - promote if yes
-        # win if other side no more moves available
 
 
     @classmethod
