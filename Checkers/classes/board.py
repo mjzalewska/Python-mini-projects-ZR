@@ -95,5 +95,3 @@ class Board:
         for i in range(len(letters)):
             print(f"{letters[i]}  {'  '.join(str_matrix[i])}")
 
-board = Board()
-print(board.get_board_diagonals('B3'))
