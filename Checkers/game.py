@@ -95,35 +95,21 @@ class Game:
         cls.game_state = 'playing'
 
     @classmethod
-    def scan_for_mandatory_captures(cls, piece, player):
+    def scan_for_mandatory_captures(cls, player):
         mandatory_captures = []
-        piece_coordinates = cls.board.get_piece_coordinates(piece)
-        line, column = piece_coordinates[0]
-
-        if line in range(0, len(cls.board.board_fields) - 1) and column in range(0, len(
-                cls.board.board_fields[line]) - 1):
-            left_down = cls.board.board_fields[line + 1][column - 1]
-            right_down = cls.board.board_fields[line + 1][column + 1]
-            left_top = cls.board.board_fields[line - 1][column - 1]
-            right_top = cls.board.board_fields[line - 1][column + 1]
-
-            next_left_down = cls.board.board_fields[line + 2][column - 2]
-            next_right_down = cls.board.board_fields[line + 2][column + 2]
-            next_left_top = cls.board.board_fields[line - 2][column - 2]
-            next_right_top = cls.board.board_fields[line - 2][column + 2]
-
+        for piece in player.pieces:
             if piece.rank == 'pawn':
-                if left_down and left_down in player.pieces and next_left_down == ' ' or \
-                        right_down and right_down in player.pieces and next_right_down == ' ':
-                    mandatory_captures.append(convert(index=piece_coordinates[0]))
+                if piece.color == 'white':
+                    dirs = [[2, -2], [2, 2]]
+                else:
+                    dirs = [[-2, -2], [-2, 2]]
+            else:
+                dirs = [[2, -2], [2, 2], [-2, -2], [-2, 2]]
 
-            elif piece.rank == 'king':
-                if left_down and left_down in player.pieces and next_left_down == ' ' or \
-                        right_down and right_down in player.pieces and next_right_down == ' ' or \
-                        left_top and left_top in player.pieces and next_left_top == ' ' or \
-                        right_top and right_top in player.pieces and next_right_top == ' ':
-                    mandatory_captures.append(convert(index=piece_coordinates[0]))
-
+            for d in dirs:
+                target_field = (piece.position[0] + d[0], piece.position[1] + d[1])
+                if piece.is_move_allowed(cls.board, target_field, player, piece.color):
+                    mandatory_captures.append(convert(index=target_field))
         return mandatory_captures
 
     @classmethod
