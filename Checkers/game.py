@@ -95,24 +95,6 @@ class Game:
         cls.game_state = 'playing'
 
     @classmethod
-    def scan_for_mandatory_captures(cls, player):
-        mandatory_captures = []
-        for piece in player.pieces:
-            if piece.rank == 'pawn':
-                if piece.color == 'white':
-                    dirs = [[2, -2], [2, 2]]
-                else:
-                    dirs = [[-2, -2], [-2, 2]]
-            else:
-                dirs = [[2, -2], [2, 2], [-2, -2], [-2, 2]]
-
-            for d in dirs:
-                target_field = (piece.position[0] + d[0], piece.position[1] + d[1])
-                if piece.is_move_allowed(cls.board, target_field, player, piece.color):
-                    mandatory_captures.append(convert(index=target_field))
-        return mandatory_captures
-
-    @classmethod
     def get_field_no(cls, prompt):
         board_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
         while True:

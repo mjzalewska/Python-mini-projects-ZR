@@ -15,6 +15,23 @@ class Player:
     def update_kings_count(self):
         pass
 
+    def get_mandatory_captures(self, board):
+        mandatory_captures = []
+        for piece in self.pieces:
+            if piece.rank == 'pawn':
+                if piece.color == 'white':
+                    dirs = [[2, -2], [2, 2]]
+                else:
+                    dirs = [[-2, -2], [-2, 2]]
+            else:
+                dirs = [[2, -2], [2, 2], [-2, -2], [-2, 2]]
+
+            for d in dirs:
+                target_field = (piece.position[0] + d[0], piece.position[1] + d[1])
+                if piece.is_move_allowed(self, board, target_field, piece.color):
+                    mandatory_captures.append(convert(index=target_field))
+        return mandatory_captures
+
     def has_piece_left(self):
         if self.pieces:
             return True
