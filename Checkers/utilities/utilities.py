@@ -20,4 +20,3 @@ def convert(index: tuple = None, field: str = None):
         except TypeError:
             print("Only one argument - index or field no - should be specified!")
             break
-

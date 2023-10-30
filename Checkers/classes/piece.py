@@ -8,7 +8,7 @@ from colorama import Fore
 
 class Piece:
     def __init__(self):
-        self.color = None  # no color added in white and black pieces classes
+        self.color = None
         self.position = None
         self.name = None
         self.rank = None
@@ -43,6 +43,11 @@ class Pawn(Piece):
 
     def __init__(self):
         super().__init__()
+        if self.color == 'white':
+            self.name = '\u23FA'
+        else:
+            self.name = '\U0001F785'
+        self.rank = 'pawn'
 
     def is_move_allowed(self, board, new_position, player, turn):
         old_line, old_column = self.position
@@ -83,23 +88,26 @@ class Pawn(Piece):
             self.rank = 'king'
 
 
-class WhitePawn(Pawn):
-    def __init__(self):
-        super().__init__()
-        self.name = '\u23FA'
-        self.rank = 'pawn'
-
-
-class BlackPawn(Pawn):
-    def __init__(self):
-        super().__init__()
-        self.name = '\U0001F785'
-        self.rank = 'pawn'
-
-
 class King(Piece):
     def __init__(self):
         super().__init__()
+        if self.color == 'white':
+            self.name = '\u265A'
+        else:
+            self.name = '\u2654'
+        self.rank = 'king'
+
+    def __repr__(self):
+        if self.color == 'white':
+            return str(Fore.RED + self.name)
+        else:
+            return str(Fore.BLUE + self.name)
+
+    def __str__(self):
+        if self.color == 'white':
+            return str(Fore.RED + self.name)
+        else:
+            return str(Fore.BLUE + self.name)
 
     def is_move_allowed(self, board, new_position):
         old_line, old_column = self.position
@@ -115,29 +123,3 @@ class King(Piece):
             return True
         else:
             return False
-
-
-class WhiteKing(King):
-    def __init__(self):
-        super().__init__()
-        self.name = '\u265A'
-        self.rank = 'king'
-
-    def __repr__(self):
-        return str(Fore.RED + self.name)
-
-    def __str__(self):
-        return str(Fore.RED + self.name)
-
-
-class BlackKing(King):
-    def __init__(self):
-        super().__init__()
-        self.name = '\u2654'
-        self.rank = 'king'
-
-    def __repr__(self):
-        return str(Fore.BLUE + self.name)
-
-    def __str__(self):
-        return str(Fore.BLUE + self.name)
