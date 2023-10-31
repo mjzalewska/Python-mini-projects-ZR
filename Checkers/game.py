@@ -3,7 +3,7 @@ import string
 from math import ceil
 
 from art import tprint
-from classes.piece import WhitePawn, BlackPawn, WhiteKing, BlackKing
+from classes.piece import Pawn, King
 from classes.player import Player
 from classes.board import Board
 from Checkers.utilities.utilities import convert
@@ -43,29 +43,45 @@ class Game:
                 print('Incorrect input. Please choose 1 or 2')
 
     @classmethod
-    def choose_color(cls):
-        return random.choice(["white", "black"])
+    def assign_color(cls):
+        cls.player_1.color = random.choice(['white', 'black'])
+        if cls.player_1.color == 'white':
+            cls.player_2.set_color('black')
+        else:
+            cls.player_2.set_color('white')
+
+    @classmethod
+    def get_player_name(cls, prompt):
+        while True:
+            try:
+                player_name = input(prompt)
+                if not player_name:
+                    raise ValueError
+            except ValueError:
+                player_name = 'Player' + str(Player.player_count)
+            return player_name
 
     @classmethod
     def initialize(cls):
         # initialize players
         match Game.choose_game_mode():
             case '1':
-                cls.player_1 = Player('human', 'white')
-                cls.player_2 = Player('human', 'black')
+                cls.player_1 = Player('human', cls.get_player_name())
+                cls.player_2 = Player('human', cls.get_player_name())
             case '2':
-                cls.player_1 = Player('human', 'white')
-                cls.player_2 = Player('CPU', 'black')
+                cls.player_1 = Player('human', cls.get_player_name())
+                cls.player_2 = Player('CPU', 'Player 2')
+        cls.assign_color()
 
         # initialize game board
         cls.board = Board()
 
         # initialize pawns
         for num in range(1, 13):
-            w_piece = WhitePawn()
+            w_piece = Pawn()
             cls.player_1.pieces.append(w_piece)
 
-            b_piece = BlackPawn()
+            b_piece = Pawn()
             cls.player_2.pieces.append(b_piece)
 
         # assign pawns to initial positions on board
@@ -95,17 +111,15 @@ class Game:
         cls.game_state = 'playing'
 
     @classmethod
-    def get_field_no(cls, prompt):
-        board_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
+    def get_player_input(cls, prompt, validator, msg):
         while True:
             try:
-                field_no = input(prompt)
-                if field_no not in board_field_list:
+                value = input(prompt)
+                if value not in validator:
                     raise ValueError
-                else:
-                    return field_no
             except ValueError:
-                print('The location is not on the board!')
+                print(msg)
+            return value
 
     @classmethod
     def is_owner_valid(cls, piece, player):
@@ -146,76 +160,39 @@ class Game:
 
     @classmethod
     def switch_players(cls):
-        if cls.current_player == "white":
-            cls.current_player = "black"
-        cls.current_player = "white"
+        if cls.current_player == cls.player_1:
+            cls.current_player = cls.player_2
+        cls.current_player = cls.player_1
 
     @classmethod
-    def play_vs_human(cls):
-        ## change Piece code, change mandatory jumps code
+    def play_2p_game(cls):
         ## first check mandatory jumps then move
         ## validate movement
         ## check promotion
         ## check if any movements left
         ## check if any pawns left
         ## switch sides
-        while True:
-            if cls.game_state == 'initializing':
-                cls.initialize()
-            else:
-                print('Player 1, your turn!')
-                for piece in cls.player_1.pieces:
-                    if cls.scan_for_mandatory_captures(piece, ):
-                        print('Mandatory jump! You must move one of the following pieces:')
-                        for checker_field in cls.scan_for_mandatory_captures(piece, ):
-                            print(f'{checker_field}')
-                        while True:
-                            pawn_location = cls.get_field_no(
-                                'Which piece would you like to move? Please indicate position '
-                                'on the board: ')
-                            try:
-                                if pawn_location in cls.scan_for_mandatory_captures(piece, ):
-                                    target_location = cls.get_field_no(
-                                        'Where would you like to move your pawn? Please indicate '
-                                        'position on the board: ')
-                                    for item in cls.board.get_board_diagonals(pawn_location):
-                                        # check if target field is next to the current field and empty or target field is
-                                        # two fields from the current one, enemy pawn is in the way and the target field is empty
-                                        try:
-                                            if (item.index(target_location) == item.index(pawn_location) + 1 and not
-                                            item[item.index(target_location)]) or \
-                                                    (item.index(target_location) == item.index(pawn_location) + 2 and
-                                                     item[item.index(target_location) - 1] and not item[
-                                                                item.index(target_location)]):
-                                                # move and remove from gameplay
-                                                pass
-                                            else:
-                                                raise ValueError
-                                        except ValueError:
-                                            print("Forbidden move!")
-                                            ### przepisać to z wykorzystaniem obiektu Piece
-                                            # czy pion obok to pion przeciwnika (powinno być item[item.index(target_location)-1] jest pionem przecienika)
-                                            # różnicowanie ruchu pion vs damka
-                                            # wielobicie
-                                            # spr czy osiągnięta linia przemiany
-                                else:
-                                    raise ValueError
-                            except ValueError:
-                                print(f'You can only move one of the following pawns: '
-                                      f'{",".join(cls.scan_for_mandatory_captures(piece, ))}')
-                    else:
-                        pawn_location = cls.get_field_no('Which pawn would you like to move? Please indicate position '
-                                                         'on the board: ')
-                        if not cls.board.is_cell_vacant(pawn_location) and \
-                                cls.is_owner_valid(pawn_location, cls.player_1):
-                            pass
 
-                        target_location = cls.get_field_no('Where would you like to jump your pawn? Please indicate '
-                                                           'position on the board: ')
+        if cls.game_state == 'initializing':
+            cls.initialize()
+        else:
+            while not cls.game_over:
+                mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+                if mandatory_moves:
+                    print(
+                        f'{cls.current_player.name} mandatory capture! You must move one of these pawns: '
+                        f'{",".join(mandatory_moves)}')
+                    current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
+                                                                                             'Move not on the '
+                                                                                             'list')
+                    new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
+                                                     'Location not on the board! Try again')
+                    if cls.is_move_valid(current_field, new_field, cls.current_player):
+                        pass # move and check if further mandatory captures possible for this piece
 
 
     @classmethod
-    def human_vs_comp(cls):
+    def play_1p_game(cls):
         pass
 
     @classmethod
