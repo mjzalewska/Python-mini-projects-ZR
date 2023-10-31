@@ -2,12 +2,19 @@ from Checkers.utilities.utilities import convert
 
 
 class Player:
-    def __init__(self, p_type, color):
+    player_count = 0
+
+    def __init__(self, p_type, name):
         self.type = p_type
-        self.color = color
+        self.__class__.player_count += 1
+        self.color = None
+        self.name = name
         self.pieces = []
         self.score = 0
         self.kings = 0
+
+    def set_player_color(self, color):
+        self.color = color
 
     def update_pieces_count(self):
         pass
