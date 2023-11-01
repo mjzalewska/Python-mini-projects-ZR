@@ -1,5 +1,4 @@
 import random
-import string
 from math import ceil
 
 from art import tprint
@@ -18,7 +17,7 @@ class Game:
     current_player = None
 
     @classmethod
-    def show_welcome_screen(cls):
+    def print_welcome_screen(cls):
         tprint('Checkers', font='tarty1')  # tarty9
         print()
 
@@ -78,10 +77,10 @@ class Game:
 
         # initialize pawns
         for num in range(1, 13):
-            w_piece = Pawn()
+            w_piece = Pawn(cls.player_1.color)
             cls.player_1.pieces.append(w_piece)
 
-            b_piece = Pawn()
+            b_piece = Pawn(cls.player_2.color)
             cls.player_2.pieces.append(b_piece)
 
         # assign pawns to initial positions on board
@@ -117,9 +116,9 @@ class Game:
                 value = input(prompt)
                 if value not in validator:
                     raise ValueError
+                return value
             except ValueError:
                 print(msg)
-            return value
 
     @classmethod
     def is_owner_valid(cls, piece, player):
@@ -165,6 +164,16 @@ class Game:
         cls.current_player = cls.player_1
 
     @classmethod
+    def check_winner(cls):
+        if not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board):
+            print(f'{cls.player_2.name} wins!')
+            return True
+        elif not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board):
+            print(f'{cls.player_1.name} wins!')
+            return True
+        return False
+
+    @classmethod
     def play_2p_game(cls):
         ## first check mandatory jumps then move
         ## validate movement
@@ -177,19 +186,47 @@ class Game:
             cls.initialize()
         else:
             while not cls.game_over:
-                mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
-                if mandatory_moves:
-                    print(
-                        f'{cls.current_player.name} mandatory capture! You must move one of these pawns: '
-                        f'{",".join(mandatory_moves)}')
-                    current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
-                                                                                             'Move not on the '
-                                                                                             'list')
-                    new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
-                                                     'Location not on the board! Try again')
-                    if cls.is_move_valid(current_field, new_field, cls.current_player):
-                        pass # move and check if further mandatory captures possible for this piece
-
+                while True:
+                    mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+                    if mandatory_moves:
+                        print(
+                            f'{cls.current_player.name} mandatory capture! You must move one of the following pieces: '
+                            f'{",".join(mandatory_moves)}')
+                        current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
+                                                                                                 'Move not on the list')
+                        new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
+                                                         'Location not on the board! Try again')
+                        if cls.is_move_valid(current_field, new_field, cls.current_player):
+                            line, column = convert(field=current_field)
+                            new_line, new_column = convert(field=new_field)
+                            piece = cls.board.board_fields[line][column]
+                            piece.move((new_line, new_column))
+                        else:
+                            print('Invalid move!')
+                    else:
+                        break
+                current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
+                                                                                         'Move not on the list')
+                new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
+                                                 'Location not on the board! Try again')
+                while True:
+                    try:
+                        if cls.is_move_valid(current_field, new_field, cls.current_player):
+                            line, column = convert(field=current_field)
+                            new_line, new_column = convert(field=new_field)
+                            piece = cls.board.board_fields[line][column]
+                            piece.move((new_line, new_column))
+                            if piece.is_promoted():
+                                piece.promote_pawn()
+                            if not cls.check_winner():
+                                cls.switch_players()
+                                break
+                        else:
+                            raise ValueError
+                    except ValueError:
+                        print('Invalid move! Try again!')
+            else:
+                pass
 
     @classmethod
     def play_1p_game(cls):
