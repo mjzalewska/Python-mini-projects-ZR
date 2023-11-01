@@ -7,23 +7,23 @@ from colorama import Fore
 # just_fix_windows_console()
 
 class Piece:
-    def __init__(self):
-        self.color = None
+    def __init__(self, color):
+        self.color = color
         self.position = None
         self.name = None
         self.rank = None
         self.status = 'active'
 
-    def __repr__(self):
-        return str(self.name)
-
     def __str__(self):
-        return str(self.name)
+        return self.name
 
-    def set_initial_position(self, position):
+    def __repr__(self):
+        return self.name
+
+    def set_initial_position(self, position: tuple):
         self.position = position
 
-    def move(self, new_position):
+    def move(self, new_position: tuple):
         self.position = new_position
         new_line, new_col = new_position
         Board.board_fields[new_line][new_col] = self
@@ -41,8 +41,8 @@ class Piece:
 
 class Pawn(Piece):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color):
+        super().__init__(color)
         if self.color == 'white':
             self.name = '\u23FA'
         else:
@@ -89,19 +89,13 @@ class Pawn(Piece):
 
 
 class King(Piece):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, color):
+        super().__init__(color)
         if self.color == 'white':
             self.name = '\u265A'
         else:
             self.name = '\u2654'
         self.rank = 'king'
-
-    def __repr__(self):
-        if self.color == 'white':
-            return str(Fore.RED + self.name)
-        else:
-            return str(Fore.BLUE + self.name)
 
     def __str__(self):
         if self.color == 'white':
