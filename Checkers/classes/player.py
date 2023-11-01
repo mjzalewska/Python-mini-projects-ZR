@@ -35,8 +35,8 @@ class Player:
 
             for d in dirs:
                 target_field = (piece.position[0] + d[0], piece.position[1] + d[1])
-                if piece.is_move_allowed(self, board, target_field, piece.color):
-                    mandatory_captures.append(convert(index=target_field))
+                if piece.is_move_allowed(board, target_field, self, piece.color):
+                    mandatory_captures.append((convert(index=piece.position), convert(index=target_field)))
         return mandatory_captures
 
     def has_piece_left(self):
