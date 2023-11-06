@@ -1,7 +1,7 @@
-from math import ceil
-
-from Checkers.classes.board import Board
 from colorama import Fore
+from math import ceil
+from Checkers.classes.board import Board
+from Checkers.utilities.utilities import convert
 
 
 # just_fix_windows_console()
@@ -24,14 +24,18 @@ class Piece:
         self.position = position
 
     def move(self, new_position: tuple):
-        self.position = new_position
+        old_line, old_column = self.position
         new_line, new_col = new_position
-        Board.board_fields[new_line][new_col] = self
+        Board.fields[old_line][old_column] = ' '
+        Board.fields[new_line][new_col] = self
+        self.position = new_position
 
-    def remove(self, new_status, player):
+    def remove_piece(self, new_status, player):
         self.status = new_status
         player.pieces.remove(self)
-        player.update_pieces_count()
+        line, column = self.position
+        Board.fields[line][column] = ' '
+
 
     def is_own_piece(self, player):
         if self in player.pieces:
@@ -49,28 +53,28 @@ class Pawn(Piece):
             self.name = '\U0001F785'
         self.rank = 'pawn'
 
-    def is_move_allowed(self, board, new_position, player, turn):
+    def is_move_allowed(self, board, new_position: str, player, turn):
         old_line, old_column = self.position
-        new_line, new_column = new_position
+        new_line, new_column = convert(field=new_position)
         mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
-        other_piece = board.board_fields[mid_line][mid_column]
+        other_piece = board.fields[mid_line][mid_column]
         if 0 <= new_line <= 7 and 0 <= new_column <= 7:
             if turn == 'white':
                 if new_line - old_line == 1 and new_column - old_column in [-1, 1] and \
-                        board.board_fields[new_line][new_column] == ' ':
+                        board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
-                        board.board_fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
-                        board.board_fields[new_line][new_column] == ' ':
+                        board.fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
+                        board.fields[new_line][new_column] == ' ':
                     return True
                 return False
             else:
                 if new_line - old_line == -1 and new_column - old_column in [-1, 1] and \
-                        board.board_fields[new_line][new_column] == ' ':
+                        board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == -2 and new_column - old_column in [-2, 2] and \
-                        board.board_fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
-                        board.board_fields[new_line][new_column] == ' ':
+                        board.fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
+                        board.fields[new_line][new_column] == ' ':
                     return True
                 return False
         else:
@@ -107,13 +111,13 @@ class King(Piece):
         old_line, old_column = self.position
         new_line, new_column = new_position
         mid_line, mid_column = old_line + new_line // 2, old_column + new_column // 2
-        other_piece = board.board_fields[mid_line][mid_column]
+        other_piece = board.fields[mid_line][mid_column]
         if abs(new_line - old_line) == 1 and abs(new_column - old_column) == 1 and \
-                board.board_fields[new_line][new_column] == ' ':
+                board.fields[new_line][new_column] == ' ':
             return True
         elif abs(new_line - old_line) == 2 and abs(new_column - old_column) == 2 and \
                 board[mid_line][mid_column] != ' ' and not other_piece.is_own_piece() and \
-                board.board_fields[new_line][new_column] == ' ':
+                board.fields[new_line][new_column] == ' ':
             return True
         else:
             return False
