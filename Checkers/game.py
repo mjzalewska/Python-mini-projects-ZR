@@ -15,6 +15,7 @@ class Game:
     player_1 = None
     player_2 = None
     current_player = None
+    other_player = None
 
     @classmethod
     def print_welcome_screen(cls):
@@ -84,27 +85,27 @@ class Game:
             cls.player_2.pieces.append(b_piece)
 
         # assign pawns to initial positions on board
-        for line in range(len(cls.board.board_fields[:3])):
-            for column in range(len(cls.board.board_fields[line])):
-                if cls.board.board_fields[line][column] == ' ':
-                    cls.board.board_fields[line][column] = next(iter(cls.player_1.pieces))
+        for line in range(len(cls.board.fields[:3])):
+            for column in range(len(cls.board.fields[line])):
+                if cls.board.fields[line][column] == ' ':
+                    cls.board.fields[line][column] = next(iter(cls.player_1.pieces))
 
-        for line in range(len(cls.board.board_fields[4:])):
-            for column in range(len(cls.board.board_fields[line])):
-                if cls.board.board_fields[-line][column] == ' ':
-                    cls.board.board_fields[-line][column] = next(iter(cls.player_2.pieces))
+        for line in range(len(cls.board.fields[4:])):
+            for column in range(len(cls.board.fields[line])):
+                if cls.board.fields[-line][column] == ' ':
+                    cls.board.fields[-line][column] = next(iter(cls.player_2.pieces))
 
         # assign  initial field_list position to pieces
         for item in cls.player_1.pieces:
-            for line in range(len(cls.board.board_fields[:4])):
-                for column in range(len(cls.board.board_fields[line])):
-                    if cls.board.board_fields[line][column] == item:
+            for line in range(len(cls.board.fields[:4])):
+                for column in range(len(cls.board.fields[line])):
+                    if cls.board.fields[line][column] == item:
                         item.set_initial_position((line, column))
 
         for item in cls.player_2.pieces:
-            for line in range(len(cls.board.board_fields[5:])):
-                for column in range(len(cls.board.board_fields[line])):
-                    if cls.board.board_fields[line][column] == item:
+            for line in range(len(cls.board.fields[5:])):
+                for column in range(len(cls.board.fields[line])):
+                    if cls.board.fields[line][column] == item:
                         item.set_initial_position((line, column))
 
         cls.game_state = 'playing'
@@ -124,7 +125,7 @@ class Game:
     def is_owner_valid(cls, piece, player):
         while True:
             try:
-                if piece.is_own_piece(player, cls.board):
+                if piece.is_own_piece(player):
                     return True
                 raise ValueError
             except ValueError:
@@ -133,7 +134,7 @@ class Game:
     @classmethod
     def check_if_field_vacant(cls, field_no):
         try:
-            if not Board.is_cell_vacant(field_no):
+            if not Board.is_cell_occupied(field_no):
                 raise ValueError
             else:
                 return field_no
@@ -145,17 +146,38 @@ class Game:
         old_line, old_column = convert(field=old_position)
         new_line, new_column = convert(field=new_position)
         mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
-        current_piece = cls.board.board_fields[old_line][old_column]
-        other_piece = cls.board.board_fields[mid_line][mid_column]
+        current_piece = cls.board.fields[old_line][old_column]
+        other_piece = cls.board.fields[mid_line][mid_column]
         if current_piece != ' ' and cls.is_owner_valid(current_piece, player):
             if current_piece.rank == "pawn":
-                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, old_position):
+                if current_piece.is_move_allowed(cls.board.fields, other_piece, old_position):  # correct
                     return True
             elif current_piece.rank == "king":
-                if current_piece.is_move_allowed(cls.board.board_fields, other_piece, old_position):
+                if current_piece.is_move_allowed(cls.board.fields, other_piece, old_position):  # correct
                     return True
             return False
         return False
+
+    @classmethod
+    def enforce_mandatory_jumps(cls, mandatory_moves):
+        print(
+            f'mandatory capture! You must move one of the following pieces: '
+            f'{",".join([move[0] for move in mandatory_moves])}')
+        current_field = cls.get_player_input(prompt='Piece to move: ',
+                                             validator=[move[0] for move in mandatory_moves],
+                                             msg='Invalid choice! '
+                                                 'Move not on the list')
+        new_field = cls.get_player_input(prompt='Target location: ',
+                                         validator=[move[1] for move in mandatory_moves if move[0] == current_field],
+                                         msg='Location not on the board! Try again')
+        if cls.is_move_valid(current_field, new_field, cls.current_player):
+            line, column = convert(field=current_field)
+            new_line, new_column = convert(field=new_field)
+            mid_line, mid_column = ceil((line + new_line) / 2), ceil((column + new_column) / 2)
+            piece = cls.board.fields[line][column]
+            opponent_piece = cls.board.fields[mid_line][mid_column]
+            piece.move((new_line, new_column))
+            opponent_piece.remove_piece('retired', cls.other_player)
 
     @classmethod
     def switch_players(cls):
@@ -181,6 +203,7 @@ class Game:
         ## check if any movements left
         ## check if any pawns left
         ## switch sides
+        ## add scores (piece counts for each player)
 
         if cls.game_state == 'initializing':
             cls.initialize()
@@ -189,22 +212,11 @@ class Game:
                 while True:
                     mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
                     if mandatory_moves:
-                        print(
-                            f'{cls.current_player.name} mandatory capture! You must move one of the following pieces: '
-                            f'{",".join(mandatory_moves)}')
-                        current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
-                                                                                                 'Move not on the list')
-                        new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
-                                                         'Location not on the board! Try again')
-                        if cls.is_move_valid(current_field, new_field, cls.current_player):
-                            line, column = convert(field=current_field)
-                            new_line, new_column = convert(field=new_field)
-                            piece = cls.board.board_fields[line][column]
-                            piece.move((new_line, new_column))
-                        else:
-                            print('Invalid move!')
+                        cls.enforce_mandatory_jumps(mandatory_moves) # add promotion and win check
+                        cls.board.display_board()
                     else:
-                        break
+                        break # add code for regular move
+
                 current_field = cls.get_player_input('Piece to move: ', mandatory_moves, 'Invalid choice! '
                                                                                          'Move not on the list')
                 new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
@@ -214,7 +226,7 @@ class Game:
                         if cls.is_move_valid(current_field, new_field, cls.current_player):
                             line, column = convert(field=current_field)
                             new_line, new_column = convert(field=new_field)
-                            piece = cls.board.board_fields[line][column]
+                            piece = cls.board.fields[line][column]
                             piece.move((new_line, new_column))
                             if piece.is_promoted():
                                 piece.promote_pawn()
