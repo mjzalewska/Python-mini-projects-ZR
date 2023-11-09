@@ -1,7 +1,7 @@
 from colorama import Fore
 from math import ceil
 from Checkers.classes.board import Board
-from Checkers.utilities.utilities import convert
+from Checkers.utilities.utilities import convert, get_piece_obj, get_piece_coordinates
 
 
 # just_fix_windows_console()
@@ -15,9 +15,6 @@ class Piece:
         self.status = 'active'
 
     def __str__(self):
-        return self.name
-
-    def __repr__(self):
         return self.name
 
     def set_initial_position(self, position: tuple):
@@ -36,7 +33,6 @@ class Piece:
         line, column = self.position
         Board.fields[line][column] = ' '
 
-
     def is_own_piece(self, player):
         if self in player.pieces:
             return True
@@ -54,10 +50,9 @@ class Pawn(Piece):
         self.rank = 'pawn'
 
     def is_move_allowed(self, board, new_position: str, player, turn):
-        old_line, old_column = self.position
-        new_line, new_column = convert(field=new_position)
-        mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
-        other_piece = board.fields[mid_line][mid_column]
+        (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
+            (get_piece_coordinates(self.position, convert(field=new_position)))
+        other_piece = get_piece_obj(old_line, old_column, new_line, new_column)[1]
         if 0 <= new_line <= 7 and 0 <= new_column <= 7:
             if turn == 'white':
                 if new_line - old_line == 1 and new_column - old_column in [-1, 1] and \
@@ -108,10 +103,9 @@ class King(Piece):
             return str(Fore.BLUE + self.name)
 
     def is_move_allowed(self, board, new_position):
-        old_line, old_column = self.position
-        new_line, new_column = new_position
-        mid_line, mid_column = old_line + new_line // 2, old_column + new_column // 2
-        other_piece = board.fields[mid_line][mid_column]
+        (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
+            (get_piece_coordinates(self.position, convert(field=new_position)))
+        other_piece = get_piece_obj(old_line, old_column, new_line, new_column)[1]
         if abs(new_line - old_line) == 1 and abs(new_column - old_column) == 1 and \
                 board.fields[new_line][new_column] == ' ':
             return True
