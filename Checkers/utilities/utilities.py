@@ -1,4 +1,7 @@
 import string
+from math import ceil
+
+from Checkers.classes.board import Board
 
 
 def convert(index: tuple = None, field: str = None):
@@ -20,3 +23,16 @@ def convert(index: tuple = None, field: str = None):
         except TypeError:
             print("Only one argument - index or field no - should be specified!")
             break
+
+
+def get_piece_coordinates(old_position: str, target_position: str):
+    old_line, old_column = convert(field=old_position)
+    new_line, new_column = convert(field=target_position)
+    mid_line, mid_column = ceil((old_line + new_line) / 2), ceil((old_column + new_column) / 2)
+    return (old_line, old_column), (new_line, new_column), (mid_line, mid_column)
+
+
+def get_piece_obj(current_line, current_column, mid_line, mid_column):
+    current_piece = Board.fields[current_line][current_column]
+    other_piece = Board.fields[mid_line][mid_column]
+    return current_piece, other_piece
