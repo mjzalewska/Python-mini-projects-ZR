@@ -1,5 +1,5 @@
 import string
-from Checkers.utilities.utilities import convert
+import Checkers.utilities.utilities as utils
 
 
 class Board:
@@ -21,18 +21,10 @@ class Board:
 
     @classmethod
     def is_cell_occupied(cls, cell):
-        cell_line, cell_col = convert(field=cell)
+        cell_line, cell_col = utils.convert(field=cell)
         if cls.fields[cell_line][cell_col] != ' ':
             return True
         return False
-
-    # @classmethod
-    # def get_next_cell(cls, cell):
-    #     return f"{chr(ord(cell[0]) + 1)}{str(int(cell[1]) + 1)}"
-    #
-    # @classmethod
-    # def get_preceding_cell(cls, cell):
-    #     return f"{chr(ord(cell[0]) - 1)}{str(int(cell[1]) - 1)}"
 
     @classmethod
     def get_piece_coordinates(cls, piece_obj):
