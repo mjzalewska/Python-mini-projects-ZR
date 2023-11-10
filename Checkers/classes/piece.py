@@ -1,5 +1,4 @@
 from colorama import Fore
-from math import ceil
 from Checkers.classes.board import Board
 from Checkers.utilities.utilities import convert, get_piece_obj, get_piece_coordinates
 
@@ -37,7 +36,6 @@ class Piece:
         if self in player.pieces:
             return True
         return False
-
 
 class Pawn(Piece):
 

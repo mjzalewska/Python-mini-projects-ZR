@@ -1,6 +1,5 @@
 import string
 from math import ceil
-
 from Checkers.classes.board import Board
 
 
