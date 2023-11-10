@@ -11,16 +11,9 @@ class Player:
         self.name = name
         self.pieces = []
         self.score = 0
-        self.kings = 0
 
     def set_player_color(self, color):
         self.color = color
-
-    def update_pieces_count(self):
-        pass
-
-    def update_kings_count(self):
-        pass
 
     def get_mandatory_captures(self, board):
         mandatory_captures = []
@@ -62,3 +55,7 @@ class Player:
                         result.append(1)
                     result.append(0)
             return any(result)
+
+    def update_score(self):
+        self.score += 1
+
