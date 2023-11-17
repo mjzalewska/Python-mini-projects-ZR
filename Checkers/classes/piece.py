@@ -37,6 +37,7 @@ class Piece:
             return True
         return False
 
+
 class Pawn(Piece):
 
     def __init__(self, color):
@@ -49,7 +50,7 @@ class Pawn(Piece):
 
     def is_move_allowed(self, board, new_position: str, player, turn):
         (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
-            (get_piece_coordinates(self.position, convert(field=new_position)))
+            (get_piece_coordinates(convert(index=self.position), new_position))
         other_piece = get_piece_obj(old_line, old_column, new_line, new_column)[1]
         if 0 <= new_line <= 7 and 0 <= new_column <= 7:
             if turn == 'white':
@@ -57,18 +58,18 @@ class Pawn(Piece):
                         board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
-                        board.fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
-                        board.fields[new_line][new_column] == ' ':
-                    return True
+                        board.fields[mid_line][mid_column] != ' ':
+                    if not other_piece.is_own_piece(player) and board.fields[new_line][new_column] == ' ':
+                        return True
                 return False
             else:
                 if new_line - old_line == -1 and new_column - old_column in [-1, 1] and \
                         board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == -2 and new_column - old_column in [-2, 2] and \
-                        board.fields[mid_line][mid_column] != ' ' and not other_piece.is_own_piece(player) and \
-                        board.fields[new_line][new_column] == ' ':
-                    return True
+                        board.fields[mid_line][mid_column] != ' ':
+                    if not other_piece.is_own_piece(player) and board.fields[new_line][new_column] == ' ':
+                        return True
                 return False
         else:
             return False

@@ -4,7 +4,7 @@ import Checkers.classes.board as b
 
 
 def convert(index: tuple = None, field: str = None):
-    rows_dict = {letter: string.ascii_uppercase[:8].index(letter) for letter in string.ascii_uppercase[:8]}
+    rows_dict = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7}
     while True:
         try:
             if index is not None and field is None:
