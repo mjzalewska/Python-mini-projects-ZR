@@ -58,19 +58,21 @@ class Pawn(Piece):
                         board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == 2 and new_column - old_column in [-2, 2] and \
-                        board.fields[mid_line][mid_column] != ' ':
+                        other_piece != ' ':
                     if not other_piece.is_own_piece(player) and board.fields[new_line][new_column] == ' ':
                         return True
-                return False
+                else:
+                    return False
             else:
                 if new_line - old_line == -1 and new_column - old_column in [-1, 1] and \
                         board.fields[new_line][new_column] == ' ':
                     return True
                 elif new_line - old_line == -2 and new_column - old_column in [-2, 2] and \
-                        board.fields[mid_line][mid_column] != ' ':
+                        other_piece != ' ':
                     if not other_piece.is_own_piece(player) and board.fields[new_line][new_column] == ' ':
                         return True
-                return False
+                else:
+                    return False
         else:
             return False
 
