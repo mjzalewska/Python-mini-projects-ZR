@@ -95,20 +95,20 @@ class Game:
 
         # assign pawns to initial positions on board
         p1_pieces_iter = iter(cls.player_1.pieces)
-        for line in range(len(cls.board.fields[:3])):
-            for column in range(len(cls.board.fields[line])):
+        for line in range(3):
+            for column in range(8):
                 if cls.board.fields[line][column] == ' ':
                     p1_pawn = next(p1_pieces_iter)
                     cls.board.fields[line][column] = p1_pawn
                     p1_pawn.set_initial_position((line, column))
 
         p2_pieces_iter = iter(cls.player_2.pieces)
-        for line in range(len(cls.board.fields[4:])):
-            for column in range(len(cls.board.fields[line])):
+        for line in range(4):
+            for column in range(8):
                 if cls.board.fields[-line][column] == ' ':
                     p2_pawn = next(p2_pieces_iter)
                     cls.board.fields[-line][column] = p2_pawn
-                    p2_pawn.set_initial_position((line, column))
+                    p2_pawn.set_initial_position((line+4, column))
 
         cls.game_state = 'playing'
 
@@ -232,34 +232,34 @@ class Game:
             cls.initialize()
         else:
             while not cls.game_over:
-                print(Game.game_state)
-                print(cls.current_player)
-                print(cls.other_player)
-                print("current player pieces:")
-                for piece in cls.player_1.pieces:
-                    print(piece.position)
-                print("other player pieces")
-                for piece in cls.player_2.pieces:
-                    print(piece.position)
-                print(cls.board.display_board())
-                break
-                # while True:
-                #     mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
-                #     if mandatory_moves:
-                #         cls.enforce_mandatory_move(mandatory_moves)
-                #         cls.board.display_board()
-                #         if not cls.check_winner():
-                #             cls.switch_players()
-                #         else:
-                #             cls.check_winner()
-                #     else:
-                #         cls.get_regular_move()
-                #         cls.board.display_board
-                #         if not cls.check_winner():
-                #             cls.switch_players()
-                #         else:
-                #             cls.check_winner()
-                #
+                # print(Game.game_state)
+                # print(cls.current_player)
+                # print(cls.other_player)
+                # print("current player pieces:")
+                # for piece in cls.player_1.pieces:
+                #     print(piece.position)
+                # print("other player pieces")
+                # for piece in cls.player_2.pieces:
+                #     print(piece.position)
+                # print(cls.board.display_board())
+                # break
+                while True:
+                    mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+                    if mandatory_moves:
+                        cls.enforce_mandatory_move(mandatory_moves)
+                        cls.board.display_board()
+                        if not cls.check_winner():
+                            cls.switch_players()
+                        else:
+                            cls.check_winner()
+                    else:
+                        cls.get_regular_move()
+                        cls.board.display_board
+                        if not cls.check_winner():
+                            cls.switch_players()
+                        else:
+                            cls.check_winner()
+
 
         # add score display
         # add clear screen
