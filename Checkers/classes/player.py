@@ -1,15 +1,15 @@
 from Checkers.utilities.utilities import convert
-import Checkers.classes.board as b
 
 
 class Player:
     player_count = 0
 
-    def __init__(self, p_type, name):
+    def __init__(self, p_type, name, side):
         self.type = p_type
         self.__class__.player_count += 1
         self.color = None
         self.name = name
+        self.side = side
         self.pieces = []
         self.score = 0
 
@@ -31,7 +31,7 @@ class Player:
                 target_line, target_column = (piece.position[0] + d[0], piece.position[1] + d[1])
                 if target_line in range(8) and target_column in range(8):
                     target_field = convert(index=(target_line, target_column))
-                    if piece.is_move_allowed(board, target_field, self, piece.color):
+                    if piece.is_move_allowed(board, target_field, self):
                         mandatory_captures.append((convert(index=piece.position), target_field))
         return mandatory_captures
 

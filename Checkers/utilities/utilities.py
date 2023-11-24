@@ -1,6 +1,4 @@
-import string
 from math import ceil
-import Checkers.classes.board as b
 
 
 def convert(index: tuple = None, field: str = None):
@@ -31,7 +29,8 @@ def get_piece_coordinates(old_position: str, target_position: str):
     return (old_line, old_column), (new_line, new_column), (mid_line, mid_column)
 
 
-def get_piece_obj(current_line, current_column, mid_line, mid_column):
-    current_piece = b.Board.fields[current_line][current_column]
-    other_piece = b.Board.fields[mid_line][mid_column]
+def get_piece_obj(current_line, current_column, mid_line, mid_column, board):
+    current_piece = board.fields[current_line][current_column]
+    other_piece = board.fields[mid_line][mid_column]
     return current_piece, other_piece
+

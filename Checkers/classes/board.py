@@ -3,17 +3,17 @@ import Checkers.utilities.utilities as utils
 
 
 class Board:
-    w_box = '\u25A0'
+    box = '\u25A0'
 
     fields = [
-        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
-        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
-        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
-        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
-        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
-        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
-        [w_box, ' ', w_box, ' ', w_box, ' ', w_box, ' '],
-        [' ', w_box, ' ', w_box, ' ', w_box, ' ', w_box],
+        [box, ' ', box, ' ', box, ' ', box, ' '],
+        [' ', box, ' ', box, ' ', box, ' ', box],
+        [box, ' ', box, ' ', box, ' ', box, ' '],
+        [' ', box, ' ', box, ' ', box, ' ', box],
+        [box, ' ', box, ' ', box, ' ', box, ' '],
+        [' ', box, ' ', box, ' ', box, ' ', box],
+        [box, ' ', box, ' ', box, ' ', box, ' '],
+        [' ', box, ' ', box, ' ', box, ' ', box],
     ]
     alfanum_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
     white_promotion_line = fields[0]
