@@ -19,11 +19,11 @@ class Piece:
     def set_initial_position(self, position: tuple):
         self.position = position
 
-    def move(self, new_position: tuple):
+    def move(self, new_position: tuple, board):
         old_line, old_column = self.position
         new_line, new_col = new_position
-        Board.fields[old_line][old_column] = ' '
-        Board.fields[new_line][new_col] = self
+        board.fields[old_line][old_column] = ' '
+        board.fields[new_line][new_col] = self
         self.position = new_position
 
     def remove_piece(self, new_status, player):

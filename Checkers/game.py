@@ -70,9 +70,9 @@ class Game:
             return player_name
 
     @classmethod
-    def initialize(cls):
+    def initialize(cls, mode):
         # initialize players
-        match Game.choose_game_mode():
+        match mode:
             case '1':
                 cls.player_1 = Player('human', cls.get_player_name('Player 1 enter your name: '), 'top')
                 cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
@@ -184,11 +184,12 @@ class Game:
             cls.current_player.update_score()
             if piece.rank == 'pawn' and piece.is_promoted():
                 piece.promote_pawn()
+            cls.switch_players()
 
     @classmethod
     def get_regular_move(cls):
-        print(f'{cls.current_player.name} your move!')
         while True:
+            print(f'{cls.current_player.name} your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
                                                   cls.current_player.pieces],
@@ -201,29 +202,33 @@ class Game:
                     (line, column), (new_line, new_column), (mid_line, mid_column) = \
                         (utils.get_piece_coordinates(current_field, new_field))
                     piece = utils.get_piece_obj(line, column, mid_line, mid_column, cls.board)[0]
-                    piece.move((new_line, new_column))
+                    piece.move((new_line, new_column), cls.board)
+                    # cls.clear_screen()
+                    cls.board.display_board()
                     if piece.rank == 'pawn' and piece.is_promoted():
                         piece.promote_pawn()
+                    cls.switch_players()
                 else:
                     raise ValueError
             except ValueError:
-                print('Invalid move! A pawn can only move forwards one field at a time!') # to zmienić
+                print('Invalid move!')
 
     @classmethod
     def switch_players(cls):
         if cls.current_player == cls.player_1:
             cls.current_player = cls.player_2
-        cls.current_player = cls.player_1
+        else:
+            cls.current_player = cls.player_1
 
     @classmethod
     def check_winner(cls):
-        print(f'Current score: '
-              f'{cls.player_1.name}: {cls.player_1.score}'
+        print(f'Current score: \n'
+              f'{cls.player_1.name}: {cls.player_1.score}\n'
               f'{cls.player_2.name}: {cls.player_2.score}')
-        if not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board):
+        if not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board):
             print(f'{cls.player_2.name} wins!')
             return True
-        elif not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board):
+        elif not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board):
             print(f'{cls.player_1.name} wins!')
             return True
         return False
@@ -240,35 +245,27 @@ class Game:
         ## check if any movements left - check win
         ## check if any pawns left - check win
         ## switch sides
+        # change messages
 
-        if cls.game_state == 'initializing':  # fix the current player assignemnt
-            cls.initialize()
+        # mandatory moves nie działa jak powinno
+        # bicie nie zawsze działą
+        # promotion nie działa
+
+        mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+        if mandatory_moves:
+            cls.board.display_board()
+            print()
+            cls.enforce_mandatory_move(mandatory_moves)
+            print()
+            if cls.check_winner():
+                cls.game_over = True
         else:
-            while not cls.game_over:
-                while True:
-                    mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
-                    if mandatory_moves:
-                        cls.board.display_board()
-                        print()
-                        cls.enforce_mandatory_move(mandatory_moves)
-                        print()
-                        cls.board.display_board()
-                        cls.clear_screen()
-                        if not cls.check_winner():
-                            cls.switch_players()
-                        else:
-                            cls.game_over = True
-                    else:
-                        cls.board.display_board()
-                        print()
-                        cls.get_regular_move()
-                        print()
-                        cls.board.display_board()
-                        cls.clear_screen()
-                        if not cls.check_winner():
-                            cls.switch_players()
-                        else:
-                            cls.game_over = True
+            cls.board.display_board()
+            print()
+            cls.get_regular_move()
+            print()
+            if cls.check_winner():
+                cls.game_over = True
 
     @classmethod
     def play_1p_game(cls):
@@ -276,9 +273,18 @@ class Game:
 
     @classmethod
     def play(cls):
-        pass
+        game_mode = cls.choose_game_mode()
+        match game_mode:
+            case '1':
+                while not cls.game_over:
+                    if cls.game_state == 'initializing':
+                        cls.initialize(game_mode)
+                    else:
+                        cls.play_2p_game()
+
+            case '2':
+                pass
 
 
 # manual test code
-Game.initialize()
-Game.play_2p_game()
+Game.play()
