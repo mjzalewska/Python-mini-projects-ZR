@@ -1,7 +1,5 @@
 import os
 import random
-from math import ceil
-
 from art import tprint
 from classes.piece import Pawn, King
 from classes.player import Player
@@ -53,6 +51,8 @@ class Game:
             cls.current_player = cls.player_1
             cls.other_player = cls.player_2
             print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
+            print(cls.current_player)
+            print(cls.other_player)
         else:
             cls.current_player = cls.player_2
             print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
@@ -66,7 +66,7 @@ class Game:
                 if not player_name:
                     raise ValueError
             except ValueError:
-                player_name = 'Player' + str(Player.player_count)
+                player_name = 'Player ' + str(Player.player_count+1)
             return player_name
 
     @classmethod
@@ -100,7 +100,7 @@ class Game:
                 if cls.board.fields[line][column] == ' ':
                     p1_pawn = next(p1_pieces_iter)
                     cls.board.fields[line][column] = p1_pawn
-                    p1_pawn.set_initial_position((line, column))
+                    p1_pawn.set_position((line, column))
 
         p2_pieces_iter = iter(cls.player_2.pieces)
         for line in range(1, 4):
@@ -108,7 +108,7 @@ class Game:
                 if cls.board.fields[line + 4][column] == ' ':
                     p2_pawn = next(p2_pieces_iter)
                     cls.board.fields[line + 4][column] = p2_pawn
-                    p2_pawn.set_initial_position((line + 4, column))
+                    p2_pawn.set_position((line + 4, column))
 
         cls.game_state = 'playing'
 
@@ -150,10 +150,10 @@ class Game:
             print("This field is occupied. Please choose another field!")
 
     @classmethod
-    def is_move_valid(cls, old_position, new_position, player):
-        (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
-            (utils.get_piece_coordinates(old_position, new_position))
-        current_piece = utils.get_piece_obj(old_line, old_column, mid_line, mid_column, cls.board)[0]
+    def is_move_valid(cls, current_position, new_position, player):
+        (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
+            (utils.get_piece_coordinates(current_position, new_position))
+        current_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column, cls.board)[0]
         if (current_piece != ' ' and cls.is_owner_valid(current_piece, player) and
                 current_piece.rank in ('pawn', 'king') and current_piece.is_move_allowed(cls.board,
                                                                                          new_position,
@@ -174,39 +174,44 @@ class Game:
                                                  'Move not on the list')
         new_field = cls.get_player_input(prompt='Target location: ',
                                          validator=[move[1] for move in mandatory_moves if move[0] == current_field],
-                                         msg='Invalid location! Please choose ')
+                                         msg='Invalid location!')
         if cls.is_move_valid(current_field, new_field, cls.current_player):
             (line, column), (new_line, new_column), (mid_line, mid_column) = \
                 (utils.get_piece_coordinates(current_field, new_field))
             piece, opponent_piece = utils.get_piece_obj(line, column, mid_line, mid_column)
-            piece.move((new_line, new_column))
-            opponent_piece.remove_piece('retired', cls.other_player)
+            piece.move((new_line, new_column), cls.board)
+            opponent_piece.remove_piece('retired', cls.other_player, cls.board)
             cls.current_player.update_score()
             if piece.rank == 'pawn' and piece.is_promoted():
-                piece.promote_pawn()
+                piece.promote_pawn(cls.board, cls.current_player)
             cls.switch_players()
 
     @classmethod
     def get_regular_move(cls):
         while True:
-            print(f'{cls.current_player.name} your move!')
+            print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
                                                   cls.current_player.pieces],
-                                                 'Invalid choice! Please choose your own piece!')
+                                                 'Invalid choice! Please choose one of your pieces to move')
 
             new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
-                                             'Location not on the board! Try again')
+                                             'Invalid field number! Try again')
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
-                    (line, column), (new_line, new_column), (mid_line, mid_column) = \
+                    (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
                         (utils.get_piece_coordinates(current_field, new_field))
-                    piece = utils.get_piece_obj(line, column, mid_line, mid_column, cls.board)[0]
-                    piece.move((new_line, new_column), cls.board)
+                    piece, opponent_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column, cls.board)
+                    if abs(new_line - current_line) == 1 and abs(new_column - current_column) == 1:
+                        piece.move((new_line, new_column), cls.board)
+                    elif abs(new_line - current_line) == 2 and abs(new_column - current_column) == 2:
+                        piece.move((new_line, new_column), cls.board)
+                        opponent_piece.remove_piece('retired', cls.other_player, cls.board)
+                        cls.current_player.update_score()
                     # cls.clear_screen()
                     cls.board.display_board()
                     if piece.rank == 'pawn' and piece.is_promoted():
-                        piece.promote_pawn()
+                        piece.promote_pawn(cls.board, cls.current_player)
                     cls.switch_players()
                 else:
                     raise ValueError
@@ -217,8 +222,10 @@ class Game:
     def switch_players(cls):
         if cls.current_player == cls.player_1:
             cls.current_player = cls.player_2
-        else:
+            cls.other_player = cls.player_1
+        elif cls.current_player == cls.player_2:
             cls.current_player = cls.player_1
+            cls.other_player = cls.player_2
 
     @classmethod
     def check_winner(cls):
@@ -234,8 +241,8 @@ class Game:
         return False
 
     @classmethod
-    def print_game_over(cls):
-        tprint('Game over', font='tarty1')
+    def print_ui_message(cls, message):
+        tprint(message, font='tarty1')
 
     @classmethod
     def play_2p_game(cls):
@@ -248,24 +255,23 @@ class Game:
         # change messages
 
         # mandatory moves nie działa jak powinno
-        # bicie nie zawsze działą
         # promotion nie działa
-
-        mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
-        if mandatory_moves:
-            cls.board.display_board()
-            print()
-            cls.enforce_mandatory_move(mandatory_moves)
-            print()
-            if cls.check_winner():
-                cls.game_over = True
-        else:
-            cls.board.display_board()
-            print()
-            cls.get_regular_move()
-            print()
-            if cls.check_winner():
-                cls.game_over = True
+        while True:
+            mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+            if mandatory_moves:
+                cls.board.display_board()
+                print()
+                cls.enforce_mandatory_move(mandatory_moves)
+                print()
+                if cls.check_winner():
+                    cls.game_over = True
+            else:
+                cls.board.display_board()
+                print()
+                cls.get_regular_move()
+                print()
+                if cls.check_winner():
+                    cls.game_over = True
 
     @classmethod
     def play_1p_game(cls):
@@ -286,5 +292,4 @@ class Game:
                 pass
 
 
-# manual test code
 Game.play()
