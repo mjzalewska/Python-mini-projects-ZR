@@ -1,9 +1,6 @@
-from colorama import Fore
-from Checkers.classes.board import Board
+from termcolor import colored
 from Checkers.utilities.utilities import convert, get_piece_obj, get_piece_coordinates
 
-
-# just_fix_windows_console()
 
 class Piece:
     def __init__(self, color):
@@ -76,15 +73,15 @@ class Pawn(Piece):
         else:
             return False
 
-    def is_promoted(self):
-        if self.color == 'white' and self in Board.black_promotion_line:
+    def is_promoted(self, board):
+        if self.color == 'white' and self in board.black_promotion_line:
             return True
-        elif self.color == 'black' and self in Board.white_promotion_line:
+        elif self.color == 'black' and self in board.white_promotion_line:
             return True
         return False
 
     def promote_pawn(self, board, player):
-        if self.is_promoted():
+        if self.is_promoted(board):
             line, column = self.position
             promoted_pawn = King(self.color)
             promoted_pawn.set_position((line, column))
@@ -104,9 +101,9 @@ class King(Piece):
 
     def __str__(self):
         if self.color == 'white':
-            return str(Fore.RED + self.name)
+            return colored(self.name, 'red', force_color=True)
         else:
-            return str(Fore.BLUE + self.name)
+            return colored(self.name, 'blue', force_color=True)
 
     def is_move_allowed(self, board, new_position):
         (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
@@ -121,3 +118,4 @@ class King(Piece):
             return True
         else:
             return False
+
