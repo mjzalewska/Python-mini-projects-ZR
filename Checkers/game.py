@@ -182,13 +182,15 @@ class Game:
             piece.move((new_line, new_column), cls.board)
             opponent_piece.remove_piece('retired', cls.other_player, cls.board)
             cls.current_player.update_score()
-            if piece.rank == 'pawn' and piece.is_promoted():
+            if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                 piece.promote_pawn(cls.board, cls.current_player)
             cls.switch_players()
 
     @classmethod
     def get_regular_move(cls):
         while True:
+            print(f"{cls.player_2.name}", [piece.rank for piece in cls.player_2.pieces])
+            print(f"{cls.player_1.name}", [piece.rank for piece in cls.player_1.pieces])
             print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
@@ -208,10 +210,10 @@ class Game:
                         piece.move((new_line, new_column), cls.board)
                         opponent_piece.remove_piece('retired', cls.other_player, cls.board)
                         cls.current_player.update_score()
+                    if piece.rank == 'pawn' and piece.is_promoted(cls.board):
+                        piece.promote_pawn(cls.board, cls.current_player)
                     # cls.clear_screen()
                     cls.board.display_board()
-                    if piece.rank == 'pawn' and piece.is_promoted():
-                        piece.promote_pawn(cls.board, cls.current_player)
                     cls.switch_players()
                 else:
                     raise ValueError
@@ -252,10 +254,10 @@ class Game:
         ## check if any movements left - check win
         ## check if any pawns left - check win
         ## switch sides
-        # change messages
 
         # mandatory moves nie działa jak powinno
-        # promotion nie działa
+        # promotion - nie można postawić piona w pobliżu damki (Invalid move)
+        # bicie damką sypie błedami
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
             if mandatory_moves:
