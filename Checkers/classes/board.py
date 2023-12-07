@@ -16,8 +16,8 @@ class Board:
         [' ', box, ' ', box, ' ', box, ' ', box],
     ]
     alfanum_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
-    white_promotion_line = fields[0]
-    black_promotion_line = fields[-1]
+    white_promotion_line = None
+    black_promotion_line = None
 
     @classmethod
     def is_cell_occupied(cls, cell):
