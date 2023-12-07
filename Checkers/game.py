@@ -51,8 +51,6 @@ class Game:
             cls.current_player = cls.player_1
             cls.other_player = cls.player_2
             print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
-            print(cls.current_player)
-            print(cls.other_player)
         else:
             cls.current_player = cls.player_2
             print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
@@ -66,7 +64,7 @@ class Game:
                 if not player_name:
                     raise ValueError
             except ValueError:
-                player_name = 'Player ' + str(Player.player_count+1)
+                player_name = 'Player ' + str(Player.player_count + 1)
             return player_name
 
     @classmethod
@@ -109,6 +107,14 @@ class Game:
                     p2_pawn = next(p2_pieces_iter)
                     cls.board.fields[line + 4][column] = p2_pawn
                     p2_pawn.set_position((line + 4, column))
+
+        # set promotion lines
+        if cls.player_1.color == 'white':
+            cls.board.white_promotion_line = cls.board.fields[0]
+            cls.board.black_promotion_line = cls.board.fields[-1]
+        else:
+            cls.board.white_promotion_line = cls.board.fields[-1]
+            cls.board.black_promotion_line = cls.board.fields[0]
 
         cls.game_state = 'playing'
 
@@ -155,9 +161,11 @@ class Game:
             (utils.get_piece_coordinates(current_position, new_position))
         current_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column, cls.board)[0]
         if (current_piece != ' ' and cls.is_owner_valid(current_piece, player) and
-                current_piece.rank in ('pawn', 'king') and current_piece.is_move_allowed(cls.board,
-                                                                                         new_position,
-                                                                                         cls.current_player)):
+                current_piece.rank == 'pawn' and current_piece.is_move_allowed(cls.board, new_position,
+                                                                               cls.current_player)):
+            return True
+        elif (current_piece != ' ' and cls.is_owner_valid(current_piece, player) and
+              current_piece.rank == 'king' and current_piece.is_move_allowed(cls.board, new_position)):
             return True
         else:
             return False
@@ -203,7 +211,8 @@ class Game:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
                     (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
                         (utils.get_piece_coordinates(current_field, new_field))
-                    piece, opponent_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column, cls.board)
+                    piece, opponent_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column,
+                                                                cls.board)
                     if abs(new_line - current_line) == 1 and abs(new_column - current_column) == 1:
                         piece.move((new_line, new_column), cls.board)
                     elif abs(new_line - current_line) == 2 and abs(new_column - current_column) == 2:
@@ -216,8 +225,9 @@ class Game:
                     cls.board.display_board()
                     cls.switch_players()
                 else:
-                    raise ValueError
-            except ValueError:
+                    raise Exception #ValueError
+            except Exception as e: #ValueError:
+                print(e)
                 print('Invalid move!')
 
     @classmethod
@@ -256,7 +266,6 @@ class Game:
         ## switch sides
 
         # mandatory moves nie działa jak powinno
-        # promotion - nie można postawić piona w pobliżu damki (Invalid move)
         # bicie damką sypie błedami
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
