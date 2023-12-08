@@ -81,13 +81,12 @@ class Pawn(Piece):
         return False
 
     def promote_pawn(self, board, player):
-        if self.is_promoted(board):
-            line, column = self.position
-            promoted_pawn = King(self.color)
-            promoted_pawn.set_position((line, column))
-            board.fields[line][column] = promoted_pawn
-            player.pieces.remove(self)
-            player.pieces.append(promoted_pawn)
+        line, column = self.position
+        promoted_pawn = King(self.color)
+        promoted_pawn.set_position((line, column))
+        board.fields[line][column] = promoted_pawn
+        player.pieces.remove(self)
+        player.pieces.append(promoted_pawn)
 
 
 class King(Piece):
@@ -105,17 +104,16 @@ class King(Piece):
         else:
             return colored(self.name, 'blue', force_color=True)
 
-    def is_move_allowed(self, board, new_position):
+    def is_move_allowed(self, board, new_position: str, player):
         (old_line, old_column), (new_line, new_column), (mid_line, mid_column) = \
-            (get_piece_coordinates(self.position, convert(field=new_position)))
-        other_piece = get_piece_obj(old_line, old_column, new_line, new_column)[1]
+            (get_piece_coordinates(convert(index=self.position), new_position))
+        other_piece = get_piece_obj(old_line, old_column, mid_line, mid_column, board)[1]
         if abs(new_line - old_line) == 1 and abs(new_column - old_column) == 1 and \
                 board.fields[new_line][new_column] == ' ':
             return True
         elif abs(new_line - old_line) == 2 and abs(new_column - old_column) == 2 and \
-                other_piece != ' ' and not other_piece.is_own_piece() and \
+                other_piece != ' ' and not other_piece.is_own_piece(player) and \
                 board.fields[new_line][new_column] == ' ':
             return True
         else:
             return False
-

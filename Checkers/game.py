@@ -165,7 +165,8 @@ class Game:
                                                                                cls.current_player)):
             return True
         elif (current_piece != ' ' and cls.is_owner_valid(current_piece, player) and
-              current_piece.rank == 'king' and current_piece.is_move_allowed(cls.board, new_position)):
+              current_piece.rank == 'king' and current_piece.is_move_allowed(cls.board, new_position,
+                                                                             cls.current_player)):
             return True
         else:
             return False
@@ -195,7 +196,7 @@ class Game:
             cls.switch_players()
 
     @classmethod
-    def get_regular_move(cls):
+    def get_regular_move(cls): # przy biciu damką źle pobiera dane pionka przeciwnika (widzi jako puste pole) - do spr
         while True:
             print(f"{cls.player_2.name}", [piece.rank for piece in cls.player_2.pieces])
             print(f"{cls.player_1.name}", [piece.rank for piece in cls.player_1.pieces])
@@ -266,7 +267,6 @@ class Game:
         ## switch sides
 
         # mandatory moves nie działa jak powinno
-        # bicie damką sypie błedami
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
             if mandatory_moves:

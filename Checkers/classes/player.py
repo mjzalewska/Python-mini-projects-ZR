@@ -54,7 +54,7 @@ class Player:
                     dirs = [[-1, -1], [-1, 1], [1, -1], [1, 1], [2, -2], [2, 2],[-2, -2], [-2, 2]]
 
                 for d in dirs:
-                    if piece.is_move_allowed(board, (line + d[0], column + d[1]), self, self.color):
+                    if piece.is_move_allowed(board, convert(index=(line + d[0], column + d[1])), self):
                         result.append(1)
                     result.append(0)
             return any(result)
