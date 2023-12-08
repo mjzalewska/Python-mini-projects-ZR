@@ -1,19 +1,22 @@
 import string
+
+from termcolor import colored
+
 import Checkers.utilities.utilities as utils
 
 
 class Board:
-    box = '\u25A0'
+    w_sq = '\u25A0'
 
     fields = [
-        [box, ' ', box, ' ', box, ' ', box, ' '],
-        [' ', box, ' ', box, ' ', box, ' ', box],
-        [box, ' ', box, ' ', box, ' ', box, ' '],
-        [' ', box, ' ', box, ' ', box, ' ', box],
-        [box, ' ', box, ' ', box, ' ', box, ' '],
-        [' ', box, ' ', box, ' ', box, ' ', box],
-        [box, ' ', box, ' ', box, ' ', box, ' '],
-        [' ', box, ' ', box, ' ', box, ' ', box],
+        [w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq, ' '],
+        [' ', w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq],
+        [w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq, ' '],
+        [' ', w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq],
+        [w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq, ' '],
+        [' ', w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq],
+        [w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq, ' '],
+        [' ', w_sq, ' ', w_sq, ' ', w_sq, ' ', w_sq],
     ]
     alfanum_field_list = [letter + str(num) for letter in string.ascii_uppercase[:8] for num in range(1, 9)]
     white_promotion_line = None
@@ -38,8 +41,7 @@ class Board:
         str_matrix = []
         for line in cls.fields:
             str_matrix.append([str(column) for column in line])
-        print('   ' + '  '.join([str(num) for num in range(1, 9)]))
+        print('\t' + ('\t'.join([str(num) for num in range(1, 9)])))
         letters = string.ascii_uppercase[:8]
         for i in range(len(letters)):
-            print(f"{letters[i]}  {'  '.join(str_matrix[i])}")
-
+            print(f"{letters[i]}" + '\t' + '\t'.join(str_matrix[i]))
