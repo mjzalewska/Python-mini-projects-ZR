@@ -46,17 +46,20 @@ class Player:
             for piece in self.pieces:
                 line, column = piece.position
                 if piece.rank == "pawn":
-                    if piece.color == "white":
+                    if self.side == "top":
                         dirs = [[1, -1], [1, 1], [2, -2], [2, 2]]
                     else:
                         dirs = [[-1, -1], [-1, 1], [-2, -2], [-2, 2]]
+                    for d in dirs:
+                        if piece.is_move_allowed(board, convert(index=(line + d[0], column + d[1])), self):
+                            result.append(1)
+                        result.append(0)
                 else:
                     dirs = [[-1, -1], [-1, 1], [1, -1], [1, 1], [2, -2], [2, 2],[-2, -2], [-2, 2]]
-
-                for d in dirs:
-                    if piece.is_move_allowed(board, convert(index=(line + d[0], column + d[1])), self):
-                        result.append(1)
-                    result.append(0)
+                    for d in dirs:
+                        if piece.is_move_allowed(board, convert(index=(line + d[0], column + d[1])), self):
+                            result.append(1)
+                        result.append(0)
             return any(result)
 
     def update_score(self):

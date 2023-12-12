@@ -173,9 +173,9 @@ class Game:
 
     @classmethod
     def enforce_mandatory_move(cls, mandatory_moves):
-        print(f'{cls.current_player.name} ({cls.current_player.color} pieces) your move!')
+        print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
         print(
-            f'mandatory capture! You must move one of the following pieces: '
+            f'Mandatory capture! You must move one of the following pieces: '
             f'{",".join([f"{move[0]}-> {move[1]}" for move in mandatory_moves])}')
         current_field = cls.get_player_input(prompt='Piece to move: ',
                                              validator=[move[0] for move in mandatory_moves],
@@ -187,7 +187,7 @@ class Game:
         if cls.is_move_valid(current_field, new_field, cls.current_player):
             (line, column), (new_line, new_column), (mid_line, mid_column) = \
                 (utils.get_piece_coordinates(current_field, new_field))
-            piece, opponent_piece = utils.get_piece_obj(line, column, mid_line, mid_column)
+            piece, opponent_piece = utils.get_piece_obj(line, column, mid_line, mid_column, cls.board)
             piece.move((new_line, new_column), cls.board)
             opponent_piece.remove_piece('retired', cls.other_player, cls.board)
             cls.current_player.update_score()
@@ -196,10 +196,8 @@ class Game:
             cls.switch_players()
 
     @classmethod
-    def get_regular_move(cls): # przy biciu damką źle pobiera dane pionka przeciwnika (widzi jako puste pole) - do spr
+    def get_regular_move(cls):
         while True:
-            print(f"{cls.player_2.name}", [piece.rank for piece in cls.player_2.pieces])
-            print(f"{cls.player_1.name}", [piece.rank for piece in cls.player_1.pieces])
             print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
@@ -225,10 +223,10 @@ class Game:
                     # cls.clear_screen()
                     cls.board.display_board()
                     cls.switch_players()
+                    break
                 else:
-                    raise Exception #ValueError
-            except Exception as e: #ValueError:
-                print(e)
+                    raise ValueError
+            except ValueError:
                 print('Invalid move!')
 
     @classmethod
@@ -267,6 +265,9 @@ class Game:
         ## switch sides
 
         # mandatory moves nie działa jak powinno
+        # dodać try/except w enforce mandatory... oraz while
+        # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
+        # test czy game over/ winner pojawia się kiedy trzeba
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
             if mandatory_moves:
