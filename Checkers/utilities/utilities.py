@@ -14,12 +14,14 @@ def convert(index: tuple = None, field: str = None):
                 field_no += str(column + 1)
                 return field_no
             elif field is not None and index is None:
-                return rows_dict[field[0]], int(field[1]) - 1
+                return rows_dict[field[0]], int(field[-1]) - 1
             else:
                 raise TypeError
         except TypeError:
             print("Only one argument - index or field no - should be specified!")
             break
+        except KeyError:
+            return (0, 0)
 
 
 def get_piece_coordinates(old_position: str, target_position: str):
@@ -33,4 +35,3 @@ def get_piece_obj(current_line, current_column, mid_line, mid_column, board):
     current_piece = board.fields[current_line][current_column]
     other_piece = board.fields[mid_line][mid_column]
     return current_piece, other_piece
-
