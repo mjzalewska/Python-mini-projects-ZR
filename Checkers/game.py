@@ -264,10 +264,11 @@ class Game:
         ## check if any pawns left - check win
         ## switch sides
 
-        # mandatory moves nie działa jak powinno
-        # dodać try/except w enforce mandatory... oraz while
+        # mandatory: dodać try/except w enforce mandatory... oraz while
         # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
-        # test czy game over/ winner pojawia się kiedy trzeba
+        # game over - po komunikacje 'xy wins" nadal pyta o ruch drugą stronę
+        # plansza drukuje się podwójnie
+
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
             if mandatory_moves:
