@@ -20,7 +20,7 @@ class Player:
         mandatory_captures = []
         for piece in self.pieces:
             if piece.rank == 'pawn':
-                if piece.color == 'white':
+                if self.side == 'top':
                     dirs = [[2, -2], [2, 2]]
                 else:
                     dirs = [[-2, -2], [-2, 2]]

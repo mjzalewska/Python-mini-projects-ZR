@@ -221,7 +221,7 @@ class Game:
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
                     # cls.clear_screen()
-                    cls.board.display_board()
+                    # cls.board.display_board()
                     cls.switch_players()
                     break
                 else:
@@ -257,17 +257,9 @@ class Game:
 
     @classmethod
     def play_2p_game(cls):
-        ## first check mandatory jumps then move
-        ## validate movement
-        ## check promotion and promote
-        ## check if any movements left - check win
-        ## check if any pawns left - check win
-        ## switch sides
-
         # mandatory: dodać try/except w enforce mandatory... oraz while
         # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
         # game over - po komunikacje 'xy wins" nadal pyta o ruch drugą stronę
-        # plansza drukuje się podwójnie
 
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
@@ -277,14 +269,14 @@ class Game:
                 cls.enforce_mandatory_move(mandatory_moves)
                 print()
                 if cls.check_winner():
-                    cls.game_over = True
+                    break
             else:
                 cls.board.display_board()
                 print()
                 cls.get_regular_move()
                 print()
                 if cls.check_winner():
-                    cls.game_over = True
+                    break
 
     @classmethod
     def play_1p_game(cls):
