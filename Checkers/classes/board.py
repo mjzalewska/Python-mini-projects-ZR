@@ -30,13 +30,6 @@ class Board:
         return False
 
     @classmethod
-    def get_piece_coordinates(cls, piece_obj):
-        coordinates = [(line, column) for line in range(len(cls.fields))
-                       for column in range(len(cls.fields[line]))
-                       if cls.fields[line][column] == piece_obj]
-        return coordinates
-
-    @classmethod
     def display_board(cls):
         str_matrix = []
         for line in cls.fields:
