@@ -1,5 +1,7 @@
 import os
 import random
+from time import sleep
+
 from art import tprint
 from classes.piece import Pawn, King
 from classes.player import Player
@@ -244,10 +246,10 @@ class Game:
               f'{cls.player_1.name}: {cls.player_1.score}\n'
               f'{cls.player_2.name}: {cls.player_2.score}')
         if not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board):
-            print(f'{cls.player_2.name} wins!')
+            cls.print_ui_message(f'{cls.player_2.name} wins!')
             return True
         elif not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board):
-            print(f'{cls.player_1.name} wins!')
+            cls.print_ui_message(f'{cls.player_1.name} wins!')
             return True
         return False
 
@@ -259,7 +261,6 @@ class Game:
     def play_2p_game(cls):
         # mandatory: dodać try/except w enforce mandatory... oraz while
         # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
-        # game over - po komunikacje 'xy wins" nadal pyta o ruch drugą stronę
 
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
@@ -269,14 +270,14 @@ class Game:
                 cls.enforce_mandatory_move(mandatory_moves)
                 print()
                 if cls.check_winner():
-                    break
+                    return False
             else:
                 cls.board.display_board()
                 print()
                 cls.get_regular_move()
                 print()
                 if cls.check_winner():
-                    break
+                    return False
 
     @classmethod
     def play_1p_game(cls):
@@ -284,17 +285,22 @@ class Game:
 
     @classmethod
     def play(cls):
+        cls.print_ui_message('Checkers')
+        # sleep(3)
+        # cls.clear_screen()
         game_mode = cls.choose_game_mode()
-        match game_mode:
-            case '1':
-                while not cls.game_over:
-                    if cls.game_state == 'initializing':
-                        cls.initialize(game_mode)
-                    else:
-                        cls.play_2p_game()
-
-            case '2':
-                pass
+        while not cls.game_over:
+            if cls.game_state == 'initializing':
+                cls.initialize(game_mode)
+            else:
+                match game_mode:
+                    case '1':
+                        if not cls.play_2p_game():
+                            cls.game_over = True
+                        else:
+                            cls.play_2p_game()
+                    case '2':
+                        pass
 
 
 Game.play()
