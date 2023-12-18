@@ -16,9 +16,9 @@ class Player:
     def set_player_color(self, color):
         self.color = color
 
-    def get_mandatory_captures(self, board):
+    def get_mandatory_captures(self, board, piece_collection):
         mandatory_captures = []
-        for piece in self.pieces:
+        for piece in piece_collection:
             if piece.rank == 'pawn':
                 if self.side == 'top':
                     dirs = [[2, -2], [2, 2]]

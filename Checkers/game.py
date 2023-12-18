@@ -1,8 +1,7 @@
+from art import tprint
 import os
 import random
 from time import sleep
-
-from art import tprint
 from classes.piece import Pawn, King
 from classes.player import Player
 from classes.board import Board
@@ -17,11 +16,6 @@ class Game:
     player_2 = None
     current_player = None
     other_player = None
-
-    @classmethod
-    def print_welcome_screen(cls):
-        tprint('Checkers', font='tarty1')  # tarty9
-        print()
 
     @classmethod
     def choose_game_mode(cls):
@@ -176,16 +170,18 @@ class Game:
     @classmethod
     def enforce_mandatory_move(cls, mandatory_moves):
         while True:
-            print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
+            cls.board.display_board()
+            print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
             print(
-                f'Mandatory capture! You must move one of the following pieces: '
+                f'Mandatory capture! Only the following moves are possible: '
                 f'{",".join([f"{move[0]}-> {move[1]}" for move in mandatory_moves])}')
             current_field = cls.get_player_input(prompt='Piece to move: ',
                                                  validator=[move[0] for move in mandatory_moves],
                                                  msg='Invalid choice! '
                                                      'Move not on the list')
             new_field = cls.get_player_input(prompt='Target location: ',
-                                             validator=[move[1] for move in mandatory_moves if move[0] == current_field],
+                                             validator=[move[1] for move in mandatory_moves if
+                                                        move[0] == current_field],
                                              msg='Invalid location!')
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
@@ -197,8 +193,11 @@ class Game:
                     cls.current_player.update_score()
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
-                    # cls.clear_screen()
-                    # cls.board.display_board()
+                    new_position = cls.board.fields[new_line][new_column]
+                    follow_up_move = cls.current_player.get_mandatory_captures(cls.board, [new_position])
+                    if follow_up_move:
+                        cls.enforce_mandatory_move(follow_up_move)
+                        cls.switch_players()
                     cls.switch_players()
                     break
                 else:
@@ -209,7 +208,8 @@ class Game:
     @classmethod
     def get_regular_move(cls):
         while True:
-            print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
+            cls.board.display_board()
+            print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
                                                   cls.current_player.pieces],
@@ -231,14 +231,18 @@ class Game:
                         cls.current_player.update_score()
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
-                    # cls.clear_screen()
-                    # cls.board.display_board()
                     cls.switch_players()
                     break
                 else:
                     raise ValueError
             except ValueError:
                 print('Invalid move!')
+
+    @classmethod
+    def get_cpu_move(cls):
+        current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
+        target_line, target_column = utils.convert(field=random.choice(cls.board.alfanum_field_list))
+        pass
 
     @classmethod
     def switch_players(cls):
@@ -260,6 +264,9 @@ class Game:
         elif not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board):
             cls.print_ui_message(f'{cls.player_1.name} wins!')
             return True
+        elif (not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board)) and \
+                (not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board)):
+            cls.print_ui_message('It\'s a draw!')
         return False
 
     @classmethod
@@ -268,20 +275,14 @@ class Game:
 
     @classmethod
     def play_2p_game(cls):
-        # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
-
         while True:
-            mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+            mandatory_moves = cls.current_player.get_mandatory_captures(cls.board, cls.current_player.pieces)
             if mandatory_moves:
-                cls.board.display_board()
-                print()
                 cls.enforce_mandatory_move(mandatory_moves)
                 print()
                 if cls.check_winner():
                     return False
             else:
-                cls.board.display_board()
-                print()
                 cls.get_regular_move()
                 print()
                 if cls.check_winner():
