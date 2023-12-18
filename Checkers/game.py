@@ -21,8 +21,8 @@ class Game:
     def choose_game_mode(cls):
         modes = ['1', '2']
         print('Please choose game mode: ')
-        print('1 - Player vs Player')
-        print('2 - Player vs Computer')
+        print('1 - Player vs Computer')
+        print('2 - Player vs Player')
         while True:
             mode_choice = input()
             try:
@@ -69,10 +69,10 @@ class Game:
         match mode:
             case '1':
                 cls.player_1 = Player('human', cls.get_player_name('Player 1 enter your name: '), 'top')
-                cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
+                cls.player_2 = Player('CPU', 'Player 2', 'bottom')
             case '2':
                 cls.player_1 = Player('human', cls.get_player_name('Player 1 enter your name: '), 'top')
-                cls.player_2 = Player('CPU', 'Player 2', 'bottom')
+                cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
         cls.assign_color()
         cls.decide_who_goes_first()
 
@@ -210,13 +210,18 @@ class Game:
         while True:
             cls.board.display_board()
             print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
-            current_field = cls.get_player_input('Piece to move: ',
-                                                 [utils.convert(index=piece.position) for piece in
-                                                  cls.current_player.pieces],
-                                                 'Invalid choice! Please choose one of your pieces to move')
+            if cls.current_player.type == 'human':
+                current_field = cls.get_player_input('Piece to move: ',
+                                                     [utils.convert(index=piece.position) for piece in
+                                                      cls.current_player.pieces],
+                                                     'Invalid choice! Please choose one of your pieces to move')
 
-            new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
-                                             'Invalid field number! Try again')
+                new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
+                                                 'Invalid field number! Try again')
+            else:
+                current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
+                current_field = utils.convert(index=(current_line, current_column))
+                new_field = random.choice(cls.board.alfanum_field_list)
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
                     (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
@@ -238,11 +243,32 @@ class Game:
             except ValueError:
                 print('Invalid move!')
 
-    @classmethod
-    def get_cpu_move(cls):
-        current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
-        target_line, target_column = utils.convert(field=random.choice(cls.board.alfanum_field_list))
-        pass
+    # @classmethod
+    # def get_cpu_move(cls):
+    #     current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
+    #     current_field = utils.convert(index=(current_line, current_column))
+    #     new_field = random.choice(cls.board.alfanum_field_list)
+    #
+    #     try:
+    #         if cls.is_move_valid(current_field, new_field, cls.current_player):
+    #             (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
+    #                 (utils.get_piece_coordinates(current_field, new_field))
+    #             piece, opponent_piece = utils.get_piece_obj(current_line, current_column, mid_line, mid_column,
+    #                                                         cls.board)
+    #             if abs(new_line - current_line) == 1 and abs(new_column - current_column) == 1:
+    #                 piece.move((new_line, new_column), cls.board)
+    #             elif abs(new_line - current_line) == 2 and abs(new_column - current_column) == 2:
+    #                 piece.move((new_line, new_column), cls.board)
+    #                 opponent_piece.remove_piece('retired', cls.other_player, cls.board)
+    #                 cls.current_player.update_score()
+    #             if piece.rank == 'pawn' and piece.is_promoted(cls.board):
+    #                 piece.promote_pawn(cls.board, cls.current_player)
+    #             cls.switch_players()
+    #             break
+    #         else:
+    #             raise ValueError
+    #     except ValueError:
+    #         print('Invalid move!')
 
     @classmethod
     def switch_players(cls):
@@ -294,7 +320,7 @@ class Game:
 
     @classmethod
     def play(cls):
-        cls.print_ui_message('Checkers')
+        cls.print_ui_message('Checkers'.center(20))
         # sleep(3)
         # cls.clear_screen()
         game_mode = cls.choose_game_mode()
@@ -304,12 +330,12 @@ class Game:
             else:
                 match game_mode:
                     case '1':
+                        pass
+                    case '2':
                         if not cls.play_2p_game():
                             cls.game_over = True
                         else:
                             cls.play_2p_game()
-                    case '2':
-                        pass
 
 
 Game.play()
