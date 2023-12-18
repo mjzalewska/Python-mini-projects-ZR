@@ -1,8 +1,7 @@
+from art import tprint
 import os
 import random
 from time import sleep
-
-from art import tprint
 from classes.piece import Pawn, King
 from classes.player import Player
 from classes.board import Board
@@ -185,7 +184,8 @@ class Game:
                                                  msg='Invalid choice! '
                                                      'Move not on the list')
             new_field = cls.get_player_input(prompt='Target location: ',
-                                             validator=[move[1] for move in mandatory_moves if move[0] == current_field],
+                                             validator=[move[1] for move in mandatory_moves if
+                                                        move[0] == current_field],
                                              msg='Invalid location!')
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
@@ -197,6 +197,9 @@ class Game:
                     cls.current_player.update_score()
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
+                    follow_up_move = cls.current_player.get_mandatory_captures(cls.board, [cls.board.fields[new_line][new_column]])
+                    if follow_up_move:
+                        cls.enforce_mandatory_move(follow_up_move)
                     # cls.clear_screen()
                     # cls.board.display_board()
                     cls.switch_players()
@@ -241,6 +244,12 @@ class Game:
                 print('Invalid move!')
 
     @classmethod
+    def get_cpu_move(cls):
+        current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
+        target_line, target_column = utils.convert(field=random.choice(cls.board.alfanum_field_list))
+        pass
+
+    @classmethod
     def switch_players(cls):
         if cls.current_player == cls.player_1:
             cls.current_player = cls.player_2
@@ -260,6 +269,9 @@ class Game:
         elif not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board):
             cls.print_ui_message(f'{cls.player_1.name} wins!')
             return True
+        elif (not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board)) and \
+                (not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board)):
+            cls.print_ui_message('It\'s a draw!')
         return False
 
     @classmethod
@@ -269,9 +281,11 @@ class Game:
     @classmethod
     def play_2p_game(cls):
         # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
+        # uzależnić get mandatory moves od kolekcji (player.pieces lub piece który już zrobił mandatory move)
+        # po cls.enforce_mandatory_move -> if cls.current_player.get_mandatory_captures wywoałnie enforce, a jak nie to continue
 
         while True:
-            mandatory_moves = cls.current_player.get_mandatory_captures(cls.board)
+            mandatory_moves = cls.current_player.get_mandatory_captures(cls.board, cls.current_player.pieces)
             if mandatory_moves:
                 cls.board.display_board()
                 print()
