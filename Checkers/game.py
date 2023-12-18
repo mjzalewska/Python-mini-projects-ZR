@@ -18,11 +18,6 @@ class Game:
     other_player = None
 
     @classmethod
-    def print_welcome_screen(cls):
-        tprint('Checkers', font='tarty1')  # tarty9
-        print()
-
-    @classmethod
     def choose_game_mode(cls):
         modes = ['1', '2']
         print('Please choose game mode: ')
@@ -175,9 +170,10 @@ class Game:
     @classmethod
     def enforce_mandatory_move(cls, mandatory_moves):
         while True:
-            print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
+            cls.board.display_board()
+            print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
             print(
-                f'Mandatory capture! You must move one of the following pieces: '
+                f'Mandatory capture! Only the following moves are possible: '
                 f'{",".join([f"{move[0]}-> {move[1]}" for move in mandatory_moves])}')
             current_field = cls.get_player_input(prompt='Piece to move: ',
                                                  validator=[move[0] for move in mandatory_moves],
@@ -197,11 +193,11 @@ class Game:
                     cls.current_player.update_score()
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
-                    follow_up_move = cls.current_player.get_mandatory_captures(cls.board, [cls.board.fields[new_line][new_column]])
+                    new_position = cls.board.fields[new_line][new_column]
+                    follow_up_move = cls.current_player.get_mandatory_captures(cls.board, [new_position])
                     if follow_up_move:
                         cls.enforce_mandatory_move(follow_up_move)
-                    # cls.clear_screen()
-                    # cls.board.display_board()
+                        cls.switch_players()
                     cls.switch_players()
                     break
                 else:
@@ -212,7 +208,8 @@ class Game:
     @classmethod
     def get_regular_move(cls):
         while True:
-            print(f'{cls.current_player.name} ({cls.current_player.color}) your move!')
+            cls.board.display_board()
+            print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
             current_field = cls.get_player_input('Piece to move: ',
                                                  [utils.convert(index=piece.position) for piece in
                                                   cls.current_player.pieces],
@@ -234,8 +231,6 @@ class Game:
                         cls.current_player.update_score()
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
-                    # cls.clear_screen()
-                    # cls.board.display_board()
                     cls.switch_players()
                     break
                 else:
@@ -280,22 +275,14 @@ class Game:
 
     @classmethod
     def play_2p_game(cls):
-        # za pierwszym razem spr wszystkie, ale potem już tylko spr kolejne dla danego pionka
-        # uzależnić get mandatory moves od kolekcji (player.pieces lub piece który już zrobił mandatory move)
-        # po cls.enforce_mandatory_move -> if cls.current_player.get_mandatory_captures wywoałnie enforce, a jak nie to continue
-
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board, cls.current_player.pieces)
             if mandatory_moves:
-                cls.board.display_board()
-                print()
                 cls.enforce_mandatory_move(mandatory_moves)
                 print()
                 if cls.check_winner():
                     return False
             else:
-                cls.board.display_board()
-                print()
                 cls.get_regular_move()
                 print()
                 if cls.check_winner():
