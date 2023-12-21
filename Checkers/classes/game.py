@@ -1,5 +1,4 @@
 from art import tprint
-import os
 import random
 from .piece import Pawn
 from .player import Player
