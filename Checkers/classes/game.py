@@ -2,9 +2,9 @@ from art import tprint
 import os
 import random
 from time import sleep
-from classes.piece import Pawn, King
-from classes.player import Player
-from classes.board import Board
+from .piece import Pawn
+from .player import Player
+from .board import Board
 import Checkers.utilities.utilities as utils
 
 
