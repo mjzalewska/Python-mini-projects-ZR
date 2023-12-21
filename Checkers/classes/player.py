@@ -35,13 +35,13 @@ class Player:
                         mandatory_captures.append((convert(index=piece.position), target_field))
         return mandatory_captures
 
-    def has_piece_left(self):
+    def has_pieces_left(self):
         if self.pieces:
             return True
         return False
 
     def has_moves_left(self, board):
-        if self.has_piece_left():
+        if self.has_pieces_left():
             result = []
             for piece in self.pieces:
                 line, column = piece.position
