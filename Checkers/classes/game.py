@@ -1,3 +1,5 @@
+from time import sleep
+
 from art import tprint
 import random
 from .piece import Pawn
@@ -197,7 +199,9 @@ class Game:
                     if follow_up_move:
                         cls.enforce_mandatory_move(follow_up_move)
                         cls.switch_players()
+                        sleep(2)
                     cls.switch_players()
+                    sleep(2)
                     break
                 else:
                     raise ValueError
@@ -236,6 +240,7 @@ class Game:
                     if piece.rank == 'pawn' and piece.is_promoted(cls.board):
                         piece.promote_pawn(cls.board, cls.current_player)
                     cls.switch_players()
+                    sleep(2)
                     break
                 else:
                     raise ValueError
