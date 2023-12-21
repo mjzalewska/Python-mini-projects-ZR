@@ -20,9 +20,9 @@ class Game:
     @classmethod
     def choose_game_mode(cls):
         modes = ['1', '2']
-        print('Please choose game mode: ')
-        print('1 - Player vs Player')
-        print('2 - Player vs Computer')
+        print('\nPlease choose game mode: '.center(110))
+        print('1 - Player vs Computer')
+        print('2 - Player vs Player')
         while True:
             mode_choice = input()
             try:
@@ -46,10 +46,10 @@ class Game:
         if cls.player_1.color == 'white':
             cls.current_player = cls.player_1
             cls.other_player = cls.player_2
-            print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
+            print(f'\n{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
         else:
             cls.current_player = cls.player_2
-            print(f'{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
+            print(f'\n{cls.current_player.name} your color is {cls.current_player.color}, you will move first!\n')
             cls.other_player = cls.player_1
 
     @classmethod
@@ -68,11 +68,11 @@ class Game:
         # initialize players
         match mode:
             case '1':
-                cls.player_1 = Player('human', cls.get_player_name('Player 1 enter your name: '), 'top')
-                cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
-            case '2':
-                cls.player_1 = Player('human', cls.get_player_name('Player 1 enter your name: '), 'top')
+                cls.player_1 = Player('human', cls.get_player_name('\nPlayer 1 enter your name: '), 'top')
                 cls.player_2 = Player('CPU', 'Player 2', 'bottom')
+            case '2':
+                cls.player_1 = Player('human', cls.get_player_name('\nPlayer 1 enter your name: '), 'top')
+                cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
         cls.assign_color()
         cls.decide_who_goes_first()
 
@@ -171,18 +171,24 @@ class Game:
     def enforce_mandatory_move(cls, mandatory_moves):
         while True:
             cls.board.display_board()
+            cls.show_score()
             print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
             print(
                 f'Mandatory capture! Only the following moves are possible: '
                 f'{",".join([f"{move[0]}-> {move[1]}" for move in mandatory_moves])}')
-            current_field = cls.get_player_input(prompt='Piece to move: ',
-                                                 validator=[move[0] for move in mandatory_moves],
-                                                 msg='Invalid choice! '
-                                                     'Move not on the list')
-            new_field = cls.get_player_input(prompt='Target location: ',
-                                             validator=[move[1] for move in mandatory_moves if
-                                                        move[0] == current_field],
-                                             msg='Invalid location!')
+
+            if cls.current_player.type == 'human':
+                current_field = cls.get_player_input(prompt='Piece to move: ',
+                                                     validator=[move[0] for move in mandatory_moves],
+                                                     msg='Invalid choice! '
+                                                         'Move not on the list')
+                new_field = cls.get_player_input(prompt='Target location: ',
+                                                 validator=[move[1] for move in mandatory_moves if
+                                                            move[0] == current_field],
+                                                 msg='Invalid location!')
+            else:
+                current_field = random.choice(mandatory_moves)[0]
+                new_field = random.choice(mandatory_moves)[1]
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
                     (line, column), (new_line, new_column), (mid_line, mid_column) = \
@@ -209,14 +215,19 @@ class Game:
     def get_regular_move(cls):
         while True:
             cls.board.display_board()
+            cls.show_score()
             print(f'\n{cls.current_player.name} ({cls.current_player.color}) your move!')
-            current_field = cls.get_player_input('Piece to move: ',
-                                                 [utils.convert(index=piece.position) for piece in
-                                                  cls.current_player.pieces],
-                                                 'Invalid choice! Please choose one of your pieces to move')
+            if cls.current_player.type == 'human':
+                current_field = cls.get_player_input('Piece to move: ',
+                                                     [utils.convert(index=piece.position) for piece in
+                                                      cls.current_player.pieces],
+                                                     'Invalid choice! Please choose one of your pieces to move')
 
-            new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
-                                             'Invalid field number! Try again')
+                new_field = cls.get_player_input('Target location: ', cls.board.alfanum_field_list,
+                                                 'Invalid field number! Try again')
+            else:
+                current_field, new_field = cls.generate_cpu_move()
+                print(f'CPU: Moving from {current_field} to {new_field}')
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
                     (current_line, current_column), (new_line, new_column), (mid_line, mid_column) = \
@@ -239,10 +250,13 @@ class Game:
                 print('Invalid move!')
 
     @classmethod
-    def get_cpu_move(cls):
-        current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
-        target_line, target_column = utils.convert(field=random.choice(cls.board.alfanum_field_list))
-        pass
+    def generate_cpu_move(cls):
+        while True:
+            current_line, current_column = random.choice([piece.position for piece in cls.current_player.pieces])
+            current_field = utils.convert(index=(current_line, current_column))
+            new_field = random.choice(cls.board.alfanum_field_list)
+            if cls.is_move_valid(current_field, new_field, cls.current_player):
+                return current_field, new_field
 
     @classmethod
     def switch_players(cls):
@@ -254,18 +268,21 @@ class Game:
             cls.other_player = cls.player_2
 
     @classmethod
-    def check_winner(cls):
+    def show_score(cls):
         print(f'Current score: \n'
               f'{cls.player_1.name}: {cls.player_1.score}\n'
-              f'{cls.player_2.name}: {cls.player_2.score}')
-        if not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board):
+              f'{cls.player_2.name}: {cls.player_2.score}\n')
+
+    @classmethod
+    def check_winner(cls):
+        if not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board):
             cls.print_ui_message(f'{cls.player_2.name} wins!')
             return True
-        elif not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board):
+        elif not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board):
             cls.print_ui_message(f'{cls.player_1.name} wins!')
             return True
-        elif (not cls.player_1.has_piece_left() or not cls.player_1.has_moves_left(cls.board)) and \
-                (not cls.player_2.has_piece_left() or not cls.player_2.has_moves_left(cls.board)):
+        elif (not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board)) and \
+                (not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board)):
             cls.print_ui_message('It\'s a draw!')
         return False
 
@@ -274,7 +291,7 @@ class Game:
         tprint(message, font='tarty1')
 
     @classmethod
-    def play_2p_game(cls):
+    def gameplay(cls):
         while True:
             mandatory_moves = cls.current_player.get_mandatory_captures(cls.board, cls.current_player.pieces)
             if mandatory_moves:
@@ -289,12 +306,8 @@ class Game:
                     return False
 
     @classmethod
-    def play_1p_game(cls):
-        pass
-
-    @classmethod
-    def play(cls):
-        cls.print_ui_message('Checkers')
+    def run(cls):
+        cls.print_ui_message('Checkers'.center(110))
         # sleep(3)
         # cls.clear_screen()
         game_mode = cls.choose_game_mode()
@@ -304,12 +317,14 @@ class Game:
             else:
                 match game_mode:
                     case '1':
-                        if not cls.play_2p_game():
+                        if not cls.gameplay():
                             cls.game_over = True
                         else:
-                            cls.play_2p_game()
+                            cls.gameplay()
                     case '2':
-                        pass
+                        if not cls.gameplay():
+                            cls.game_over = True
+                        else:
+                            cls.gameplay()
 
-
-Game.play()
+# add clear screen
