@@ -181,6 +181,7 @@ class Game:
             else:
                 current_field = random.choice(mandatory_moves)[0]
                 new_field = random.choice(mandatory_moves)[1]
+                print(f'CPU: Moving from {current_field} to {new_field}')
             try:
                 if cls.is_move_valid(current_field, new_field, cls.current_player):
                     (line, column), (new_line, new_column), (mid_line, mid_column) = \
