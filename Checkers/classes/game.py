@@ -1,7 +1,6 @@
 from art import tprint
 import os
 import random
-from time import sleep
 from .piece import Pawn
 from .player import Player
 from .board import Board
@@ -124,12 +123,6 @@ class Game:
                 return value
             except ValueError:
                 print(msg)
-
-    @classmethod
-    def clear_screen(cls):
-        if os.name == 'nt':
-            os.system('cls')
-        os.system('clear')
 
     @classmethod
     def is_owner_valid(cls, piece, player):
@@ -308,8 +301,6 @@ class Game:
     @classmethod
     def run(cls):
         cls.print_ui_message('Checkers'.center(110))
-        # sleep(3)
-        # cls.clear_screen()
         game_mode = cls.choose_game_mode()
         while not cls.game_over:
             if cls.game_state == 'initializing':
@@ -326,5 +317,3 @@ class Game:
                             cls.game_over = True
                         else:
                             cls.gameplay()
-
-# add clear screen
