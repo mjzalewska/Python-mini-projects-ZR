@@ -69,7 +69,7 @@ class Game:
         match mode:
             case '1':
                 cls.player_1 = Player('human', cls.get_player_name('\nPlayer 1 enter your name: '), 'top')
-                cls.player_2 = Player('CPU', 'Player 2', 'bottom')
+                cls.player_2 = Player('CPU', 'CPU', 'bottom')
             case '2':
                 cls.player_1 = Player('human', cls.get_player_name('\nPlayer 1 enter your name: '), 'top')
                 cls.player_2 = Player('human', cls.get_player_name('Player 2 enter your name: '), 'bottom')
@@ -274,13 +274,16 @@ class Game:
     @classmethod
     def check_winner(cls):
         if not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board):
+            cls.board.display_board()
             cls.print_ui_message(f'{cls.player_2.name} wins!')
             return True
         elif not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board):
+            cls.board.display_board()
             cls.print_ui_message(f'{cls.player_1.name} wins!')
             return True
         elif (not cls.player_1.has_pieces_left() or not cls.player_1.has_moves_left(cls.board)) and \
                 (not cls.player_2.has_pieces_left() or not cls.player_2.has_moves_left(cls.board)):
+            cls.board.display_board()
             cls.print_ui_message('It\'s a draw!')
         return False
 
