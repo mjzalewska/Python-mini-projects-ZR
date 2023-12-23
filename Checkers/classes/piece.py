@@ -1,5 +1,5 @@
 from termcolor import colored
-from Checkers.utilities.utilities import convert, get_piece_obj, get_piece_coordinates
+from utilities.utilities import convert, get_piece_obj, get_piece_coordinates
 
 
 class Piece:

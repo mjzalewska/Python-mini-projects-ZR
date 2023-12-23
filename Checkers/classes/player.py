@@ -1,4 +1,4 @@
-from Checkers.utilities.utilities import convert
+from utilities.utilities import convert
 
 
 class Player:

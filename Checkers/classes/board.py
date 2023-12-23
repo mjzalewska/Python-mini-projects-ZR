@@ -1,8 +1,5 @@
 import string
-
-from termcolor import colored
-
-import Checkers.utilities.utilities as utils
+import utilities.utilities as utils
 
 
 class Board:

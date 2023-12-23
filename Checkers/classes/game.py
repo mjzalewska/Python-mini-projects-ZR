@@ -1,11 +1,11 @@
+import os
 from time import sleep
-
 from art import tprint
 import random
 from .piece import Pawn
 from .player import Player
 from .board import Board
-import Checkers.utilities.utilities as utils
+import utilities.utilities as utils
 
 
 class Game:
