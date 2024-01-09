@@ -1,9 +1,9 @@
 from PIL import ImageTk, Image
 import tkinter as tk
-from tkinter import ttk, Button, Frame, Label
+from tkinter import ttk
 
 
-class MainWindow(tk.Tk):
+class HangmanApp(tk.Tk):
     def __init__(self):
         super().__init__()
         # root window
@@ -12,48 +12,95 @@ class MainWindow(tk.Tk):
         self.geometry("700x500")
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        # buttons style
+
+        # container frame
+        container = tk.Frame(master=self)
+        container.grid(row=0, column=0, sticky="nswe")
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        # app buttons styling
         self.b_style = ttk.Style()
-        self.b_style.configure("TButton", font=("Algerian", 15, "bold"), foreground="#910c20", background="black",
+        self.b_style.configure("TButton", font=("Algerian", 15, "bold"), background="black",
                                width=15)
         self.b_style.map("TButton", background=[("active", "red")])
-        # frames
-        self.main_frm = Frame(master=self)
-        self.main_frm.grid(row=0, column=0, sticky="nswe")
-        self.header_frm = Frame(master=self.main_frm, bg="black")
+
+        # dictionary of child frame instances
+        self.frames = {}
+        for page in (TitlePage, GamePage):
+            frame = page(container, self)
+            self.frames[page] = frame
+            frame.grid(row=0, column=0, sticky="nswe")
+
+        self.show_frame(TitlePage)
+
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        # raises the current frame to the top
+        frame.tkraise()
+
+
+class TitlePage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__()
+
+        # title frame
+        self.header_frm = tk.Frame(master=self, bg="black")
         self.header_frm.pack(fill=tk.BOTH, expand=True)
         self.header_frm.grid_rowconfigure(0, weight=1)
         self.header_frm.grid_columnconfigure(0, weight=1)
-
-        self.start_btn_frm = Frame(master=self.main_frm, bg="black")
+        # title image
+        self.original_img = Image.open(
+            "C:\\Users\\mjarz\\PycharmProjects\\Python-mini-projects-Z2J\\GUI-Hangman-Game\\Hangman_red_font_black_bg.png")
+        resized = self.original_img.resize((700, 360), Image.LANCZOS)
+        self.title_img = ImageTk.PhotoImage(resized)
+        self.title_lbl = tk.Label(master=self, image=self.title_img, borderwidth=0)
+        self.title_lbl.pack()
+        # start button frame
+        self.start_btn_frm = tk.Frame(master=self, bg="black")
         self.start_btn_frm.pack(fill=tk.X)
         self.start_btn_frm.grid_columnconfigure(0, weight=1)
         self.start_btn_frm.grid_rowconfigure(0, weight=1)
-
-        self.quit_btn_frm = Frame(master=self.main_frm, bg="black")
+        # quit button frame
+        self.quit_btn_frm = tk.Frame(master=self, bg="black")
         self.quit_btn_frm.pack(fill=tk.X)
         self.quit_btn_frm.grid_columnconfigure(0, weight=1)
         self.quit_btn_frm.grid_rowconfigure(0, weight=1)
-
         # buttons
-        self.start_btn = ttk.Button(master=self.start_btn_frm, text="PLAY", padding=7)
-        self.start_btn.grid(row=0, column=0, pady=10)
+        self.start_btn = ttk.Button(master=self.start_btn_frm, text="PLAY", padding=7,
+                                    command=lambda: controller.show_frame(GamePage))
+        self.start_btn.pack(pady=10)
         self.quit_btn = ttk.Button(master=self.quit_btn_frm, text="QUIT", padding=7, command=self.quit_game)
-        self.quit_btn.grid(row=0, column=0, pady=10)
-
-        # title image
-        self.original_img = Image.open("Hangman_red_font_black_bg.png")
-        resized = self.original_img.resize((650, 360), Image.LANCZOS)
-        self.title_img = ImageTk.PhotoImage(resized)
-        self.title_lbl = Label(master=self.header_frm, image=self.title_img, borderwidth=0)
-        self.title_lbl.grid(row=0, column=0)
-
+        self.quit_btn.pack(pady=10)
 
     @staticmethod
     def quit_game():
         exit()
 
 
+class GamePage(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__()
+
+        # game screen
+        self.game_screen_frm = tk.Frame(master=self, bg="black")
+        self.game_screen_frm.pack(fill=tk.BOTH, expand=True)
+        self.game_screen_frm.grid_rowconfigure(0, weight=1)
+        self.game_screen_frm.grid_columnconfigure(0, weight=1)
+        # secret word frame
+        self.secret_wrd_frm = tk.Frame(master=self, bg="black")
+        self.secret_wrd_frm.pack(fill=tk.X)
+        self.secret_wrd_frm.grid_columnconfigure(0, weight=1)
+        self.secret_wrd_frm.grid_rowconfigure(0, weight=1)
+        # guess button frame
+        self.guess_btn_frm = tk.Frame(master=self, bg="black")
+        self.guess_btn_frm.pack(fill=tk.X)
+        self.guess_btn_frm.grid_columnconfigure(0, weight=1)
+        self.guess_btn_frm.grid_rowconfigure(0, weight=1)
+        # submit button
+        self.submit_btn = ttk.Button(master=self, text="TAKE A GUESS", padding=7)
+
+
 if __name__ == '__main__':
-    app = MainWindow()
+    app = HangmanApp()
     app.mainloop()
