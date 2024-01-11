@@ -1,3 +1,6 @@
+import csv
+import string
+from random import choice
 from PIL import ImageTk, Image
 import tkinter as tk
 from tkinter import ttk
@@ -93,7 +96,7 @@ class GamePage(tk.Frame):
         self.gallows_img = ImageTk.PhotoImage(resized)
         # game screen label
         self.game_screen_lbl = tk.Label(master=self.game_screen_frm, bg="black", borderwidth=0, image=self.gallows_img)
-        self.game_screen_lbl.pack(fill=tk.BOTH,expand=True)
+        self.game_screen_lbl.pack(fill=tk.BOTH, expand=True)
         # secret word display frame
         self.secret_wrd_frm = tk.Frame(master=self, bg="black")
         self.secret_wrd_frm.pack(fill=tk.BOTH)
@@ -111,6 +114,9 @@ class GamePage(tk.Frame):
         # letter entry
         self.letter_ent = ttk.Entry(master=self.letter_ent_frm, width=16, background="black",
                                     font=("Algerian", 15, "bold"), justify=tk.CENTER)
+        validate_cmd = (self.register(self.validate), "%P")
+        invalid_cmd = (self.register(self.on_invalid, ))
+        self.letter_ent.config(validate="focusout", validatecommand=validate_cmd, invalidcommand=invalid_cmd)
         self.letter_ent.pack(ipady=6, pady=10)
         # submit button frame
         self.guess_btn_frm = tk.Frame(master=self, bg="black")
@@ -120,6 +126,99 @@ class GamePage(tk.Frame):
         # submit button
         self.guess_btn = ttk.Button(master=self.guess_btn_frm, text="TAKE A GUESS", padding=7)
         self.guess_btn.pack(pady=10)
+        # return button frame
+        self.return_btn_frm = tk.Frame(master=self, bg="black")
+        self.return_btn_frm.pack(fill=tk.X)
+        self.return_btn_frm.grid_columnconfigure(0, weight=1)
+        self.return_btn_frm.grid_rowconfigure(0, weight=1)
+        # return button
+        self.return_btn = ttk.Button(master=self.return_btn_frm, text="BACK", padding=7,
+                                     command=lambda: controller.show_frame(TitlePage))
+        self.return_btn.pack(pady=10)
+
+    @staticmethod
+    def validate(value):
+        if len(value) == 1 and value in string.ascii_letters:
+            return True
+        else:
+            return False
+
+    def on_invalid(self):
+        self.show_message("Too many chars!", "red")
+
+    def show_message(self, error="", color="black"):
+        self.letter_ent.delete(0, tk.END)
+        self.letter_ent.insert(0, error)
+        self.letter_ent["foreground"] = color
+
+    def run_game(self):
+        pass # add game run command for the submit button
+
+
+class GameLogic:
+    def __init__(self, guess):
+        self.player_guess = guess
+        self.word_list = None
+        self.secret_word = None
+        self.gallows_img = None
+        self.misses = 0
+
+    @staticmethod
+    def import_wordlist(file_name):
+        words = []
+        with open(file_name, "r") as f:
+            data = csv.reader(f)
+            for row in data:
+                words.extend(row)
+        return words
+
+    def choose_secret_word(self):
+        self.secret_word = choice(self.word_list)
+
+    @staticmethod
+    def show_word(secret_word, guess):
+        unhidden_word = ""
+        for letter in secret_word:
+            if letter == guess:
+                unhidden_word += letter
+            else:
+                unhidden_word += "*"
+        return unhidden_word
+
+    def is_winner(self):
+        if "*" not in self.secret_word:
+            return True
+        else:
+            return False
+
+    def is_game_over(self):
+        if self.misses >= 8:
+            return True
+        else:
+            return False
+
+    def show_gallows(self):
+        if self.misses <= 8:
+            orig_img = Image.open(f"Assets/gallows_{self.misses}.png")
+            resized = orig_img.resize((700, 180))
+            self.gallows_img = ImageTk.PhotoImage(resized)
+        else:
+            orig_img = Image.open("Assets/gallows_winner.png")
+            resized = orig_img.resize((700, 180))
+            self.gallows_img = ImageTk.PhotoImage(resized)
+
+    def play(self):
+        self.word_list = self.import_wordlist("wordlist.csv")
+        self.choose_secret_word()
+        if self.player_guess in self.secret_word:
+            self.show_word(self.secret_word, self.player_guess)
+            if self.is_winner():
+                self.show_gallows()
+        else:
+            self.misses += 1
+            self.show_gallows()
+        if self.is_game_over():
+            pass
 
 
 if __name__ == '__main__':
