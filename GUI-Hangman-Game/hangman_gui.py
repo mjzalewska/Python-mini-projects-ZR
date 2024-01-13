@@ -1,5 +1,6 @@
 import csv
 import string
+import sys
 from random import choice
 from time import sleep
 from PIL import ImageTk, Image
@@ -55,7 +56,7 @@ class TitlePage(tk.Frame):
         self.header_frm.grid_rowconfigure(0, weight=1)
         self.header_frm.grid_columnconfigure(0, weight=1)
         # title image
-        self.original_img = Image.open("Assets/Hangman_red_font_black_bg.png")
+        self.original_img = Image.open("C:\\Users\\mjarz\\PycharmProjects\\Python-mini-projects-Z2J\\GUI-Hangman-Game\\Assets\\Hangman_red_font_black_bg.png")
         resized = self.original_img.resize((700, 360), Image.LANCZOS)
         self.title_img = ImageTk.PhotoImage(resized)
         self.title_lbl = tk.Label(master=self.header_frm, image=self.title_img, borderwidth=0)
@@ -79,7 +80,7 @@ class TitlePage(tk.Frame):
 
     @staticmethod
     def quit_game():
-        exit()
+        sys.exit()
 
 
 class GamePage(tk.Frame):
