@@ -160,8 +160,11 @@ class GamePage(tk.Frame):
         self.letter_ent.config(state="normal")
         self.guess_btn.config(state="normal")
         self.secret_wrd_lbl["text"] = ""
-        self.letter_ent.delete(0,tk.END)
+        self.letter_ent.delete(0, tk.END)
+        self.letter_ent["foreground"] = "black"
         self.game = GameLogic()
+        self.game_screen_lbl["image"] = self.game.update_gallows()
+        self.secret_wrd_lbl["text"] = "".join(self.game.revealed_word)
 
     def start_over(self):
         answer = askyesno(title='Play Again?',
@@ -170,7 +173,6 @@ class GamePage(tk.Frame):
             self.reset()
 
     def run_game(self):
-        print(self.game.secret_word)
         player_guess = self.letter_ent.get().casefold()
         if len(player_guess) != 1:
             sleep(1)
@@ -196,8 +198,9 @@ class GameLogic:
         self.word_list = self._import_wordlist("wordlist.csv")
         self.secret_word = self._choose_secret_word()
         self.revealed_word = len(self.secret_word) * ["*"]
-        self.gallows_img = None
         self.misses = 0
+        self.gallows_images = self._load_images()
+        self.current_gallows_img = self.update_gallows()
 
     @staticmethod
     def _import_wordlist(file_name):
@@ -207,6 +210,16 @@ class GameLogic:
             for row in data:
                 words.extend(row)
         return words
+
+    @staticmethod
+    def _load_images():
+        gallows_images = []
+        for i in range(10):
+            orig_img = Image.open(f"Assets/gallows_{i}.png")
+            resized = orig_img.resize((700, 180))
+            gallows_img = ImageTk.PhotoImage(resized)
+            gallows_images.append(gallows_img)
+        return gallows_images
 
     def _choose_secret_word(self):
         return choice(self.word_list)
@@ -234,15 +247,11 @@ class GameLogic:
 
     def update_gallows(self):
         if self.is_winner():
-            image_path = "Assets/gallows_winner.png"
-        elif self.misses <= 8:
-            image_path = f"Assets/gallows_{self.misses}.png"
-
-        orig_img = Image.open(image_path)
-        resized = orig_img.resize((700, 180))
-        self.gallows_img = ImageTk.PhotoImage(resized)
-
-        return self.gallows_img
+            image_idx = 9
+        else:
+            image_idx = self.misses
+        self.current_gallows_img = self.gallows_images[image_idx]
+        return self.current_gallows_img
 
 
 if __name__ == '__main__':
